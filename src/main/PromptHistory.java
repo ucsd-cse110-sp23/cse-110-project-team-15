@@ -20,7 +20,6 @@ class Prompt extends JPanel {
 
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
-    //Color pink = new Color(0,0,0);
 
     Prompt(String query, String answer) {
 
