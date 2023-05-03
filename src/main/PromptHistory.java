@@ -20,22 +20,23 @@ class Footer extends JPanel {
   JButton clearButton;
 
   Color backgroundColor = new Color(50, 205, 50);
-  Border emptyBorder = BorderFactory.createEmptyBorder();
 
   Footer() {
     this.setPreferredSize(new Dimension(400, 60));
     this.setBackground(backgroundColor);
-    // TODO: Set the layout of the footer to a GridLayout with 1 row and 2 columns
+    // Set the layout of the footer to a GridLayout with 1 row and 2 columns
     GridLayout layout = new GridLayout(1, 2);
     this.setLayout(layout);
 
-    newButton = new JButton("New"); // add new button
-    newButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
-    this.add(newButton); // add to footer
+    // add new question button to footer
+    newButton = new JButton("New Question");
+    newButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
+    this.add(newButton);
 
-    clearButton = new JButton("Clear All"); // clear button
-    clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
-    this.add(clearButton); // add to footer
+    // add clear button to footer
+    clearButton = new JButton("Clear All");
+    clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
+    this.add(clearButton);
   }
 
   public JButton getNewButton() {
@@ -109,9 +110,6 @@ class ScrollFrame extends JFrame {
 
   public ScrollFrame() {
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setTitle("Prompt History");
-
     // Create the content pane
     contentPane = new JPanel();
     contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
@@ -129,7 +127,7 @@ class ScrollFrame extends JFrame {
     setContentPane(scrollPane);
 
     pack();
-    setVisible(true);
+
   }
 }
 
@@ -141,13 +139,20 @@ class AppFrame extends JFrame {
   private JButton newButton;
   private JButton clearButton;
 
+  Color black = new Color(0,0,0);
+  Color red = new Color(255,0,0);
+
+  private boolean isRecording = false;
+
   public AppFrame() {
+
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("SayIt");
     setSize(400, 600);
 
     // Create a new ScrollFrame
     scrollFrame = new ScrollFrame();
+    // Create a new Footer
     footer = new Footer();
 
     // Make the main part of the frame the scrollFrame
@@ -161,23 +166,32 @@ class AppFrame extends JFrame {
     addListeners();
 
     setVisible(true);
+    
   }
 
   /**
-   * Create functionality for the new and clear buttons
+   * Create functionality for when the new and clear buttons are pressed
    */
   public void addListeners() {
+    AudioRecord audio = new AudioRecord();
     newButton.addActionListener(
         (ActionEvent e) -> {
-          AudioRecord audio = new AudioRecord();
-          audio.startRecording();
+          if (!isRecording) {
+            newButton.setText("Stop Recording");
+            newButton.setForeground(red);
+            audio.startRecording();
+          } else {
+            newButton.setText("New Question");
+            newButton.setForeground(black);
+            audio.stopRecording();
+          }
+          isRecording = !isRecording;
         });
 
     clearButton.addActionListener(
         (ActionEvent e) -> {
           // TBD iteration 2
         });
-        
   }
 }
 
