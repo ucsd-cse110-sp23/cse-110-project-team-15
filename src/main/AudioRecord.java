@@ -22,7 +22,7 @@ class AudioRecord {
             // handle info regarding the data line
             DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
             if (!AudioSystem.isLineSupported(dataInfo)) {
-                System.out.println("Not Supported");
+                System.out.println("AudioRecord.java: Not Supported");
             }
 
             // ready mic to start recording
@@ -38,9 +38,10 @@ class AudioRecord {
                     AudioInputStream recordingStream = new AudioInputStream(targetLine);
                     File outputFile = new File(PATH_NAME);
                     try {
+                        System.out.println("Started Recording");
                         AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
                     } catch (IOException e) {
-                        System.out.println(e);
+                        System.out.println("AudioRecord.java: " + e);
                     }
                     System.out.println("Stopped Recording");
                 }
@@ -49,7 +50,7 @@ class AudioRecord {
             // start the recording audio thread
             audioRecorderThread.start();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("AudioRecord.java: " + e);
         }
     }
     
