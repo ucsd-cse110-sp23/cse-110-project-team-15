@@ -60,7 +60,7 @@
                  };
                  audioRecorderThread.start();
  
-                 // stop recording when 
+                 // stop recording when Stop Recording is pressed
                  JOptionPane.showMessageDialog(null, "Press to Stop Recording");
                  targetLine.stop();
                  targetLine.close();
