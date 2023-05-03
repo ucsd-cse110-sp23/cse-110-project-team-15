@@ -14,13 +14,19 @@ import javax.swing.*;
 
 // Add Header Class
 
-// Add Footer Class
+/**
+ * Panel for footer of app that will contain buttons for recording and clearing prompts
+ */
 class Footer extends JPanel {
-  JButton newButton;
-  JButton clearButton;
+  private JButton newButton;
+  private JButton clearButton;
+  private AppFrameButtons buttons;
 
   Color backgroundColor = new Color(50, 205, 50);
 
+  /**
+   * Default constructor that sets up Footer panel in app
+   */
   Footer() {
     this.setPreferredSize(new Dimension(400, 60));
     this.setBackground(backgroundColor);
@@ -37,12 +43,26 @@ class Footer extends JPanel {
     clearButton = new JButton("Clear All");
     clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
     this.add(clearButton);
+
+    // Create listeners for new and clear buttons
+    buttons = new AppFrameButtons();
+    buttons.setNewButton(getNewButton());
+    buttons.setClearButton(getClearButton());
+    buttons.newClearListeners();
   }
 
+  /**
+   * Getter for newButton
+   * @return JButton of the newButton button in Footer
+   */
   public JButton getNewButton() {
     return newButton;
   }
 
+  /**
+   * Getter for clearButton
+   * @return JButton of the clearButton button in Footer
+   */
   public JButton getClearButton() {
     return clearButton;
   }
@@ -131,48 +151,37 @@ class ScrollFrame extends JFrame {
   }
 }
 
-class AppFrame extends JFrame {
-
-  private ScrollFrame scrollFrame;
-  private Footer footer;
-
+/** 
+ * Responsible for nesting and managing all button functions
+ */
+class AppFrameButtons {
+  // put all buttons used in app here
   private JButton newButton;
   private JButton clearButton;
 
-  Color black = new Color(0,0,0);
-  Color red = new Color(255,0,0);
-
+  // other miscellaneous variables
   private boolean isRecording = false;
+  Color black = new Color(0, 0, 0);
+  Color red = new Color(255, 0, 0);
 
-  public AppFrame() {
+  /**
+   * Setter for newButton
+   */
+  public void setNewButton(JButton button) {
+    newButton = button;
+  }
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setTitle("SayIt");
-    setSize(400, 600);
-
-    // Create a new ScrollFrame
-    scrollFrame = new ScrollFrame();
-    // Create a new Footer
-    footer = new Footer();
-
-    // Make the main part of the frame the scrollFrame
-    this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
-    // Add footer on bottom of the screen
-    this.add(footer, BorderLayout.SOUTH);
-
-    // Create listeners for new and clear buttons
-    newButton = footer.getNewButton();
-    clearButton = footer.getClearButton();
-    addListeners();
-
-    setVisible(true);
-    
+  /**
+   * Setter for clearButton
+   */
+  public void setClearButton(JButton button) {
+    clearButton = button;
   }
 
   /**
    * Create functionality for when the new and clear buttons are pressed
    */
-  public void addListeners() {
+  public void newClearListeners() {
     AudioRecord audio = new AudioRecord();
     newButton.addActionListener(
         (ActionEvent e) -> {
@@ -190,8 +199,36 @@ class AppFrame extends JFrame {
 
     clearButton.addActionListener(
         (ActionEvent e) -> {
-          // TBD iteration 2
+          // TBD in iteration 2
         });
+  }
+}
+
+/**
+ * Frame responsible for positioning and displaying all panels on GUI
+ */
+class AppFrame extends JFrame {
+
+  private ScrollFrame scrollFrame;
+  private Footer footer;
+
+  public AppFrame() {
+
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setTitle("SayIt");
+    setSize(400, 600);
+
+    // Create a new ScrollFrame
+    scrollFrame = new ScrollFrame();
+    // Create a new Footer
+    footer = new Footer();
+
+    // Make the main part of the frame the scrollFrame
+    this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
+    // Add footer on bottom of the screen
+    this.add(footer, BorderLayout.SOUTH);
+
+    setVisible(true);
   }
 }
 

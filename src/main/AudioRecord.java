@@ -1,20 +1,19 @@
-/*
- * Tutorial followed: https://youtu.be/WSyTrdjKeqQ
- */
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
-public class AudioRecord {
+/**
+ * Responsible for audio-based functionality
+ */
+class AudioRecord {
     private AudioFormat audioFormat;
     private TargetDataLine targetLine;
     private final String PATH_NAME = "Test-files/question.wav";
     
     /**
-     * Start recording and create audio file with audio
+     * Start recording and create audio file with input audio
      */
     public void startRecording() {
         try {
@@ -46,6 +45,8 @@ public class AudioRecord {
                     System.out.println("Stopped Recording");
                 }
             };
+
+            // start the recording audio thread
             audioRecorderThread.start();
         } catch (Exception e) {
             System.out.println(e);
