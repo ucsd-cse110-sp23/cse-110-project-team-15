@@ -17,7 +17,6 @@
  
      /**
       * Start recording and create audio file with audio
-      * 
       */
      public void startRecording() {
          try {  

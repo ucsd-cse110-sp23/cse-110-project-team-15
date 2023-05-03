@@ -1,7 +1,9 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,6 +14,37 @@ import javax.swing.*;
 // Add Header Class
 
 // Add Footer Class
+class Footer extends JPanel {
+  JButton newButton;
+  JButton clearButton;
+
+  Color backgroundColor = new Color(50,205,50);
+  Border emptyBorder = BorderFactory.createEmptyBorder();
+
+  Footer() {
+    this.setPreferredSize(new Dimension(400, 60));
+    this.setBackground(backgroundColor);
+    // TODO: Set the layout of the footer to a GridLayout with 1 row and 2 columns
+    GridLayout layout = new GridLayout(1, 2);
+    this.setLayout(layout);
+
+    newButton = new JButton("New"); // add new button
+    newButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
+    this.add(newButton); // add to footer
+
+    clearButton = new JButton("Clear All"); // clear button
+    clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
+    this.add(clearButton); // add to footer
+  }
+
+  public JButton getNewButton() {
+    return newButton;
+  }
+
+  public JButton getClearButton() {
+    return clearButton;
+  }
+}
 
 class Prompt extends JPanel {
     
@@ -102,6 +135,7 @@ class ScrollFrame extends JFrame {
   class AppFrame extends JFrame {
 
     private ScrollFrame scrollFrame;
+    private Footer footer;
 
     public AppFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,11 +144,23 @@ class ScrollFrame extends JFrame {
 
         // Create a new ScrollFrame
         scrollFrame = new ScrollFrame();
+        footer = new Footer();
 
         // Make the main part of the frame the scrollFrame
-        setContentPane(scrollFrame.getContentPane());
+        // setContentPane(scrollFrame.getContentPane());
+        this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
+        // Add footer on bottom of the screen
+        this.add(footer, BorderLayout.SOUTH);
+
 
         setVisible(true);
+    }
+
+    /**
+     * Create functionality for the new and clear buttons
+     */
+    public void addListeners() {
+      
     }
 }
 
