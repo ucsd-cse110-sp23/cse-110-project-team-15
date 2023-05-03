@@ -12,6 +12,14 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main']
+        }
+    }
+}
+
 dependencies {
     def junitVersion = '5.8.1'
 
