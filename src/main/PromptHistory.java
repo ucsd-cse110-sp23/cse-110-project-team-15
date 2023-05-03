@@ -99,11 +99,30 @@ class ScrollFrame extends JFrame {
     }
   }
 
+  class AppFrame extends JFrame {
+
+    private ScrollFrame scrollFrame;
+
+    public AppFrame() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("SayIt");
+        setSize(400, 600);
+
+        // Create a new ScrollFrame
+        scrollFrame = new ScrollFrame();
+
+        // Make the main part of the frame the scrollFrame
+        setContentPane(scrollFrame.getContentPane());
+
+        setVisible(true);
+    }
+}
+
   public class PromptHistory {
 
     public static void main(String args[]) {
       SwingUtilities.invokeLater(() -> {
-        new ScrollFrame();
+        new AppFrame();
       });
     }
   }
