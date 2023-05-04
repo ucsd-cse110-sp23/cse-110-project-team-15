@@ -15,7 +15,8 @@ import javax.swing.*;
 // Add Header Class
 
 /**
- * Panel for footer of app that will contain buttons for recording and clearing prompts
+ * Panel for footer of app that will contain buttons for recording and clearing
+ * prompts
  */
 class Footer extends JPanel {
   private JButton newButton;
@@ -53,6 +54,7 @@ class Footer extends JPanel {
 
   /**
    * Getter for newButton
+   * 
    * @return JButton of the newButton button in Footer
    */
   public JButton getNewButton() {
@@ -61,6 +63,7 @@ class Footer extends JPanel {
 
   /**
    * Getter for clearButton
+   * 
    * @return JButton of the clearButton button in Footer
    */
   public JButton getClearButton() {
@@ -151,7 +154,7 @@ class ScrollFrame extends JFrame {
   }
 }
 
-/** 
+/**
  * Responsible for nesting and managing all button functions
  */
 class AppFrameButtons {
@@ -182,25 +185,29 @@ class AppFrameButtons {
    * Create functionality for when the new and clear buttons are pressed
    */
   public void newClearListeners() {
+    // start or stop recording when new button is pressed
     AudioRecord audio = new AudioRecord();
     newButton.addActionListener(
-        (ActionEvent e) -> {
-          if (!isRecording) {
-            newButton.setText("Stop Recording");
-            newButton.setForeground(red);
-            audio.startRecording();
-          } else {
-            newButton.setText("New Question");
-            newButton.setForeground(black);
-            audio.stopRecording();
-          }
-          isRecording = !isRecording;
-        });
+      (ActionEvent e) -> {
+        if (!isRecording) {
+          newButton.setText("Stop Recording");
+          newButton.setForeground(red);
+          audio.startRecording();
+        } else {
+          newButton.setText("New Question");
+          newButton.setForeground(black);
+          audio.stopRecording();
+        }
+        isRecording = !isRecording;
+      }
+    );
 
+    // delete all prompts in prompt history when clear button is pressed
     clearButton.addActionListener(
-        (ActionEvent e) -> {
-          // TBD in iteration 2
-        });
+      (ActionEvent e) -> {
+        // TBD in iteration 2
+      }
+    );
   }
 }
 

@@ -47,7 +47,7 @@ class AudioRecord {
                 }
             };
 
-            // start the recording audio thread
+            // start the recording audio thread and move on
             audioRecorderThread.start();
         } catch (Exception e) {
             System.out.println("AudioRecord.java: " + e);
