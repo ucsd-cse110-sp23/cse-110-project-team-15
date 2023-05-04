@@ -146,6 +146,7 @@ class ScrollFrame extends JFrame {
 
     scrollPane = new JScrollPane(contentPane);
     scrollPane.setPreferredSize(new Dimension(400, 400));
+    scrollPane.getVerticalScrollBar().setUnitIncrement(15);
 
     setContentPane(scrollPane);
 
