@@ -1,5 +1,3 @@
-package main;
-
 public class QandA {
     private String query;
     private String answer;
