@@ -25,29 +25,31 @@ class Prompt extends JPanel {
 
       this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-      // Format Query Field
+      // Format Query Field as a textbox
       queryField = new JTextArea(query);
+      queryField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+      queryField.setBackground(pink);
+      queryField.setFont(new Font("Arial", Font.PLAIN, 14));
       queryField.setWrapStyleWord(true);
       queryField.setLineWrap(true);
       queryField.setEditable(false);
-      queryField.setBackground(pink);
-      queryField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-      queryField.setFont(new Font("Arial", Font.PLAIN, 14));
 
+      // Make it so that there is some space between the text and the border line
       Border paddingBorder1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
       Border compoundBorder1 = BorderFactory.createCompoundBorder(queryField.getBorder(), paddingBorder1);
       queryField.setBorder(compoundBorder1);
 
-      // Format Answer Field
+      // Format Answer Field as a text box
       answerField = new JTextArea(answer);
-      answerField.setFont(new Font("Arial", Font.PLAIN, 12));
       answerField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-      answerField.setLineWrap(true);
+      answerField.setBackground(pink);
+      answerField.setFont(new Font("Arial", Font.PLAIN, 12));
       answerField.setWrapStyleWord(true);
+      answerField.setLineWrap(true);
       answerField.setEditable(false);
       answerField.setPreferredSize(new Dimension(200,50));
-      answerField.setBackground(pink);
 
+      // Make it so that there is some space between the text and the border line
       Border paddingBorder2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
       Border compoundBorder2 = BorderFactory.createCompoundBorder(answerField.getBorder(), paddingBorder2);
       answerField.setBorder(compoundBorder2);
@@ -56,7 +58,7 @@ class Prompt extends JPanel {
       this.add(queryField);
       this.add(answerField);
 
-      // Format prompt box
+      // Format prompt box with some padding
       Border border = BorderFactory.createLineBorder(Color.BLACK);
       setBorder(BorderFactory.createCompoundBorder(border, 
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
@@ -69,7 +71,6 @@ class Prompt extends JPanel {
 class ScrollFrame extends JFrame {
 
     private GetPromptHistory history = new GetPromptHistory();
-
     private JPanel contentPane;
     private JScrollPane scrollPane;
   
@@ -89,9 +90,9 @@ class ScrollFrame extends JFrame {
           contentPane.add(prompt);
       }
 
+      // Display the contents and enable scrolling
       scrollPane = new JScrollPane(contentPane);
       scrollPane.setPreferredSize(new Dimension(400, 400));
-
       setContentPane(scrollPane);
 
       pack();
