@@ -6,16 +6,16 @@ import java.util.ArrayList;
 public class GetPromptHistory {
 
     private int size = 0;
-    private final String filepath = "Test-files/test-1.txt";
+    private final String filepath = "src/main/Test-files/test-1.txt";
     private ArrayList<QandA> prompts = new ArrayList<QandA>();
 
-    // Method read text file and pull relevant info, store it
+    // Read text file and pull relevant info, store it
     public GetPromptHistory() {
         try {
             FileReader fileReader = new FileReader(filepath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
-            String line2;
+            String line;    // query line
+            String line2;   // answer line
             
             while (((line = bufferedReader.readLine()) != null)
                     && (line2 = bufferedReader.readLine()) != null ) {
@@ -31,20 +31,39 @@ public class GetPromptHistory {
           }
     }
 
+    /*
+     * Return prompt object given index number
+     */
     public QandA getPrompt(int promptNumber) {
         return this.prompts.get(promptNumber);
     }
 
+    /*
+     * Return query text given index number
+     */
     public String getQuery(int promptNumber) {
         return this.prompts.get(promptNumber).getQuery();
     }
 
+    /*
+     * Return answer text given index number
+     */
     public String getAnswer(int promptNumber) {
-      return this.prompts.get(promptNumber).getAnswer();
+        return this.prompts.get(promptNumber).getAnswer();
     }
 
+    /*
+     * Return size of ArrayList
+     */
     public int getSize() {
-      return this.size;
+        return this.size;
+    }
+
+    /*
+     * Add a prompt to the ArrayList
+     */
+    public void addPrompt(String query, String answer) {
+        prompts.add(new QandA(query, answer));
     }
 
     public static void main(String args[]) {
