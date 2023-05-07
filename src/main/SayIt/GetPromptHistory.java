@@ -7,11 +7,7 @@ import java.util.ArrayList;
 public class GetPromptHistory {
 
     private int size = 0;
-<<<<<<< HEAD:bin/SayIt/GetPromptHistory.java
     //private final String filepath = "src/main/Test-files/test-1.txt";
-=======
-    private final String filepath = "Test-files/test-1.txt";
->>>>>>> main:src/GetPromptHistory.java
     private ArrayList<QandA> prompts = new ArrayList<QandA>();
 
     // Read text file and pull relevant info, store it
