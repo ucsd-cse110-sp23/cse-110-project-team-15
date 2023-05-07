@@ -1,3 +1,6 @@
+package SayIt;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,6 +20,7 @@ class Prompt extends JPanel {
     
     private JTextArea queryField;
     private JTextArea answerField;
+    JButton deleteButton;
 
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
@@ -53,8 +57,14 @@ class Prompt extends JPanel {
       Border paddingBorder2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
       Border compoundBorder2 = BorderFactory.createCompoundBorder(answerField.getBorder(), paddingBorder2);
       answerField.setBorder(compoundBorder2);
+
+      deleteButton = new JButton("Delete");
+      deleteButton.setPreferredSize(new Dimension(80, 20));
+      deleteButton.setBorder(BorderFactory.createEmptyBorder());
+      deleteButton.setFocusPainted(false);
       
       // Add text fields to prompt box
+      this.add(deleteButton, BorderLayout.EAST);
       this.add(queryField);
       this.add(answerField);
 
@@ -70,7 +80,7 @@ class Prompt extends JPanel {
 
 class ScrollFrame extends JFrame {
 
-    private GetPromptHistory history = new GetPromptHistory();
+    private GetPromptHistory history = new GetPromptHistory("src/main/Test-files/test-1.txt");
     private JPanel contentPane;
     private JScrollPane scrollPane;
   
@@ -93,6 +103,7 @@ class ScrollFrame extends JFrame {
       // Display the contents and enable scrolling
       scrollPane = new JScrollPane(contentPane);
       scrollPane.setPreferredSize(new Dimension(400, 400));
+      scrollPane.getVerticalScrollBar().setUnitIncrement(15);
       setContentPane(scrollPane);
 
       pack();
@@ -113,7 +124,7 @@ class ScrollFrame extends JFrame {
         scrollFrame = new ScrollFrame();
 
         // Make the main part of the frame the scrollFrame
-        setContentPane(scrollFrame.getContentPane());
+        this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
 
         setVisible(true);
     }
