@@ -7,7 +7,7 @@ import javax.swing.*;
 /**
  * Responsible for audio-based functionality
  */
-class AudioRecord {
+public class AudioRecord {
     private AudioFormat audioFormat;
     private TargetDataLine targetLine;
     private final String PATH_NAME = "Test-files/question.wav";
