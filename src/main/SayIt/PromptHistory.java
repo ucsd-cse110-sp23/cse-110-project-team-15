@@ -1,3 +1,5 @@
+package SayIt;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -10,10 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.*;
+import javax.swing.*; 
 
 // Add Header Class
 
+// Add Footer Class
 /**
  * Panel for footer of app that will contain buttons for recording and clearing
  * prompts
@@ -75,6 +78,7 @@ class Prompt extends JPanel {
     
     private JTextArea queryField;
     private JTextArea answerField;
+    JButton deleteButton;
 
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
@@ -111,8 +115,14 @@ class Prompt extends JPanel {
       Border paddingBorder2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
       Border compoundBorder2 = BorderFactory.createCompoundBorder(answerField.getBorder(), paddingBorder2);
       answerField.setBorder(compoundBorder2);
+
+      deleteButton = new JButton("Delete");
+      deleteButton.setPreferredSize(new Dimension(80, 20));
+      deleteButton.setBorder(BorderFactory.createEmptyBorder());
+      deleteButton.setFocusPainted(false);
       
       // Add text fields to prompt box
+      this.add(deleteButton, BorderLayout.EAST);
       this.add(queryField);
       this.add(answerField);
 
@@ -128,36 +138,38 @@ class Prompt extends JPanel {
 
 class ScrollFrame extends JFrame {
 
-  private GetPromptHistory history = new GetPromptHistory();
-  private JPanel contentPane;
-  private JScrollPane scrollPane;
+    private GetPromptHistory history = new GetPromptHistory("src/main/Test-files/test-1.txt");
+    private JPanel contentPane;
+    private JScrollPane scrollPane;
+  
+    public ScrollFrame() {
+      
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setTitle("Prompt History");
+      
+      // Create the content pane
+      contentPane = new JPanel();
+      contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+      contentPane.setBackground(Color.BLUE);
+      
+      // Add multiple prompt objects to the content pane
+      for (int i = 0; i < history.getSize(); i++) {
+          Prompt prompt = new Prompt(history.getQuery(i), history.getAnswer(i));
+          contentPane.add(prompt);
+      }
 
-  public ScrollFrame() {
+      // Display the contents and enable scrolling
+      scrollPane = new JScrollPane(contentPane);
+      scrollPane.setPreferredSize(new Dimension(400, 400));
+      scrollPane.getVerticalScrollBar().setUnitIncrement(15);
+      setContentPane(scrollPane);
 
-    // Create the content pane
-    contentPane = new JPanel();
-    contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-    contentPane.setBackground(Color.BLUE);
-
-
-    // Add multiple prompt objects to the content pane
-    for (int i = 0; i < history.getSize(); i++) {
-      Prompt prompt = new Prompt(history.getQuery(i), history.getAnswer(i));
-      contentPane.add(prompt);
+      pack();
+      setVisible(true);
     }
-
-    // Display the contents and enable scrolling
-    scrollPane = new JScrollPane(contentPane);
-    scrollPane.setPreferredSize(new Dimension(400, 400));
-    scrollPane.getVerticalScrollBar().setUnitIncrement(15);
-    setContentPane(scrollPane);
-
-    pack();
-
   }
-}
 
-/**
+  /**
  * Responsible for nesting and managing all button functions
  */
 class AppFrameButtons {
@@ -214,42 +226,39 @@ class AppFrameButtons {
   }
 }
 
-/**
- * Frame responsible for positioning and displaying all panels on GUI
- */
-class AppFrame extends JFrame {
+  class AppFrame extends JFrame {
 
-  private ScrollFrame scrollFrame;
-  private Footer footer;
+    private ScrollFrame scrollFrame;
+    private Footer footer;
 
-  public AppFrame() {
+    public AppFrame() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("SayIt");
+        setSize(400, 600);
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setTitle("SayIt");
-    setSize(400, 600);
+        // Create a new ScrollFrame
+        scrollFrame = new ScrollFrame();
+        // Create a new Footer
+        footer = new Footer();
 
-    // Create a new ScrollFrame
-    scrollFrame = new ScrollFrame();
-    // Create a new Footer
-    footer = new Footer();
+        // Make the main part of the frame the scrollFrame
+        this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
+        // Add footer on bottom of the screen
+        this.add(footer, BorderLayout.SOUTH);
 
-    // Make the main part of the frame the scrollFrame
-    this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
-    // Add footer on bottom of the screen
-    this.add(footer, BorderLayout.SOUTH);
+        setVisible(true);
+    }
+}
 
-    setVisible(true);
+  public class PromptHistory {
+
+    public static void main(String args[]) {
+      SwingUtilities.invokeLater(() -> {
+        new AppFrame();
+      });
+    }
   }
-}
-
-public class PromptHistory {
-
-  public static void main(String args[]) {
-    SwingUtilities.invokeLater(() -> {
-      new AppFrame();
-    });
+  
+  @interface override {
   }
-}
 
-@interface override {
-}
