@@ -24,7 +24,7 @@ public class InputQ {
     private static final String MODEL = "whisper-1";
     private static final String FILE_PATH = "Test-files/question.wav";
     private static final String FILE_PATH_INPUT = "Test-files/InputQ-test.txt";
-    private static String myInputQ;
+    private static String myInputQ = "Mock Transcription Query: This is the mock query!";
 
     /* 
     private static void writeParameterToOutputStream(
@@ -91,7 +91,7 @@ public class InputQ {
     private static void handleSuccessResponseMock () {
 
         String mockGeneratedText = "Mock Transcription Query: This is the mock query!";
-        myInputQ = mockGeneratedText;
+        //myInputQ = mockGeneratedText;
 
         try {
             FileWriter writer =  new FileWriter(FILE_PATH_INPUT);

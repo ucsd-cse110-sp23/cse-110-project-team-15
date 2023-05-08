@@ -23,7 +23,7 @@ public class OutputA {
     private static final String FILE_PATH_INPUT = "Test-files/InputQ-test.txt";
     private String mockGeneratedA = "This is the mock answer!";
    
-    public String getOututQ() {
+    public String getOututA() {
         return mockGeneratedA;
     }
 
