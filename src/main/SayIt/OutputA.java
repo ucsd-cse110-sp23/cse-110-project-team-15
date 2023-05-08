@@ -9,7 +9,7 @@ import java.net.http.HttpResponse;
 import javax.sound.sampled.Line;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.JSONObject; 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.BufferedWriter;
@@ -37,6 +37,7 @@ public class OutputA {
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
+        /* 
         int maxTokens = 100; 
 
         JSONObject requestBody = new JSONObject();
@@ -67,7 +68,7 @@ public class OutputA {
 
         JSONArray choices = responseJson.getJSONArray("choices");
         String generatedText = choices.getJSONObject(0).getString("text");
-
+  
         try {
             FileWriter fileWriter = new FileWriter("Test-files/OutputA-test.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -80,6 +81,22 @@ public class OutputA {
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
+        */
+
+        String mockGeneratedText = "This is the mock answer!";
+        try {
+            FileWriter fileWriter = new FileWriter("Test-files/OutputA-test.txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(mockGeneratedText);
+            bufferedWriter.newLine();
+
+            bufferedWriter.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+
         
 
 
