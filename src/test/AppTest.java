@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+// Currently irrelivant test file. 
 public class AppTest {
     private GetPromptHistory myHistory;
     private GetPromptHistory newLineHistory;
@@ -21,8 +22,8 @@ public class AppTest {
     }
     @BeforeEach
     void setup(){
-        myHistory = new GetPromptHistory("src/main/Test-files/test-1.txt"); //Use my six line test file
-        newLineHistory = new GetPromptHistory("src/main/Test-files/test-1.txt");
+        //myHistory = new GetPromptHistory("src/main/Test-files/test-1.txt"); //Use my six line test file
+        //newLineHistory = new GetPromptHistory("src/main/Test-files/test-1.txt");
     }
 
 }
