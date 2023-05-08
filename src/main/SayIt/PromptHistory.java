@@ -212,6 +212,11 @@ class AppFrameButtons {
           newButton.setText("New Question");
           newButton.setForeground(black);
           audio.stopRecording();
+          InputQ input = new InputQ();
+          String question = input.getInputQ();
+          OutputA output = new OutputA();
+          String answer = output.getOututA();
+          
         }
         isRecording = !isRecording;
       }
