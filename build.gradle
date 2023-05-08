@@ -16,11 +16,13 @@ sourceSets {
     main {
         java {
             srcDirs = ['src/main']
+            outputDir = file("$buildDir/bin/main")
         }
     }
     test {
         java {
             srcDirs = ['src/test']
+            outputDir = file("$buildDir/bin/test")
         }
         resources.srcDirs += ["src/main"]
         compileClasspath += sourceSets.main.output
