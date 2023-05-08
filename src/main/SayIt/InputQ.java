@@ -1,3 +1,5 @@
+package SayIt;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,13 +8,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-//import org.json.JSONObject;
-//import org.json.JSONException;
+
+import org.json.JSONObject;
+import org.json.JSONException;
 
 
 import java.io.*;
 import java.net.*;
-//import org.json.*;
+import org.json.*;
 
 public class InputQ {
 
