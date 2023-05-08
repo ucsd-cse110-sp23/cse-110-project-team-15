@@ -23,6 +23,7 @@ public class InputQ {
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
     private static final String FILE_PATH = "Test-files/question.wav";
+    private static final String FILE_PATH_INPUT = "Test-files/InputQ-test.txt";
 
     /* 
     private static void writeParameterToOutputStream(
@@ -97,7 +98,7 @@ public class InputQ {
         String mockGeneratedText = "Mock Transcription Query: This is the mock query!";
 
         try {
-            FileWriter writer =  new FileWriter("Test-files/InputQ-test.txt");
+            FileWriter writer =  new FileWriter(FILE_PATH_INPUT);
             writer.write(mockGeneratedText);
             writer.close();
 

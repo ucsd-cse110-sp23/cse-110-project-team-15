@@ -11,9 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import org.junit.jupiter.api.Test;
-
-import SayIt.GetPromptHistory;
-
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,22 +25,23 @@ public class InputandOutputTest {
 
     @BeforeEach
     void setup(){
-       // myHistory = new GetPromptHistory("src/main/Test-files/test-1.txt"); //Use my six line test file
-        //newLineHistory = new GetPromptHistory("src/main/Test-files/test-1.txt");
-        inputQ = new InputQ();
-    }
+
+         inputQ = new InputQ();
+         outputA = new OutputA();
+     }
 
     @Test
-    void test() {
+    void test_input() {
 
         String prompt = "";
-
+        String parent = "";
+        
         try {
-            FileReader fileReader = new FileReader("Test-files/InputQ-test.txt");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            FileReader fileReader = new FileReader("src/main/Test-files/InputQ-test.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader); 
 
-            while ((prompt = bufferedReader.readLine()) != null) {
-
+            while ((parent = bufferedReader.readLine()) != null) {
+                prompt = parent;
             }
 
             bufferedReader.close();
@@ -51,8 +49,32 @@ public class InputandOutputTest {
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
-        System.out.println("prompt: " + prompt);
+    
         assertEquals("Mock Transcription Query: This is the mock query!", prompt);
+    }
+
+    @Test
+    void test_output() {
+
+        String answer = "";
+        String parent = "";
+
+        try {
+            FileReader fileReader = new FileReader("src/main/Test-files/OutputA-test.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader); 
+
+            while ((parent = bufferedReader.readLine()) != null) {
+                answer = parent;  
+            }
+
+            bufferedReader.close();
+            fileReader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    
+        assertEquals("This is the mock answer!", answer);
+
     }
     
 }

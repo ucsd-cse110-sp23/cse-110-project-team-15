@@ -19,13 +19,15 @@ public class OutputA {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/completions";
     private static final String API_KEY = "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";
     private static final String MODEL = "text-davinci-003";
+    private static final String FILE_PATH_OUTPUT = "Test-files/OutputA-test.txt";
+    private static final String FILE_PATH_INPUT = "Test-files/InputQ-test.txt";
    
 
     public static void main(String[] args) throws IOException, InterruptedException {
         String prompt = "";
 
         try {
-            FileReader fileReader = new FileReader("Test-files/InputQ-test.txt");
+            FileReader fileReader = new FileReader(FILE_PATH_INPUT);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             while ((prompt = bufferedReader.readLine()) != null) {
@@ -85,7 +87,7 @@ public class OutputA {
 
         String mockGeneratedText = "This is the mock answer!";
         try {
-            FileWriter fileWriter = new FileWriter("Test-files/OutputA-test.txt");
+            FileWriter fileWriter = new FileWriter(FILE_PATH_OUTPUT);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             bufferedWriter.write(mockGeneratedText);
