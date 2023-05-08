@@ -19,8 +19,7 @@ import javax.swing.*;
 // Add Header Class
 
 /**
- * Panel for footer of app that will contain buttons for recording and clearing
- * prompts
+ * Panel for footer of app that will contain buttons for recording and clearing prompts
  */
 class Footer extends JPanel {
   private JButton newButton;
@@ -170,7 +169,7 @@ class ScrollFrame extends JFrame {
     }
   }
 
-  /**
+/**
  * Responsible for nesting and managing all button functions
  */
 class AppFrameButtons {
