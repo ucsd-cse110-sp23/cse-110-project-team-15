@@ -5,8 +5,15 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
+import javax.sound.sampled.Line;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 public class OutputA {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/completions";
@@ -15,9 +22,22 @@ public class OutputA {
    
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        
-        String prompt = args[1];
-        int maxTokens = Integer.valueOf(args[0]); //args[]
+        String prompt = "";
+
+        try {
+            FileReader fileReader = new FileReader("Test-files/InputQ-test.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            while ((prompt = bufferedReader.readLine()) != null) {
+
+            }
+
+            bufferedReader.close();
+            fileReader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        int maxTokens = 100; 
 
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", MODEL);
@@ -41,14 +61,26 @@ public class OutputA {
         );
 
         String responseBody = response.body();
-        //System.out.println(responseBody);
+        
 
         JSONObject responseJson = new JSONObject(responseBody);
 
         JSONArray choices = responseJson.getJSONArray("choices");
         String generatedText = choices.getJSONObject(0).getString("text");
 
-        System.out.println(generatedText);
+        try {
+            FileWriter fileWriter = new FileWriter("Test-files/OutputA-test.txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(generatedText);
+            bufferedWriter.newLine();
+
+            bufferedWriter.close();
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+        
 
 
     }

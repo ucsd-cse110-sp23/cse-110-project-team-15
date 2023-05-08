@@ -9,13 +9,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.json.JSONObject;
-import org.json.JSONException;
+//import org.json.JSONObject;
+//import org.json.JSONException;
 
 
 import java.io.*;
 import java.net.*;
-import org.json.*;
+//import org.json.*;
 
 public class InputQ {
 
@@ -97,12 +97,12 @@ public class InputQ {
         String mockGeneratedText = "Mock Transcription Query: This is the mock query!";
 
         try {
-            FileWriter writer =  new FileWriter("Test-files/audio-test.txt");
+            FileWriter writer =  new FileWriter("Test-files/InputQ-test.txt");
             writer.write(mockGeneratedText);
             writer.close();
 
         } catch (IOException e) {
-            System.out.println("Not able to write to audio-test.txt file");
+            System.out.println("Not able to write to InputQ-test file");
         }
     }
 
