@@ -10,11 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 class PromptHistoryTest {
     private GetPromptHistory myHistory;
     private GetPromptHistory newLineHistory;
+    private final String FILE_TEST3_PATH = "src/test/java/sayit/Test-files/test-3.txt";
+    private final String FILE_EMPTY_PATH = "src/test/java/sayit/Test-files/empty.txt";
 
     @BeforeEach
     void setup(){
-        myHistory = new GetPromptHistory("src/test/Test-files/test-3.txt"); //Use my six line test file
-        newLineHistory = new GetPromptHistory("src/test/Test-files/empty.txt");
+        myHistory = new GetPromptHistory(FILE_TEST3_PATH); //Use my six line test file
+        newLineHistory = new GetPromptHistory(FILE_EMPTY_PATH);
     }
 
     @Test
