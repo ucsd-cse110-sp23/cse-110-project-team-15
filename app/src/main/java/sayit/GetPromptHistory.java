@@ -65,5 +65,6 @@ public class GetPromptHistory {
      */
     public void addPrompt(String query, String answer) {
         prompts.add(new QandA(query, answer));
+        size++;
     }
 }

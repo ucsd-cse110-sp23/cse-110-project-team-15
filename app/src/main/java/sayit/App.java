@@ -28,7 +28,6 @@ import org.json.JSONObject;
 class Footer extends JPanel {
   private JButton newButton;
   private JButton clearButton;
-  private AppFrameButtons buttons;
 
   Color backgroundColor = new Color(50, 205, 50);
 
@@ -51,12 +50,6 @@ class Footer extends JPanel {
     clearButton = new JButton("Clear All");
     clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
     this.add(clearButton);
-
-    // Create listeners for new and clear buttons
-    buttons = new AppFrameButtons();
-    buttons.setNewButton(getNewButton());
-    buttons.setClearButton(getClearButton());
-    buttons.newClearListeners();
   }
 
   /**
@@ -171,69 +164,30 @@ class ScrollFrame extends JFrame {
 
       pack();
     }
+
+    void addPrompt(String question, String answer) {
+      Prompt prompt = new Prompt(question, answer);
+      history.addPrompt(question, answer);
+      contentPane.add(prompt);
+    }
   }
 
   /**
- * Responsible for nesting and managing all button functions
- */
-class AppFrameButtons {
-  // put all buttons used in app here
-  private JButton newButton;
-  private JButton clearButton;
-
-  // other miscellaneous variables
-  private boolean isRecording = false;
-  Color black = new Color(0, 0, 0);
-  Color red = new Color(255, 0, 0);
-
-  /**
-   * Setter for newButton
+   * Put JPanels on AppFrame and make listeners for buttons
    */
-  public void setNewButton(JButton button) {
-    newButton = button;
-  }
-
-  /**
-   * Setter for clearButton
-   */
-  public void setClearButton(JButton button) {
-    clearButton = button;
-  }
-
-  /**
-   * Create functionality for when the new and clear buttons are pressed
-   */
-  public void newClearListeners() {
-    // start or stop recording when new button is pressed
-    AudioRecord audio = new AudioRecord();
-    newButton.addActionListener(
-      (ActionEvent e) -> {
-        if (!isRecording) {
-          newButton.setText("Stop Recording");
-          newButton.setForeground(red);
-          audio.startRecording();
-        } else {
-          newButton.setText("New Question");
-          newButton.setForeground(black);
-          audio.stopRecording();
-        }
-        isRecording = !isRecording;
-      }
-    );
-
-    // delete all prompts in prompt history when clear button is pressed
-    clearButton.addActionListener(
-      (ActionEvent e) -> {
-        // TBD in iteration 2
-      }
-    );
-  }
-}
-
   class AppFrame extends JFrame {
-
+    // put all JPanels here
     private ScrollFrame scrollFrame;
     private Footer footer;
+
+    // put all buttons used in app here
+    private JButton newButton;
+    private JButton clearButton;
+
+    // other miscellaneous variables
+    private boolean isRecording = false;
+    Color black = new Color(0, 0, 0);
+    Color red = new Color(255, 0, 0);
 
     public AppFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -251,6 +205,49 @@ class AppFrameButtons {
         this.add(footer, BorderLayout.SOUTH);
 
         setVisible(true);
+
+        // make functionality for buttons
+        newButton = footer.getNewButton();
+        clearButton = footer.getClearButton();
+        addListeners();
+    }
+
+    /**
+     * Create functionality for when the new and clear buttons are pressed
+     */
+    public void addListeners() {
+      // start or stop recording when new button is pressed
+      AudioRecord audio = new AudioRecord();
+      newButton.addActionListener(
+        (ActionEvent e) -> {
+          if (!isRecording) {
+            newButton.setText("Stop Recording");
+            newButton.setForeground(red);
+            audio.startRecording();
+          } else {
+            newButton.setText("New Question");
+            newButton.setForeground(black);
+            audio.stopRecording();
+            updateScrollFrame();
+          }
+          isRecording = !isRecording;
+        }
+      );
+
+    // delete all prompts in prompt history when clear button is pressed
+    clearButton.addActionListener(
+      (ActionEvent e) -> {
+        // TBD in iteration 2
+      }
+    );
+    }
+
+    public void updateScrollFrame() {
+      InputQ input = new InputQ();
+      String question = input.getInputQ();
+      OutputA output = new OutputA();
+      String answer = output.getOutputA();
+      scrollFrame.addPrompt(question, answer);
     }
 }
 

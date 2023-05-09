@@ -11,7 +11,7 @@ import javax.swing.*;
 public class AudioRecord {
     private AudioFormat audioFormat;
     private TargetDataLine targetLine;
-    private final String PATH_NAME = "question.wav";
+    private final String PATH_NAME = "src/main/java/sayit/Test-files/question.wav";
     
     /**
      * Start recording and create audio file with input audio
