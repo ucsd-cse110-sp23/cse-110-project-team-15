@@ -1,4 +1,5 @@
 package sayit;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,6 +31,10 @@ public class GetPromptHistory {
           catch (IOException e){
             System.out.println(e);
           }
+    }
+
+    public ArrayList<QandA> getHistoryArray() {
+        return this.prompts;
     }
 
     /*
@@ -66,5 +71,8 @@ public class GetPromptHistory {
     public void addPrompt(String query, String answer) {
         prompts.add(new QandA(query, answer));
         size++;
+    }
+
+    public void remove(Component c) {
     }
 }

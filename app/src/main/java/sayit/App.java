@@ -8,7 +8,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,6 +31,7 @@ import org.json.JSONObject;
  * prompts
  */
 class Footer extends JPanel {
+  private JButton clearSelectedButton;
   private JButton newButton;
   private JButton clearButton;
 
@@ -50,6 +56,11 @@ class Footer extends JPanel {
     clearButton = new JButton("Clear All");
     clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
     this.add(clearButton);
+
+    // add clear selected button to footer
+    clearSelectedButton = new JButton("Clear Selected");
+    clearSelectedButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
+    this.add(clearSelectedButton);
   }
 
   /**
@@ -69,10 +80,32 @@ class Footer extends JPanel {
   public JButton getClearButton() {
     return clearButton;
   }
+
+  /**
+   * Getter for clearSelectedButton
+   * 
+   * @return JButton of the clearButton button in Footer
+   */
+  public JButton getClearSelectedButton() {
+    return clearSelectedButton;
+  }
+
 }
 
 class Prompt extends JPanel {
+
+    //Get Icon
+    // Load the icon image from a file
+    ImageIcon icon = new ImageIcon("src/resources/delete.png");
+    ImageIcon deleteSelectIcon = new ImageIcon("src/resources/deleteSelected.png");
+
+    // Scale the icon image to fit the button
+    Image scaledImage = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+    Image scaledDeleteSelect = deleteSelectIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+    ImageIcon deleteSelectScaled = new ImageIcon(scaledDeleteSelect);
+    ImageIcon scaledIcon = new ImageIcon(scaledImage);
     
+    private boolean selected;
     private JTextArea queryField;
     private JTextArea answerField;
     JButton deleteButton;
@@ -82,11 +115,12 @@ class Prompt extends JPanel {
 
     Prompt(String query, String answer) {
 
+      this.selected = false;
+
       this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
       // Format Query Field as a textbox
       queryField = new JTextArea(query);
-      queryField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       queryField.setBackground(pink);
       queryField.setFont(new Font("Arial", Font.PLAIN, 14));
       queryField.setWrapStyleWord(true);
@@ -98,6 +132,41 @@ class Prompt extends JPanel {
       Border compoundBorder1 = BorderFactory.createCompoundBorder(queryField.getBorder(), paddingBorder1);
       queryField.setBorder(compoundBorder1);
 
+      // To store the delete button and query text
+      Border queryPanelBorder = BorderFactory.createMatteBorder(1, 1, 0, 1, Color.BLACK);
+      JPanel queryPanel = new JPanel(new BorderLayout());
+      queryPanel.add(queryField, BorderLayout.CENTER);
+      queryPanel.setBorder(queryPanelBorder);
+
+      // Make delete button
+      deleteButton = new JButton(scaledIcon);
+      deleteButton.setPreferredSize(new Dimension(20, 20));
+      deleteButton.setIcon(scaledIcon);
+      deleteButton.setBorder(BorderFactory.createEmptyBorder());
+      deleteButton.setFocusPainted(false);
+
+      deleteButton.addActionListener(e -> {
+        if (selected) {
+            deleteButton.setIcon(scaledIcon);
+            this.selected = false;
+            revalidate();
+        } else {
+            deleteButton.setIcon(deleteSelectScaled);
+            this.selected = true;
+            revalidate();
+        }
+    });
+
+      // Create a new JPanel to hold the delete button and set its preferred size
+      JPanel deletePanel = new JPanel();
+      deletePanel.setPreferredSize(new Dimension(25, 25));
+      deletePanel.add(deleteButton);
+      deletePanel.setBackground(pink);
+      deletePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
+      queryPanel.add(deletePanel, BorderLayout.EAST);
+      queryPanel.setBackground(pink);
+      
       // Format Answer Field as a text box
       answerField = new JTextArea(answer);
       answerField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -112,16 +181,10 @@ class Prompt extends JPanel {
       Border paddingBorder2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
       Border compoundBorder2 = BorderFactory.createCompoundBorder(answerField.getBorder(), paddingBorder2);
       answerField.setBorder(compoundBorder2);
-
-      deleteButton = new JButton("Delete");
-      deleteButton.setPreferredSize(new Dimension(80, 20));
-      deleteButton.setBorder(BorderFactory.createEmptyBorder());
-      deleteButton.setFocusPainted(false);
       
       // Add text fields to prompt box
-      this.add(deleteButton, BorderLayout.EAST);
-      this.add(queryField);
-      this.add(answerField);
+      this.add(queryPanel, BorderLayout.NORTH);
+      this.add(answerField, BorderLayout.CENTER);
 
       // Format prompt box with some padding
       Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -131,12 +194,21 @@ class Prompt extends JPanel {
 
       this.revalidate();
     }
+
+    public boolean getState() {
+        return this.selected;
+    }
+
+    public JButton getDelete() {
+      return deleteButton;
+    }
 }
 
 class ScrollFrame extends JFrame {
 
     private final String FILE_PATH = "src/main/java/sayit/Test-files/test-1.txt";
     private GetPromptHistory history = new GetPromptHistory(FILE_PATH);
+    private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     private JPanel contentPane;
     private JScrollPane scrollPane;
   
@@ -153,6 +225,7 @@ class ScrollFrame extends JFrame {
       // Add multiple prompt objects to the content pane
       for (int i = 0; i < history.getSize(); i++) {
           Prompt prompt = new Prompt(history.getQuery(i), history.getAnswer(i));
+          prompts.add(prompt);
           contentPane.add(prompt);
       }
 
@@ -170,6 +243,16 @@ class ScrollFrame extends JFrame {
       history.addPrompt(question, answer);
       contentPane.add(prompt);
     }
+
+    public void removeSelectedPrompts() {
+      for (Prompt c : prompts) {
+        if (((Prompt) c).getState()) {
+          contentPane.remove(c); // remove the component
+        }
+        contentPane.revalidate();
+        contentPane.repaint();
+      }
+    }
   }
 
   /**
@@ -183,11 +266,13 @@ class ScrollFrame extends JFrame {
     // put all buttons used in app here
     private JButton newButton;
     private JButton clearButton;
+    private JButton clearSelectedButton;
 
     // other miscellaneous variables
     private boolean isRecording = false;
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
+    Color pink = new Color(227, 179, 171);
 
     public AppFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -203,14 +288,17 @@ class ScrollFrame extends JFrame {
         this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
         // Add footer on bottom of the screen
         this.add(footer, BorderLayout.SOUTH);
+        this.setBackground(pink);
 
         setVisible(true);
 
         // make functionality for buttons
         newButton = footer.getNewButton();
         clearButton = footer.getClearButton();
+        clearSelectedButton = footer.getClearSelectedButton();
         addListeners();
     }
+
 
     /**
      * Create functionality for when the new and clear buttons are pressed
@@ -234,12 +322,17 @@ class ScrollFrame extends JFrame {
         }
       );
 
-    // delete all prompts in prompt history when clear button is pressed
-    clearButton.addActionListener(
-      (ActionEvent e) -> {
-        // TBD in iteration 2
-      }
-    );
+      // delete all prompts in prompt history when clear button is pressed
+      clearButton.addActionListener(
+        (ActionEvent e) -> {
+          // TBD in iteration 2
+        }
+      );
+
+      clearSelectedButton.addActionListener((ActionEvent e) -> {
+        scrollFrame.removeSelectedPrompts();
+        repaint();
+      });
     }
 
     public void updateScrollFrame() {

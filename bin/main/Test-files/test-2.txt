@@ -1,0 +1,2 @@
+a
+Documents that contain thousands of characters per line can affect the performance of Oxygen XML Editor Text mode. When a certain line length limit is reached (controlled from the Optimize loading for documents with lines longer than (Characters) option), Oxygen XML Editor prompts you to wrap the lines of text. By doing so, the following features may be affected to maintain a reasonable level of productivity:
