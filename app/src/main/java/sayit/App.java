@@ -14,10 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
 import javax.swing.*; 
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 // Add Header Class
 
@@ -165,10 +163,17 @@ class ScrollFrame extends JFrame {
       pack();
     }
 
-    void addPrompt(String question, String answer) {
+    public void addPrompt(String question, String answer) {
       Prompt prompt = new Prompt(question, answer);
       history.addPrompt(question, answer);
       contentPane.add(prompt);
+    }
+
+    /**
+     * Empty prompts array in GetPromptHistory, set its size to 0, 
+     */
+    public void clearAllPrompts() {
+      
     }
   }
 
@@ -238,6 +243,7 @@ class ScrollFrame extends JFrame {
     clearButton.addActionListener(
       (ActionEvent e) -> {
         // TBD in iteration 2
+        
       }
     );
     }

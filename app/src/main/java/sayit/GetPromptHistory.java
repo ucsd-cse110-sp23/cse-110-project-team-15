@@ -30,6 +30,7 @@ public class GetPromptHistory {
           catch (IOException e){
             System.out.println(e);
           }
+          System.out.println("# of prompts is: " + size);
     }
 
     /*
@@ -66,5 +67,6 @@ public class GetPromptHistory {
     public void addPrompt(String query, String answer) {
         prompts.add(new QandA(query, answer));
         size++;
+        System.out.println("# of prompts is: " + size);
     }
 }
