@@ -48,5 +48,17 @@ class PromptHistoryTest {
         assertEquals(newLineHistory.getSize(), 1);
     }
 
-    
+    @Test
+    void testClearAll() {
+        // make sure ArrayList is not empty
+        assertNotEquals(0, myHistory.getSize());
+        
+        // make sure that the clearAll clears the ArrayList
+        myHistory.clearPrompts();
+        assertEquals(0, myHistory.getSize());
+
+        // make sure that the clearAll keeps ArrayList size 0
+        myHistory.clearPrompts();
+        assertEquals(0, myHistory.getSize());
+    }
 }
