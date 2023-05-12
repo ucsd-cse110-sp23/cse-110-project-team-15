@@ -243,10 +243,15 @@ class ScrollFrame extends JFrame {
     }
       
     /**
-     * Empty prompts array in GetPromptHistory, set its size to 0, 
+     * Empty prompts array in GetPromptHistory, and set its size to 0
      */
     public void clearAllPrompts() {
-
+      history.clearPrompts();
+      for (Component c: contentPane.getComponents()) {
+        contentPane.remove(c);
+        contentPane.revalidate();
+        contentPane.repaint();
+      }
     }
 
     public void removeSelectedPrompts() {
@@ -331,6 +336,7 @@ class ScrollFrame extends JFrame {
       clearButton.addActionListener(
         (ActionEvent e) -> {
           // TBD in iteration 2
+          scrollFrame.clearAllPrompts();
         }
       );
 

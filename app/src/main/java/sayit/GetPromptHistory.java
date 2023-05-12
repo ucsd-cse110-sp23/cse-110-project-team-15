@@ -77,4 +77,9 @@ public class GetPromptHistory {
 
     public void remove(Component c) {
     }
+
+    public void clearPrompts() {
+        prompts.clear();
+        size = 0;
+    }
 }
