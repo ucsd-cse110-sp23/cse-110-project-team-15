@@ -47,4 +47,6 @@ class PromptHistoryTest {
         // Size Comparison
         assertEquals(newLineHistory.getSize(), 1);
     }
+
+    
 }

@@ -252,9 +252,9 @@ class ScrollFrame extends JFrame {
       history.clearPrompts();
       for (Component c: contentPane.getComponents()) {
         contentPane.remove(c);
-        contentPane.revalidate();
-        contentPane.repaint();
       }
+      contentPane.revalidate();
+      contentPane.repaint();
     }
 
     public void removeSelectedPrompts() {
