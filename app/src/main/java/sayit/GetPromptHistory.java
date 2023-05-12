@@ -1,4 +1,5 @@
 package sayit;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,6 +32,10 @@ public class GetPromptHistory {
             System.out.println(e);
           }
           System.out.println("# of prompts is: " + size);
+    }
+
+    public ArrayList<QandA> getHistoryArray() {
+        return this.prompts;
     }
 
     /*
@@ -68,5 +73,8 @@ public class GetPromptHistory {
         prompts.add(new QandA(query, answer));
         size++;
         System.out.println("# of prompts is: " + size);
+    }
+
+    public void remove(Component c) {
     }
 }
