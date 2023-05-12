@@ -236,6 +236,9 @@ class ScrollFrame extends JFrame {
       pack();
     }
 
+    /**
+     * Display new prompt and answer to content pane
+     */
     public void addPrompt(String question, String answer) {
       Prompt prompt = new Prompt(question, answer);
       history.addPrompt(question, answer);
@@ -335,7 +338,6 @@ class ScrollFrame extends JFrame {
       // delete all prompts in prompt history when clear button is pressed
       clearButton.addActionListener(
         (ActionEvent e) -> {
-          // TBD in iteration 2
           scrollFrame.clearAllPrompts();
         }
       );
