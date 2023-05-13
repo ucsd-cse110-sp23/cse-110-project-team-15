@@ -1,9 +1,7 @@
 package sayit;
-import java.awt.*;
-import java.awt.event.*;
+
 import java.io.*;
 import javax.sound.sampled.*;
-import javax.swing.*;
 
 /**
  * Responsible for audio-based functionality

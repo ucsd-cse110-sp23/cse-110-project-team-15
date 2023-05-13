@@ -1,23 +1,6 @@
 package sayit;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
-import javax.print.attribute.standard.Media;
+import java.awt.*;
 import javax.swing.*;
 
 public class ScrollFrame extends JFrame {
@@ -53,8 +36,8 @@ public class ScrollFrame extends JFrame {
   /**
    * Display new prompt and answer to content pane
    */
-  public void addPrompt(String question, String answer) {
-    contentPane.add(new Prompt(question, answer));
+  public void addPrompt(Prompt p) {
+    contentPane.add(p);
   }
 
   /**
@@ -69,32 +52,20 @@ public class ScrollFrame extends JFrame {
     contentPane.repaint();
   }
 
+  /**
+   * Remove selected prompts from scroll pane
+   */
   public void removeSelectedPrompts() {
-    int index = 0;
-    // remove selected prompts from scroll pane
     for (Component c: contentPane.getComponents()) {
       if (c instanceof Prompt) {
         if (((Prompt)c).getState()) {
           contentPane.remove(c); // remove the component
-          history.removePrompt(index);
-          index--;
+          history.removePrompt((Prompt)c);
         }
-        index++;
       }
       contentPane.revalidate();
       contentPane.repaint();
     }
-
-     // remove selected prompts from ArrayList (need a set of indices)
-    //  for (Prompt p: history.getHistoryArray()) {
-    //   System.out.println(p.getAnswer() + ": " + p.getState());
-    //   if (p.getState()) {
-    //     history.removePrompt(p);
-    //   }
-    //   contentPane.revalidate();
-    //   contentPane.repaint();
-    // }
-
   }
 
   /**

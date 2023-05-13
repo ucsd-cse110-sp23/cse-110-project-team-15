@@ -1,23 +1,8 @@
 package sayit;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
-import javax.swing.*; 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * Put JPanels on AppFrame and make listeners for buttons
@@ -108,12 +93,13 @@ public class AppFrame extends JFrame {
         input = mediator.getInputQ();
         output = mediator.getOutputA();
         promptHistory = mediator.getPromptHistory();
+        Prompt prompt = new Prompt(input.getInputQ(), output.getOutputA());
 
         // add the Q and A to promptHistory
-        promptHistory.addPrompt(input.getInputQ(), output.getOutputA());
+        promptHistory.addPrompt(prompt);
 
         // add the Q and A to scrollFrame
-        scrollFrame.addPrompt(input.getInputQ(), output.getOutputA());
+        scrollFrame.addPrompt(prompt);
     }
 
     /**

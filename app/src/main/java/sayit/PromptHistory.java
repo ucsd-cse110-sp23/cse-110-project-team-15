@@ -1,8 +1,6 @@
 package sayit;
-import java.awt.Component;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.ArrayList;
 
 public class PromptHistory {
@@ -66,22 +64,22 @@ public class PromptHistory {
         return this.size;
     }
 
-    /*
+    /**
      * Add a prompt to the ArrayList
+     * @param p Prompt to add
      */
-    public void addPrompt(String query, String answer) {
-        prompts.add(new Prompt(query, answer));
+    public void addPrompt(Prompt p) {
+        prompts.add(p);
         size++;
         System.out.println("# of prompts is: " + prompts.size());
     }
 
     /**
-     * remove a given prompt from prompts on given index
-     * @param index
+     * remove a given prompt from prompts on given the prompt
+     * @param p Prompt to delete
      */
-    public void removePrompt(int index) {
-        System.out.println("Deleting prompt: " + (index + 1));
-        prompts.remove(index);
+    public void removePrompt(Prompt p) {
+        prompts.remove(p);
         size--;
         System.out.println("# of prompts is: " + prompts.size());
     }
