@@ -5,14 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GetPromptHistory {
-
+public class PromptHistory {
+    Mediator mediator;
     private int size = 0;
     //private final String filepath = "src/main/Test-files/test-1.txt";
     private ArrayList<QandA> prompts = new ArrayList<QandA>();
 
     // Read text file and pull relevant info, store it
-    public GetPromptHistory(String filepath) {
+    public PromptHistory(String filepath) {
         try {
             FileReader fileReader = new FileReader(filepath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -85,4 +85,10 @@ public class GetPromptHistory {
         prompts.clear();
         size = 0;
     }
+
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(Mediator m) { mediator = m; }
 }

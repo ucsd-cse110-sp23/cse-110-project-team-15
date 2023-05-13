@@ -15,6 +15,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 public class OutputA {
+    Mediator mediator;
     private static final String API_ENDPOINT = "https://api.openai.com/v1/completions";
     private static final String API_KEY = "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";
     private static final String MODEL = "text-davinci-003";
@@ -97,5 +98,11 @@ public class OutputA {
 
 
     }
+
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(Mediator m) { mediator = m; }
  
 }

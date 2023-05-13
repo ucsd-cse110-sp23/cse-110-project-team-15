@@ -18,6 +18,7 @@ import java.net.*;
 
 public class InputQ {
 
+    Mediator mediator;
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
@@ -160,4 +161,10 @@ public class InputQ {
         handleSuccessResponseMock();
         
     }
+
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(Mediator m) { mediator = m; }
 }

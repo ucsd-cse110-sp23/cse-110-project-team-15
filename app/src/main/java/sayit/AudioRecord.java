@@ -9,6 +9,7 @@ import javax.swing.*;
  * Responsible for audio-based functionality
  */
 public class AudioRecord {
+    Mediator mediator;
     private AudioFormat audioFormat;
     private TargetDataLine targetLine;
     private final String PATH_NAME = "src/main/java/sayit/Test-files/question.wav";
@@ -62,4 +63,10 @@ public class AudioRecord {
         targetLine.stop();
         targetLine.close();
     }
+
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(Mediator m) { mediator = m; }
 }
