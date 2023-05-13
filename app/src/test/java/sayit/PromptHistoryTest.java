@@ -15,8 +15,10 @@ class PromptHistoryTest {
 
     @BeforeEach
     void setup(){
-        myHistory = new PromptHistory(FILE_TEST3_PATH); //Use my six line test file
-        newLineHistory = new PromptHistory(FILE_EMPTY_PATH);
+        myHistory = new PromptHistory(); //Use my six line test file
+        myHistory.setupPromptHistory(FILE_TEST3_PATH);
+        newLineHistory = new PromptHistory();
+        newLineHistory.setupPromptHistory(FILE_EMPTY_PATH);
     }
 
     @Test
