@@ -43,7 +43,6 @@ public class Footer extends JPanel {
   
     /**
      * Getter for newButton
-     * 
      * @return JButton of the newButton button in Footer
      */
     public JButton getNewButton() {
@@ -52,7 +51,6 @@ public class Footer extends JPanel {
   
     /**
      * Getter for clearButton
-     * 
      * @return JButton of the clearButton button in Footer
      */
     public JButton getClearButton() {
@@ -61,7 +59,6 @@ public class Footer extends JPanel {
   
     /**
      * Getter for clearSelectedButton
-     * 
      * @return JButton of the clearButton button in Footer
      */
     public JButton getClearSelectedButton() {

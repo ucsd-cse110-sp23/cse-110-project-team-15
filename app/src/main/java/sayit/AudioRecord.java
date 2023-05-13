@@ -7,6 +7,7 @@ import javax.sound.sampled.*;
  * Responsible for audio-based functionality
  */
 public class AudioRecord {
+    // Objects needed for AudioRecord
     Mediator mediator;
     private AudioFormat audioFormat;
     private TargetDataLine targetLine;

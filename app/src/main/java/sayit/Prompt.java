@@ -25,6 +25,11 @@ public class Prompt extends JPanel {
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
 
+    /**
+     * Default constructor
+     * @param query
+     * @param answer
+     */
     Prompt(String query, String answer) {
 
         this.selected = false;
@@ -123,10 +128,18 @@ public class Prompt extends JPanel {
         return this.answerField.getText();
     }
 
+    /**
+     * Getter for state of prompt
+     * @return whether the prompt is selected or not
+     */
     public boolean getState() {
         return this.selected;
     }
 
+    /**
+     * Getter for delete button of prompt
+     * @return deleteButton instance
+     */
     public JButton getDelete() {
         return deleteButton;
     }

@@ -4,11 +4,17 @@ import java.awt.*;
 import javax.swing.*;
 
 public class ScrollFrame extends JFrame {
+  // Objects needed to update ScrollFrame
   Mediator mediator;
   private PromptHistory history;
+
+  // put all JPanels here
   private JPanel contentPane;
   private JScrollPane scrollPane;
 
+  /**
+   * Call all other necessary classes and setup ScrollFrame
+   */
   public void setupScrollFrame() {
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

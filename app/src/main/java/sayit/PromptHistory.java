@@ -6,10 +6,12 @@ import java.util.ArrayList;
 public class PromptHistory {
     Mediator mediator;
     private int size = 0;
-    //private final String filepath = "src/main/Test-files/test-1.txt";
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
-    // Read text file and pull relevant info, store it
+    /**
+     * Read text file and pull relevant info, store it
+     * @param String of relative path to txt file
+     */
     public void setupPromptHistory(String filepath) {
         try {
             FileReader fileReader = new FileReader(filepath);
@@ -32,33 +34,44 @@ public class PromptHistory {
           System.out.println("# of prompts is: " + size);
     }
 
+    /**
+     * Return the prompts ArrayList
+     * @return prompts
+     */
     public ArrayList<Prompt> getHistoryArray() {
         return this.prompts;
     }
 
-    /*
+    /**
      * Return prompt object given index number
+     * @param int index to prompt
+     * @return Prompt at that index
      */
     public Prompt getPrompt(int promptNumber) {
         return this.prompts.get(promptNumber);
     }
 
-    /*
+    /**
      * Return query text given index number
+     * @param int index to query of certain prompt
+     * @return query of prompt at that index
      */
     public String getQuery(int promptNumber) {
         return this.prompts.get(promptNumber).getQuery();
     }
 
-    /*
+    /**
      * Return answer text given index number
+     * @param int index to answer of certain prompt
+     * @return answer of prompt at that index
      */
     public String getAnswer(int promptNumber) {
         return this.prompts.get(promptNumber).getAnswer();
     }
 
-    /*
+    /**
      * Return size of ArrayList
+     * @return size of prompts ArrayList
      */
     public int getSize() {
         return this.size;

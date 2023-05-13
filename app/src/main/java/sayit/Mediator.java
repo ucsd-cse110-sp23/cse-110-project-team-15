@@ -6,7 +6,7 @@ package sayit;
  * All other classes come through mediator (except for Prompt class) to get instance of another class
  */
 public class Mediator {
-    // objects to all classes used in app
+    // Objects to all classes used in app
     private AppFrame appFrame;
     private AudioRecord audioRecord;
     private Footer footer;

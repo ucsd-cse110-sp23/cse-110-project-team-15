@@ -29,6 +29,9 @@ public class AppFrame extends JFrame {
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
 
+    /**
+     * Call all other necessary classes and setup AppFrame
+     */
     public void setupAppFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("SayIt");
@@ -90,6 +93,7 @@ public class AppFrame extends JFrame {
      * Add new prompt from new question to prompt history and scroll frame
      */
     public void updatePrompts() {
+        // create prompt
         input = mediator.getInputQ();
         output = mediator.getOutputA();
         promptHistory = mediator.getPromptHistory();
