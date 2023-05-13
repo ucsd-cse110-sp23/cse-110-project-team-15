@@ -69,9 +69,22 @@ public class ScrollFrame extends JFrame {
   }
 
   public void removeSelectedPrompts() {
+    
+    // remove selected prompts from ArrayList (need a set of indices)
     for (Prompt p: history.getHistoryArray()) {
-      if (((Prompt) p).getState()) {
-        contentPane.remove(p); // remove the component
+      System.out.println(p.getAnswer() + ": " + p.getState());
+      if (p.getState()) {
+        history.removePrompt(p);
+      }
+      contentPane.revalidate();
+      contentPane.repaint();
+    }
+    
+    // remove selected prompts from scroll pane
+    for (Component c: contentPane.getComponents()) {
+      if (c instanceof Prompt) {
+        if (((Prompt)c).getState())
+          contentPane.remove(c); // remove the component
       }
       contentPane.revalidate();
       contentPane.repaint();

@@ -75,7 +75,9 @@ public class PromptHistory {
         System.out.println("# of prompts is: " + size);
     }
 
-    public void remove(Component c) {
+    public void removePrompt(Prompt p) {
+        prompts.remove(p);
+        size--;
     }
 
     /**

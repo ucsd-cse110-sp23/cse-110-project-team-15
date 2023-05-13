@@ -12,7 +12,7 @@ public class Mediator {
     private ScrollFrame scrollFrame;
 
     // other miscellaneous variables
-    public final String FILE_PATH = "src/main/java/sayit/Test-files/test-1.txt";
+    public final String FILE_PATH = "src/main/java/sayit/Test-files/test-2.txt";
 
     // default constructor
     Mediator() {
