@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
+import javax.swing.JOptionPane;
 import javax.swing.*; 
 
 // Add Header Class
@@ -56,7 +57,7 @@ class Footer extends JPanel {
     this.add(clearButton);
 
     // add clear selected button to footer
-    clearSelectedButton = new JButton("Clear Selected");
+    clearSelectedButton = new JButton("Delete Selected");
     clearSelectedButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
     this.add(clearSelectedButton);
   }
@@ -104,6 +105,8 @@ class Prompt extends JPanel {
     ImageIcon scaledIcon = new ImageIcon(scaledImage);
     
     private boolean selected;
+    private String qText;
+    private String aText;
     private JTextArea queryField;
     private JTextArea answerField;
     JButton deleteButton;
@@ -114,6 +117,8 @@ class Prompt extends JPanel {
     Prompt(String query, String answer) {
 
       this.selected = false;
+      qText = query;
+      aText = answer;
 
       this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -200,6 +205,14 @@ class Prompt extends JPanel {
     public JButton getDelete() {
       return deleteButton;
     }
+
+    public String getQText () {
+      return qText;
+    }
+
+    public String getAText () {
+      return aText;
+    }
 }
 
 class ScrollFrame extends JFrame {
@@ -258,14 +271,19 @@ class ScrollFrame extends JFrame {
     }
 
     public void removeSelectedPrompts() {
+      int i = 0;
       for (Prompt c : prompts) {
         if (((Prompt) c).getState()) {
           contentPane.remove(c); // remove the component
+          history.remove(i);
         }
+        i++;
         contentPane.revalidate();
         contentPane.repaint();
       }
   }
+  
+    //public void save
 }
 
   /**
@@ -310,6 +328,20 @@ class ScrollFrame extends JFrame {
         clearButton = footer.getClearButton();
         clearSelectedButton = footer.getClearSelectedButton();
         addListeners();
+
+        // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+          @Override
+          public void windowClosing(java.awt.event.WindowEvent e) {
+            System.out.println("Uncomment following to open another window!");
+            //MainPage m = new MainPage();
+            //m.setVisible(true);
+            e.getWindow().dispose();
+            System.out.println("JFrame Closed!\nYOUR MOM!");
+
+            //scrollFrame.
+          }
+        });
     }
 
 

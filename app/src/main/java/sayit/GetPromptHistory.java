@@ -75,7 +75,14 @@ public class GetPromptHistory {
         System.out.println("# of prompts is: " + size);
     }
 
-    public void remove(Component c) {
+    public void remove(int idx) {
+        //int theRem = prompts.indexOf(new QandA(query, answer));
+        // QandA removed = prompts.get(idx);
+        //     System.out.println("Q: " + removed.getQuery() + "\nA: " + removed.getAnswer());
+        prompts.remove(idx);
+        // removed = prompts.get(idx);
+        //     System.out.println("After remova:\nQ: " + removed.getQuery() + "\nA: " + removed.getAnswer());
+        size--;
     }
 
     /**
