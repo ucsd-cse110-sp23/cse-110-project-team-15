@@ -12,25 +12,31 @@ public class Mediator {
     private ScrollFrame scrollFrame;
 
     // other miscellaneous variables
-    public String filePath = "src/main/java/sayit/Test-files/test-1.txt";
+    public final String FILE_PATH = "src/main/java/sayit/Test-files/test-1.txt";
 
     // default constructor
     Mediator() {
-        /* Create new AppFrame */
-        appFrame = new AppFrame();
-        appFrame.setMediator(this);
+        /* Create new Prompt */
+        prompt = new Prompt("", "");
+        prompt.setMediator(this);
+        
+        /* Create new PromptHistory */
+        promptHistory = new PromptHistory();
+        promptHistory.setMediator(this);
+        promptHistory.setupPromptHistory(FILE_PATH);
 
-        /* Create new AudioRecord */
-        audioRecord = new AudioRecord();
-        audioRecord.setMediator(this);
-
+        /* Create new ScrollFrame */
+        scrollFrame = new ScrollFrame();
+        scrollFrame.setMediator(this);
+        scrollFrame.setupScrollFrame();
+        
         /* Create new Footer */
         footer = new Footer();
         footer.setMediator(this);
 
-        /* Create new PromptHistory */
-        promptHistory = new PromptHistory(filePath);
-        promptHistory.setMediator(this);
+        /* Create new AudioRecord */
+        audioRecord = new AudioRecord();
+        audioRecord.setMediator(this);
 
         /* Create new InputQ */
         inputQ = new InputQ();
@@ -39,14 +45,11 @@ public class Mediator {
         /* Create new OutputQ */
         outputA = new OutputA();
         outputA.setMediator(this);
-        
-        /* Create new Prompt */
-        prompt = new Prompt("", "");
-        prompt.setMediator(this);
 
-        /* Create new ScrollFrame */
-        scrollFrame = new ScrollFrame();
-        scrollFrame.setMediator(this);
+        /* Create new AppFrame */
+        appFrame = new AppFrame();
+        appFrame.setMediator(this);
+        appFrame.setupAppFrame();
     }
 
     /**

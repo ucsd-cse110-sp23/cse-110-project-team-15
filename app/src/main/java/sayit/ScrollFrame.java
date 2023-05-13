@@ -22,13 +22,11 @@ import javax.swing.*;
 
 public class ScrollFrame extends JFrame {
   Mediator mediator;
-  private final String FILE_PATH = "src/main/java/sayit/Test-files/test-1.txt";
-  private PromptHistory history = new PromptHistory(FILE_PATH);
-  private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
+  private PromptHistory history;
   private JPanel contentPane;
   private JScrollPane scrollPane;
 
-  public ScrollFrame() {
+  public void setupScrollFrame() {
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("Prompt History");
@@ -39,11 +37,8 @@ public class ScrollFrame extends JFrame {
     contentPane.setBackground(Color.BLUE);
 
     // Add multiple prompt objects to the content pane
-    for (int i = 0; i < history.getSize(); i++) {
-      Prompt prompt = new Prompt(history.getQuery(i), history.getAnswer(i));
-      prompts.add(prompt);
-      contentPane.add(prompt);
-    }
+    history = mediator.getPromptHistory();
+    for (Prompt prompt: history.getHistoryArray()) { contentPane.add(prompt); }
 
     // Display the contents and enable scrolling
     scrollPane = new JScrollPane(contentPane);
@@ -58,9 +53,7 @@ public class ScrollFrame extends JFrame {
    * Display new prompt and answer to content pane
    */
   public void addPrompt(String question, String answer) {
-    Prompt prompt = new Prompt(question, answer);
-    history.addPrompt(question, answer);
-    contentPane.add(prompt);
+    contentPane.add(new Prompt(question, answer));
   }
 
   /**
@@ -76,9 +69,9 @@ public class ScrollFrame extends JFrame {
   }
 
   public void removeSelectedPrompts() {
-    for (Prompt c : prompts) {
-      if (((Prompt) c).getState()) {
-        contentPane.remove(c); // remove the component
+    for (Prompt p: history.getHistoryArray()) {
+      if (((Prompt) p).getState()) {
+        contentPane.remove(p); // remove the component
       }
       contentPane.revalidate();
       contentPane.repaint();

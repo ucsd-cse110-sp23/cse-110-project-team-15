@@ -9,10 +9,10 @@ public class PromptHistory {
     Mediator mediator;
     private int size = 0;
     //private final String filepath = "src/main/Test-files/test-1.txt";
-    private ArrayList<QandA> prompts = new ArrayList<QandA>();
+    private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
     // Read text file and pull relevant info, store it
-    public PromptHistory(String filepath) {
+    public void setupPromptHistory(String filepath) {
         try {
             FileReader fileReader = new FileReader(filepath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -21,7 +21,7 @@ public class PromptHistory {
             
             while (((line = bufferedReader.readLine()) != null)
                     && (line2 = bufferedReader.readLine()) != null ) {
-              QandA questionAndAnswer = new QandA(line, line2);
+              Prompt questionAndAnswer = new Prompt(line, line2);
               prompts.add(questionAndAnswer);
               size++;
             }
@@ -34,14 +34,14 @@ public class PromptHistory {
           System.out.println("# of prompts is: " + size);
     }
 
-    public ArrayList<QandA> getHistoryArray() {
+    public ArrayList<Prompt> getHistoryArray() {
         return this.prompts;
     }
 
     /*
      * Return prompt object given index number
      */
-    public QandA getPrompt(int promptNumber) {
+    public Prompt getPrompt(int promptNumber) {
         return this.prompts.get(promptNumber);
     }
 
@@ -70,7 +70,7 @@ public class PromptHistory {
      * Add a prompt to the ArrayList
      */
     public void addPrompt(String query, String answer) {
-        prompts.add(new QandA(query, answer));
+        prompts.add(new Prompt(query, answer));
         size++;
         System.out.println("# of prompts is: " + size);
     }

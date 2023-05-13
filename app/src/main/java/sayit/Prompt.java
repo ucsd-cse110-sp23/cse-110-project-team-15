@@ -122,22 +122,28 @@ public class Prompt extends JPanel {
         this.revalidate();
     }
 
+    /**
+     * Getter for query of prompt
+     * @return String query of prompt
+     */
+    public String getQuery() {
+        return this.queryField.getText();
+    }
+
+    /**
+     * Getter for answer of prompt
+     * @return String answer of prompt
+     */
+    public String getAnswer() {
+        return this.answerField.getText();
+    }
+
     public boolean getState() {
         return this.selected;
     }
 
     public JButton getDelete() {
         return deleteButton;
-    }
-
-    /**
-     * Creates an instance of a prompt with a question and answer argument
-     * @param question String of user question
-     * @param answer String of answer to question
-     * @return an instance of a prompt with the passed question and answer
-     */
-    public Prompt createPrompt(String question, String answer) {
-        return new Prompt(question, answer);
     }
 
     /**

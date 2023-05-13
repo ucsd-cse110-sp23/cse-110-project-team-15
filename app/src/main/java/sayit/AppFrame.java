@@ -23,11 +23,15 @@ import javax.swing.*;
  * Put JPanels on AppFrame and make listeners for buttons
  */
 public class AppFrame extends JFrame {
-    Mediator mediator;
+    // Objects needed to update AppFrame
+    private Mediator mediator;
+    private InputQ input;
+    private OutputA output;
+    private PromptHistory promptHistory;
     
     // put all JPanels here
-    // private ScrollFrame scrollFrame;
-    // private Footer footer;
+    private ScrollFrame scrollFrame;
+    private Footer footer;
 
     // put all buttons used in app here
     private JButton newButton;
@@ -40,15 +44,14 @@ public class AppFrame extends JFrame {
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
 
-    public AppFrame() {
+    public void setupAppFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("SayIt");
         setSize(400, 600);
 
-        // Create a new ScrollFrame
-        mediator.getScrollFrame();
-        // Create a new Footer
-        footer = new Footer();
+        // Set footer to footer in mediator
+        scrollFrame = mediator.getScrollFrame();
+        footer = mediator.getFooter();
 
         // Make the main part of the frame the scrollFrame
         this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
@@ -70,27 +73,27 @@ public class AppFrame extends JFrame {
      */
     public void addListeners() {
         // start or stop recording when new button is pressed
-        AudioRecord audio = new AudioRecord();
+        AudioRecord audio = mediator.getAudioRecord();
         newButton.addActionListener(
-                (ActionEvent e) -> {
-                    if (!isRecording) {
-                        newButton.setText("Stop Recording");
-                        newButton.setForeground(red);
-                        audio.startRecording();
-                    } else {
-                        newButton.setText("New Question");
-                        newButton.setForeground(black);
-                        audio.stopRecording();
-                        updateScrollFrame();
-                    }
-                    isRecording = !isRecording;
-                });
+            (ActionEvent e) -> {
+                if (!isRecording) {
+                    newButton.setText("Stop Recording");
+                    newButton.setForeground(red);
+                    audio.startRecording();
+                } else {
+                    newButton.setText("New Question");
+                    newButton.setForeground(black);
+                    audio.stopRecording();
+                    updatePrompts();
+                }
+                isRecording = !isRecording;
+            });
 
         // delete all prompts in prompt history when clear button is pressed
         clearButton.addActionListener(
-                (ActionEvent e) -> {
-                    scrollFrame.clearAllPrompts();
-                });
+            (ActionEvent e) -> {
+                scrollFrame.clearAllPrompts();
+            });
 
         clearSelectedButton.addActionListener((ActionEvent e) -> {
             scrollFrame.removeSelectedPrompts();
@@ -98,12 +101,19 @@ public class AppFrame extends JFrame {
         });
     }
 
-    public void updateScrollFrame() {
-        InputQ input = new InputQ();
-        String question = input.getInputQ();
-        OutputA output = new OutputA();
-        String answer = output.getOutputA();
-        scrollFrame.addPrompt(question, answer);
+    /**
+     * Add new prompt from new question to prompt history and scroll frame
+     */
+    public void updatePrompts() {
+        input = mediator.getInputQ();
+        output = mediator.getOutputA();
+        promptHistory = mediator.getPromptHistory();
+
+        // add the Q and A to promptHistory
+        promptHistory.addPrompt(input.getInputQ(), output.getOutputA());
+
+        // add the Q and A to scrollFrame
+        scrollFrame.addPrompt(input.getInputQ(), output.getOutputA());
     }
 
     /**
