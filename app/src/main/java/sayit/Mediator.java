@@ -1,5 +1,5 @@
 package sayit;
-q
+
 /**
  * Class that acts as a central hub for all instances of other classes in app
  * Purpose is so that instances used in app (i.e. prompts array, scrollFrame panel, appFrame panel, etc) are in one place
