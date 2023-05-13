@@ -1,5 +1,10 @@
 package sayit;
 
+/**
+ * Class that acts as a central hub for all instances of other classes in app
+ * Purpose is so that instances used in app (i.e. prompts array, scrollFrame panel, appFrame panel, etc) are in one place
+ * All other classes come through mediator (except for Prompt class) to get instance of another class
+ */
 public class Mediator {
     // objects to all classes used in app
     private AppFrame appFrame;
