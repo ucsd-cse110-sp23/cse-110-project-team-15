@@ -236,6 +236,9 @@ class ScrollFrame extends JFrame {
       pack();
     }
 
+    /**
+     * Display new prompt and answer to content pane
+     */
     public void addPrompt(String question, String answer) {
       Prompt prompt = new Prompt(question, answer);
       history.addPrompt(question, answer);
@@ -243,10 +246,15 @@ class ScrollFrame extends JFrame {
     }
       
     /**
-     * Empty prompts array in GetPromptHistory, set its size to 0, 
+     * Empty prompts array in GetPromptHistory, and set its size to 0
      */
     public void clearAllPrompts() {
-
+      history.clearPrompts();
+      for (Component c: contentPane.getComponents()) {
+        contentPane.remove(c);
+      }
+      contentPane.revalidate();
+      contentPane.repaint();
     }
 
     public void removeSelectedPrompts() {
@@ -330,7 +338,7 @@ class ScrollFrame extends JFrame {
       // delete all prompts in prompt history when clear button is pressed
       clearButton.addActionListener(
         (ActionEvent e) -> {
-          // TBD in iteration 2
+          scrollFrame.clearAllPrompts();
         }
       );
 

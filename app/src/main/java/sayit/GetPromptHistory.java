@@ -77,4 +77,12 @@ public class GetPromptHistory {
 
     public void remove(Component c) {
     }
+
+    /**
+     * Clear all prompts in the ArrayList and set size to 0
+     */
+    public void clearPrompts() {
+        prompts.clear();
+        size = 0;
+    }
 }
