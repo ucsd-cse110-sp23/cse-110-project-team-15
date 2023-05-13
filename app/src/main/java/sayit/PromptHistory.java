@@ -72,12 +72,18 @@ public class PromptHistory {
     public void addPrompt(String query, String answer) {
         prompts.add(new Prompt(query, answer));
         size++;
-        System.out.println("# of prompts is: " + size);
+        System.out.println("# of prompts is: " + prompts.size());
     }
 
-    public void removePrompt(Prompt p) {
-        prompts.remove(p);
+    /**
+     * remove a given prompt from prompts on given index
+     * @param index
+     */
+    public void removePrompt(int index) {
+        System.out.println("Deleting prompt: " + (index + 1));
+        prompts.remove(index);
         size--;
+        System.out.println("# of prompts is: " + prompts.size());
     }
 
     /**

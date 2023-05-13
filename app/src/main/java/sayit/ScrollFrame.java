@@ -44,6 +44,7 @@ public class ScrollFrame extends JFrame {
     scrollPane = new JScrollPane(contentPane);
     scrollPane.setPreferredSize(new Dimension(400, 400));
     scrollPane.getVerticalScrollBar().setUnitIncrement(15);
+    scrollPane.getHorizontalScrollBar().setUnitIncrement(15);
     setContentPane(scrollPane);
 
     pack();
@@ -69,26 +70,31 @@ public class ScrollFrame extends JFrame {
   }
 
   public void removeSelectedPrompts() {
-    
-    // remove selected prompts from ArrayList (need a set of indices)
-    for (Prompt p: history.getHistoryArray()) {
-      System.out.println(p.getAnswer() + ": " + p.getState());
-      if (p.getState()) {
-        history.removePrompt(p);
-      }
-      contentPane.revalidate();
-      contentPane.repaint();
-    }
-    
+    int index = 0;
     // remove selected prompts from scroll pane
     for (Component c: contentPane.getComponents()) {
       if (c instanceof Prompt) {
-        if (((Prompt)c).getState())
+        if (((Prompt)c).getState()) {
           contentPane.remove(c); // remove the component
+          history.removePrompt(index);
+          index--;
+        }
+        index++;
       }
       contentPane.revalidate();
       contentPane.repaint();
     }
+
+     // remove selected prompts from ArrayList (need a set of indices)
+    //  for (Prompt p: history.getHistoryArray()) {
+    //   System.out.println(p.getAnswer() + ": " + p.getState());
+    //   if (p.getState()) {
+    //     history.removePrompt(p);
+    //   }
+    //   contentPane.revalidate();
+    //   contentPane.repaint();
+    // }
+
   }
 
   /**

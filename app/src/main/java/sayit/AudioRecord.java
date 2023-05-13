@@ -40,12 +40,12 @@ public class AudioRecord {
                     AudioInputStream recordingStream = new AudioInputStream(targetLine);
                     File outputFile = new File(PATH_NAME);
                     try {
-                        System.out.println("Started Recording");
+                        // System.out.println("Started Recording");
                         AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
                     } catch (IOException e) {
                         System.out.println("AudioRecord.java: " + e);
                     }
-                    System.out.println("Stopped Recording");
+                    // System.out.println("Stopped Recording");
                 }
             };
 
