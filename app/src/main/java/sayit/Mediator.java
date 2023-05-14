@@ -17,7 +17,7 @@ public class Mediator {
     private ScrollFrame scrollFrame;
 
     // other miscellaneous variables
-    public final String FILE_PATH = "src/main/java/sayit/Test-files/test-1.txt";
+    public final String FILE_PATH = "src/main/java/sayit/Test-files/prompts.txt";
 
     // default constructor
     Mediator() {
@@ -54,7 +54,7 @@ public class Mediator {
         /* Create new AppFrame */
         appFrame = new AppFrame();
         appFrame.setMediator(this);
-        appFrame.setupAppFrame();
+        appFrame.setupAppFrame(FILE_PATH);
     }
 
     /**

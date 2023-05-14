@@ -2,6 +2,9 @@ package sayit;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import javax.swing.*;
 
 /**
@@ -32,7 +35,7 @@ public class AppFrame extends JFrame {
     /**
      * Call all other necessary classes and setup AppFrame
      */
-    public void setupAppFrame() {
+    public void setupAppFrame(String filePath) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("SayIt");
         setSize(400, 600);
@@ -54,6 +57,40 @@ public class AppFrame extends JFrame {
         clearButton = footer.getClearButton();
         clearSelectedButton = footer.getClearSelectedButton();
         addListeners();
+
+        // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+              e.getWindow().dispose();
+              System.out.println("JFrame Closed!\nYOUR MOM!");
+              try {
+                promptHistory = mediator.getPromptHistory();
+                FileOutputStream fout = new FileOutputStream(filePath);
+                String qnA;
+                byte[] array;
+                int size = promptHistory.getSize();
+                for (int i = 0; i < size; i++) {
+                    qnA = promptHistory.getQuery(i);
+                    array = qnA.getBytes();
+                    fout.write(array);
+
+                    fout.write('\n');
+                    
+                    qnA = promptHistory.getAnswer(i);
+                    array = qnA.getBytes();
+                    fout.write(array);
+
+                    if (i != size-1) {
+                        fout.write('\n');
+                    }
+                }
+                fout.close();
+              } catch(IOException ex) {
+                System.out.println(ex);
+              }
+            }
+        });
     }
 
     /**
