@@ -29,12 +29,11 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
-    public final String FILE_PATH = "src/main/java/sayit/Test-files/test-1-output.txt";
 
     /**
      * Call all other necessary classes and setup AppFrame
      */
-    public void setupAppFrame() {
+    public void setupAppFrame(String filePath) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("SayIt");
         setSize(400, 600);
@@ -65,7 +64,7 @@ public class AppFrame extends JFrame {
               System.out.println("JFrame Closed!\nYOUR MOM!");
               try {
                 promptHistory = mediator.getPromptHistory();
-                FileOutputStream fout = new FileOutputStream(FILE_PATH);
+                FileOutputStream fout = new FileOutputStream(filePath);
                 String qnA;
                 byte[] array;
                 int size = promptHistory.getSize();
