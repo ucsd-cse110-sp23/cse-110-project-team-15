@@ -204,6 +204,7 @@ class Prompt extends JPanel {
 
 class ScrollFrame extends JFrame {
 
+    Color blue = new Color(171, 219, 227);
     private final String FILE_PATH = "src/main/java/sayit/Test-files/test-1.txt";
     private GetPromptHistory history = new GetPromptHistory(FILE_PATH);
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
@@ -218,7 +219,7 @@ class ScrollFrame extends JFrame {
       // Create the content pane
       contentPane = new JPanel();
       contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-      contentPane.setBackground(Color.BLUE);
+      contentPane.setBackground(blue);
       
       // Add multiple prompt objects to the content pane
       for (int i = 0; i < history.getSize(); i++) {
@@ -241,9 +242,11 @@ class ScrollFrame extends JFrame {
      */
     public void addPrompt(String question, String answer) {
       Prompt prompt = new Prompt(question, answer);
-      history.addPrompt(question, answer);
+      prompts.add(prompt);
       contentPane.add(prompt);
     }
+
+    
       
     /**
      * Empty prompts array in GetPromptHistory, and set its size to 0
@@ -353,6 +356,7 @@ class ScrollFrame extends JFrame {
       String question = input.getInputQ();
       OutputA output = new OutputA();
       String answer = output.getOutputA();
+      
       scrollFrame.addPrompt(question, answer);
     }
 }
