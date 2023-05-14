@@ -1,18 +1,18 @@
 package sayit;
-import java.awt.Component;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.ArrayList;
 
-public class GetPromptHistory {
-
+public class PromptHistory {
+    Mediator mediator;
     private int size = 0;
-    //private final String filepath = "src/main/Test-files/test-1.txt";
-    private ArrayList<QandA> prompts = new ArrayList<QandA>();
+    private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
-    // Read text file and pull relevant info, store it
-    public GetPromptHistory(String filepath) {
+    /**
+     * Read text file and pull relevant info, store it
+     * @param String of relative path to txt file
+     */
+    public void setupPromptHistory(String filepath) {
         try {
             FileReader fileReader = new FileReader(filepath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -21,7 +21,7 @@ public class GetPromptHistory {
             
             while (((line = bufferedReader.readLine()) != null)
                     && (line2 = bufferedReader.readLine()) != null ) {
-              QandA questionAndAnswer = new QandA(line, line2);
+              Prompt questionAndAnswer = new Prompt(line, line2);
               prompts.add(questionAndAnswer);
               size++;
             }
@@ -34,55 +34,67 @@ public class GetPromptHistory {
           System.out.println("# of prompts is: " + size);
     }
 
-    public ArrayList<QandA> getHistoryArray() {
+    /**
+     * Return the prompts ArrayList
+     * @return prompts
+     */
+    public ArrayList<Prompt> getHistoryArray() {
         return this.prompts;
     }
 
-    /*
+    /**
      * Return prompt object given index number
+     * @param int index to prompt
+     * @return Prompt at that index
      */
-    public QandA getPrompt(int promptNumber) {
+    public Prompt getPrompt(int promptNumber) {
         return this.prompts.get(promptNumber);
     }
 
-    /*
+    /**
      * Return query text given index number
+     * @param int index to query of certain prompt
+     * @return query of prompt at that index
      */
     public String getQuery(int promptNumber) {
         return this.prompts.get(promptNumber).getQuery();
     }
 
-    /*
+    /**
      * Return answer text given index number
+     * @param int index to answer of certain prompt
+     * @return answer of prompt at that index
      */
     public String getAnswer(int promptNumber) {
         return this.prompts.get(promptNumber).getAnswer();
     }
 
-    /*
+    /**
      * Return size of ArrayList
+     * @return size of prompts ArrayList
      */
     public int getSize() {
         return this.size;
     }
 
-    /*
+    /**
      * Add a prompt to the ArrayList
+     * @param p Prompt to add
      */
-    public void addPrompt(String query, String answer) {
-        prompts.add(new QandA(query, answer));
+    public void addPrompt(Prompt p) {
+        prompts.add(p);
         size++;
-        System.out.println("# of prompts is: " + size);
+        System.out.println("# of prompts is: " + prompts.size());
     }
 
-    public void remove(int idx) {
-        //int theRem = prompts.indexOf(new QandA(query, answer));
-        // QandA removed = prompts.get(idx);
-        //     System.out.println("Q: " + removed.getQuery() + "\nA: " + removed.getAnswer());
-        prompts.remove(idx);
-        // removed = prompts.get(idx);
-        //     System.out.println("After remova:\nQ: " + removed.getQuery() + "\nA: " + removed.getAnswer());
+    /**
+     * remove a given prompt from prompts on given the prompt
+     * @param p Prompt to delete
+     */
+    public void removePrompt(Prompt p) {
+        prompts.remove(p);
         size--;
+        System.out.println("# of prompts is: " + prompts.size());
     }
 
     /**
@@ -92,4 +104,10 @@ public class GetPromptHistory {
         prompts.clear();
         size = 0;
     }
+
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(Mediator m) { mediator = m; }
 }

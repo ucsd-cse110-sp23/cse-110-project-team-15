@@ -29,7 +29,6 @@ public class InputandOutputTest {
 
     @BeforeEach
     void setup(){
-
          inputQ = new InputQ();
          outputA = new OutputA();
      }

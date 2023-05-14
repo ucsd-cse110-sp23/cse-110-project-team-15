@@ -6,17 +6,20 @@ package sayit;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
+import java.util.ArrayList;
 
 class PromptHistoryTest {
-    private GetPromptHistory myHistory;
-    private GetPromptHistory newLineHistory;
+    private PromptHistory myHistory;
+    private PromptHistory newLineHistory;
     private final String FILE_TEST3_PATH = "src/test/java/sayit/Test-files/test-3.txt";
     private final String FILE_EMPTY_PATH = "src/test/java/sayit/Test-files/empty.txt";
 
     @BeforeEach
     void setup(){
-        myHistory = new GetPromptHistory(FILE_TEST3_PATH); //Use my six line test file
-        newLineHistory = new GetPromptHistory(FILE_EMPTY_PATH);
+        myHistory = new PromptHistory(); //Use my six line test file
+        myHistory.setupPromptHistory(FILE_TEST3_PATH);
+        newLineHistory = new PromptHistory();
+        newLineHistory.setupPromptHistory(FILE_EMPTY_PATH);
     }
 
     @Test
@@ -49,6 +52,39 @@ class PromptHistoryTest {
     }
 
     @Test
+    void testNewQuestion() {
+        // get initial size to test size
+        int size = myHistory.getSize();
+
+        // make and add prompt to prompts
+        Prompt p1 = new Prompt("Is the ocean a soup?", "Whatever makes you happy.");
+        myHistory.addPrompt(p1);
+        size++;
+
+        // make sure that prompt is contained in prompts and size incremented
+        assertEquals(size, myHistory.getSize());
+        assertEquals("Is the ocean a soup?", myHistory.getQuery(size - 1));
+        assertEquals("Whatever makes you happy.", myHistory.getAnswer(size - 1));
+
+        // repeat 2 more times
+        Prompt p2 = new Prompt("What's red and bad for your teeth?", "A brick.");
+        myHistory.addPrompt(p2);
+        size++;
+
+        assertEquals(size, myHistory.getSize());
+        assertEquals("What's red and bad for your teeth?", myHistory.getQuery(size - 1));
+        assertEquals("A brick.", myHistory.getAnswer(size - 1));
+
+        Prompt p3 = new Prompt("What should I do today?", "Don't care, nobody asked.");
+        myHistory.addPrompt(p3);
+        size++;
+
+        assertEquals(size, myHistory.getSize());
+        assertEquals("What should I do today?", myHistory.getQuery(size - 1));
+        assertEquals("Don't care, nobody asked.", myHistory.getAnswer(size - 1));
+    }
+
+    @Test
     void testClearAll() {
         // make sure ArrayList is not empty
         assertNotEquals(0, myHistory.getSize());
@@ -60,5 +96,37 @@ class PromptHistoryTest {
         // make sure that the clearAll keeps ArrayList size 0
         myHistory.clearPrompts();
         assertEquals(0, myHistory.getSize());
+    }
+
+    @Test
+    void testRemoveSelected() {
+        // get the prompts array and initial size it
+        ArrayList<Prompt> prompts = myHistory.getHistoryArray();
+        int size = prompts.size();
+        
+        // remove 1 from front
+        Prompt p = prompts.get(0);
+        prompts.remove(0);
+        size--;
+        myHistory.removePrompt(p);
+        assertEquals(size, myHistory.getSize());
+
+        // remove 2 from somwhere in middle
+        for (int i = size/2; i < (size/2) + 2; i++) {
+            p = prompts.get(i);
+            prompts.remove(i);
+            size--;
+            myHistory.removePrompt(p);
+        }
+        assertEquals(size, myHistory.getSize());
+
+        // remove 1 from end
+        for (int i = size - 1; i < size; i++) {
+            p = prompts.get(i);
+            prompts.remove(i);
+            size--;
+            myHistory.removePrompt(p);
+        }
+        assertEquals(size, myHistory.getSize());
     }
 }
