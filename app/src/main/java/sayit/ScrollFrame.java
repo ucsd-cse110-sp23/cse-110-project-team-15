@@ -16,6 +16,7 @@ public class ScrollFrame extends JFrame {
    * Call all other necessary classes and setup ScrollFrame
    */
   public void setupScrollFrame() {
+    Color blue = new Color(171, 219, 227);
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("Prompt History");
@@ -23,7 +24,7 @@ public class ScrollFrame extends JFrame {
     // Create the content pane
     contentPane = new JPanel();
     contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-    contentPane.setBackground(Color.BLUE);
+    contentPane.setBackground(blue);
 
     // Add multiple prompt objects to the content pane
     history = mediator.getPromptHistory();
