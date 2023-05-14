@@ -1,6 +1,9 @@
 package sayit;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -43,6 +46,18 @@ public class Prompt extends JPanel {
         queryField.setWrapStyleWord(true);
         queryField.setLineWrap(true);
         queryField.setEditable(false);
+        queryField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              if (answerField.isVisible()) {
+                answerField.setVisible(false);
+                revalidate();
+              } else {
+                answerField.setVisible(true);
+                revalidate();
+              }
+            }
+          });
 
         // Make it so that there is some space between the text and the border line
         Border paddingBorder1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -109,6 +124,7 @@ public class Prompt extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         this.setBackground(blue);
 
+        answerField.setVisible(false);
         this.revalidate();
     }
 
