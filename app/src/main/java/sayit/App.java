@@ -3,6 +3,8 @@
  */
 package sayit;
 
+import java.io.IOException;
+
 import javax.swing.SwingUtilities;
 
 /**
@@ -11,8 +13,15 @@ import javax.swing.SwingUtilities;
 public class App {
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
-      // change to "new Mediator()" for real use
+      /* comment this out for mock use */
       new MockMediator();
+
+      /* comment this out for real use */
+      // try {
+      //   new Mediator();
+      // } catch (IOException | InterruptedException e) {
+      //   e.printStackTrace();
+      // }
     });
   }
 }

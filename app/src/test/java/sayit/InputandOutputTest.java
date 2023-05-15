@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
+
 public class InputandOutputTest {
 
     private Input inputQ;
@@ -20,7 +22,7 @@ public class InputandOutputTest {
     @BeforeEach
     void setup(){
          inputQ = new MockInputQ();
-         outputA = new MockOutputA(inputQ.getTranscription());
+         outputA = new MockOutputA();
      }
 
     @Test
@@ -31,7 +33,8 @@ public class InputandOutputTest {
     }
 
     @Test
-    void test_output() {
+    void test_output() throws IOException, InterruptedException {
+        outputA.makeAnswer(inputQ.getTranscription());
         assertEquals("This is the mock answer!!! :)", outputA.getAnswer());
     }
     

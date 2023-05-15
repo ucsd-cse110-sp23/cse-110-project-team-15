@@ -21,7 +21,9 @@ class OutputA implements Output {
     private String prompt = "";
     private String answer = "";
 
-    public OutputA(String question) throws IOException, InterruptedException {
+    public OutputA() {} 
+
+    public void makeAnswer(String question) throws IOException, InterruptedException {
         this.prompt = question;
         this.answer = AnswerOutput();
     }

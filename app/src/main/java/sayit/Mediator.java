@@ -60,7 +60,7 @@ class Mediator implements IMediator {
         inputQ.setMediator(this);
 
         /* Create new OutputA */
-        outputA = new OutputA(inputQ.getTranscription());
+        outputA = new OutputA();
         outputA.setMediator(this);
 
         /* Create new AppFrame */
@@ -116,11 +116,6 @@ class Mediator implements IMediator {
      * @return scrollFrame object
      */
     public ScrollFrame getScrollFrame() { return scrollFrame; }
-
-    // /**
-    //  * 
-    //  */
-    // public void saveHistory(String filePath) {}
 }
 
 /**
@@ -169,7 +164,7 @@ class MockMediator implements IMediator {
         inputQ.setMediator(this);
 
         /* Create new MockOutputA */
-        outputA = new MockOutputA(inputQ.getTranscription());
+        outputA = new MockOutputA();
         outputA.setMediator(this);
 
         /* Create new AppFrame */
@@ -225,9 +220,4 @@ class MockMediator implements IMediator {
      * @return scrollFrame object
      */
     public ScrollFrame getScrollFrame() { return scrollFrame; }
-
-    // /**
-    //  * 
-    //  */
-    // public void saveHistory(String filePath) {}
 }

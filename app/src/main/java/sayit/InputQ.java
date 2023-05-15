@@ -15,9 +15,9 @@ public class InputQ implements Input {
 
     IMediator mediator;
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
-    private static final String TOKEN = "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";
+    private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
-    private static final String FILE_PATH = "Test-files/question.wav";
+    private static final String FILE_PATH = "src/main/java/sayit/Test-files/question.wav";
     private static final String FILE_PATH_INPUT = "Test-files/InputQ-test.txt";
     private String myInputQ = "Mock Transcription Query: This is the mock query!";
     private String audioInput = "";
@@ -28,10 +28,12 @@ public class InputQ implements Input {
         this.audioInput = FILE_PATH;
         InputTranscription(); //Updating question String
     }
+
     public InputQ(String audString) {
         this.audioInput = audString;
         questionString = myInputQ;
     }
+    
     private static void writeParameterToOutputStream(
         OutputStream outputStream,
         String parameterName,
@@ -113,6 +115,7 @@ public class InputQ implements Input {
     public String getTranscription() {
         return questionString;
     }
+
     public void InputTranscription () throws IOException {
 
         File file = new File(FILE_PATH);

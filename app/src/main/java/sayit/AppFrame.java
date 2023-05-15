@@ -99,8 +99,8 @@ public class AppFrame extends JFrame {
     public void addListeners() {
         // start or stop recording when new button is pressed
         AudioRecord audio = mediator.getAudioRecord();
-        newButton.addActionListener(
-            (ActionEvent e) -> {
+        newButton.addActionListener( 
+            (ActionEvent e)  -> {
                 if (!isRecording) {
                     newButton.setText("Stop Recording");
                     newButton.setForeground(red);
@@ -109,7 +109,11 @@ public class AppFrame extends JFrame {
                     newButton.setText("New Question");
                     newButton.setForeground(black);
                     audio.stopRecording();
-                    updatePrompts();
+                    try {
+                        updatePrompts();
+                    } catch (IOException | InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                 }
                 isRecording = !isRecording;
             });
@@ -128,12 +132,16 @@ public class AppFrame extends JFrame {
 
     /**
      * Add new prompt from new question to prompt history and scroll frame
+     * @throws IOException
+     * @throws InterruptedException
      */
-    public void updatePrompts() {
+    public void updatePrompts() throws IOException, InterruptedException {
         // create prompt
         input = mediator.getInputQ();
         output = mediator.getOutputA();
         promptHistory = mediator.getPromptHistory();
+        input.InputTranscription();
+        output.makeAnswer(input.getTranscription());
         Prompt prompt = new Prompt(input.getTranscription(), output.getAnswer());
 
         // add the Q and A to promptHistory

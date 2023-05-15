@@ -1,5 +1,7 @@
 package sayit;
 
+import java.io.IOException;
+
 public class MockInputQ implements Input {
     IMediator mediator;
     private static String mockInputString = "";
@@ -10,6 +12,10 @@ public class MockInputQ implements Input {
 
     public String getTranscription() {
         return mockInputString;
+    }
+
+    public void InputTranscription() throws IOException {
+        mockInputString = "This is the mock question?";
     }
 
     /**
