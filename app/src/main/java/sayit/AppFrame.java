@@ -31,6 +31,8 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
+    String startSt = "#Start#";
+    String endSt = "#End#";
 
     /**
      * Call all other necessary classes and setup AppFrame
@@ -71,16 +73,20 @@ public class AppFrame extends JFrame {
                 byte[] array;
                 int size = promptHistory.getSize();
                 for (int i = 0; i < size; i++) {
+                    fout.write(startSt.getBytes());
+                    fout.write('\n');
+
                     qnA = promptHistory.getQuery(i);
                     array = qnA.getBytes();
                     fout.write(array);
-
                     fout.write('\n');
                     
                     qnA = promptHistory.getAnswer(i);
                     array = qnA.getBytes();
                     fout.write(array);
+                    fout.write('\n');
 
+                    fout.write(endSt.getBytes());
                     if (i != size-1) {
                         fout.write('\n');
                     }

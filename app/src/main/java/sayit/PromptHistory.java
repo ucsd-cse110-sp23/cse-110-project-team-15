@@ -16,15 +16,26 @@ public class PromptHistory {
         try {
             FileReader fileReader = new FileReader(filepath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;    // query line
-            String line2;   // answer line
+            String lineLoop;
+            String qLine = "";    // query line
+            String aLine = "";   // answer line
             
-            while (((line = bufferedReader.readLine()) != null)
-                    && (line2 = bufferedReader.readLine()) != null ) {
-              Prompt questionAndAnswer = new Prompt(line, line2);
-              prompts.add(questionAndAnswer);
-              size++;
+            while (((lineLoop = bufferedReader.readLine()) != null)) {
+                if (lineLoop.equals("#Start#")) {
+                    qLine = bufferedReader.readLine();
+                }
+                else if (lineLoop.equals("#End#")) {
+                    Prompt questionAndAnswer = new Prompt(qLine, aLine);
+                    prompts.add(questionAndAnswer);
+                    size++;
+                    aLine = "";
+                }
+                else {
+                    aLine += lineLoop + '\n';
+                }
             }
+
+
             bufferedReader.close();
             fileReader.close();
           } 

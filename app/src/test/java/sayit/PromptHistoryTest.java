@@ -26,16 +26,16 @@ class PromptHistoryTest {
     void testNonEmpty(){
         //Pair 1:
         assertEquals(myHistory.getQuery(0), "What's the best ice cream flavor");
-        assertEquals(myHistory.getAnswer(0), "Obviously it's cookie's and cream");
+        assertEquals(myHistory.getAnswer(0), "Obviously it's cookie's and cream\n");
         
         //Pair 2
         assertEquals(myHistory.getQuery(1), "Cats or dogs");
-        assertEquals(myHistory.getAnswer(1), "Dogs are more easily manipulatable so I'd choose them");
+        assertEquals(myHistory.getAnswer(1), "Dogs are more easily manipulatable so I'd choose them\n");
         
         //Pair 3
         assertEquals(myHistory.getQuery(2), "Would you go out on a date with me");
         assertEquals(myHistory.getAnswer(2),
-             "Unfortunaley I can not, but I would reccommend going outside and touching some grass");
+             "Unfortunaley I can not, but I would reccommend going outside and touching some grass\n");
 
         // Size comparison
         assertEquals(myHistory.getSize(), 3);
@@ -45,7 +45,7 @@ class PromptHistoryTest {
     void testKindaEmpty(){
         //Pair 1:
         assertEquals(newLineHistory.getQuery(0), ""); //I think thats how the interaction would work if not then ""
-        assertEquals(newLineHistory.getAnswer(0), "");
+        assertEquals(newLineHistory.getAnswer(0), "\n");
         
         // Size Comparison
         assertEquals(newLineHistory.getSize(), 1);
