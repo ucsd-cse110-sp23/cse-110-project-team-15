@@ -13,8 +13,8 @@ import javax.swing.*;
 public class AppFrame extends JFrame {
     // Objects needed to update AppFrame
     private IMediator mediator;
-    private InputQ input;
-    private OutputA output;
+    private Input input;
+    private Output output;
     private PromptHistory promptHistory;
     
     // put all JPanels here
