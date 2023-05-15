@@ -23,8 +23,8 @@ class Mediator implements IMediator {
     private AudioRecord audioRecord;
     private Footer footer;
     private PromptHistory promptHistory;
-    private InputQ inputQ;
-    private OutputA outputA;
+    private Input inputQ;
+    private Output outputA;
     private Prompt prompt;
     private ScrollFrame scrollFrame;
 
@@ -60,7 +60,7 @@ class Mediator implements IMediator {
         inputQ.setMediator(this);
 
         /* Create new OutputA */
-        outputA = new OutputA();
+        outputA = new OutputA(inputQ.getTranscription());
         outputA.setMediator(this);
 
         /* Create new AppFrame */
@@ -97,13 +97,13 @@ class Mediator implements IMediator {
      * Getter for InputQ
      * @return inputQ object
      */
-    public InputQ getInputQ() { return inputQ; }
+    public Input getInputQ() { return inputQ; }
 
     /**
      * Getter for OutputA
      * @return outputA object
      */
-    public OutputA getOutputA() { return outputA; }
+    public Output getOutputA() { return outputA; }
 
     /**
      * Getter for Prompt
@@ -132,8 +132,8 @@ class MockMediator implements IMediator {
     private AudioRecord audioRecord;
     private Footer footer;
     private PromptHistory promptHistory;
-    private InputQ inputQ;
-    private OutputA outputA;
+    private Input inputQ;
+    private Output outputA;
     private Prompt prompt;
     private ScrollFrame scrollFrame;
 
@@ -169,7 +169,7 @@ class MockMediator implements IMediator {
         inputQ.setMediator(this);
 
         /* Create new MockOutputA */
-        outputA = new MockOutputA();
+        outputA = new MockOutputA(inputQ.getTranscription());
         outputA.setMediator(this);
 
         /* Create new AppFrame */
@@ -206,13 +206,13 @@ class MockMediator implements IMediator {
      * Getter for InputQ
      * @return inputQ object
      */
-    public InputQ getInputQ() { return inputQ; }
+    public Input getInputQ() { return inputQ; }
 
     /**
      * Getter for OutputA
      * @return outputA object
      */
-    public OutputA getOutputA() { return outputA; }
+    public Output getOutputA() { return outputA; }
 
     /**
      * Getter for Prompt

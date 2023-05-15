@@ -5,7 +5,7 @@ public class MockInputQ implements Input {
     private static String mockInputString = "";
     public MockInputQ() {
 
-        mockInputString = "This is the mock question?";
+        mockInputString = "This is the mock question? cwasont";
     }
 
     public String getTranscription() {
