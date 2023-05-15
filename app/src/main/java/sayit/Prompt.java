@@ -1,11 +1,14 @@
 package sayit;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
 public class Prompt extends JPanel {
-    Mediator mediator;
+    IMediator mediator;
     // Get Icon
     // Load the icon image from a file
     ImageIcon icon = new ImageIcon("src/resources/delete.png");
@@ -43,6 +46,18 @@ public class Prompt extends JPanel {
         queryField.setWrapStyleWord(true);
         queryField.setLineWrap(true);
         queryField.setEditable(false);
+        queryField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              if (answerField.isVisible()) {
+                answerField.setVisible(false);
+                revalidate();
+              } else {
+                answerField.setVisible(true);
+                revalidate();
+              }
+            }
+          });
 
         // Make it so that there is some space between the text and the border line
         Border paddingBorder1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -109,6 +124,7 @@ public class Prompt extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         this.setBackground(blue);
 
+        answerField.setVisible(false);
         this.revalidate();
     }
 
@@ -148,5 +164,5 @@ public class Prompt extends JPanel {
      * Setter for Mediator
      * @param m Mediator object
      */
-    public void setMediator(Mediator m) { mediator = m; }
+    public void setMediator(IMediator m) { mediator = m; }
 }

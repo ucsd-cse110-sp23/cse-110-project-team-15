@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class ScrollFrame extends JFrame {
   // Objects needed to update ScrollFrame
-  Mediator mediator;
+  IMediator mediator;
   private PromptHistory history;
 
   // put all JPanels here
@@ -78,5 +78,5 @@ public class ScrollFrame extends JFrame {
      * Setter for Mediator
      * @param m Mediator object
      */
-    public void setMediator(Mediator m) { mediator = m; }
+    public void setMediator(IMediator m) { mediator = m; }
 }

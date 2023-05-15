@@ -3,18 +3,28 @@ package sayit;
 import java.io.*;
 import org.json.JSONObject;
 import org.json.JSONException;
+import java.net.*;
 
 public class InputQ {
 
-    Mediator mediator;
+    IMediator mediator;
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
-    private static final String FILE_PATH = "src/main/java/sayit/Test-files/question.wav";
-    private static final String FILE_PATH_INPUT = "src/main/java/sayit/Test-files/InputQ-test.txt";
-    private static String myInputQ = "Mock Transcription Query: This is the mock query!";
+    private static final String FILE_PATH = "Test-files/question.wav";
+    private static final String FILE_PATH_INPUT = "Test-files/InputQ-test.txt";
+    //private static String myInputQ = "Mock Transcription Query: This is the mock query!";
+    private String audioInput = "";
+    private static String questionString = "";
 
-    /* 
+
+    public InputQ() throws IOException, InterruptedException {
+        this.audioInput = FILE_PATH;
+        InputTranscription();
+    }
+    public InputQ(String audString) {
+        this.audioInput = audString;
+    }
     private static void writeParameterToOutputStream(
         OutputStream outputStream,
         String parameterName,
@@ -29,6 +39,7 @@ public class InputQ {
         );
         outputStream.write((parameterValue + "\r\n").getBytes());
     }
+
     //recieves audio: for writing the audio file to the output stream
     private static void writeFileToOutputStream(
         OutputStream outputStream,
@@ -43,6 +54,7 @@ public class InputQ {
             ).getBytes()
         );
         outputStream.write(("Content-Type: audio/mpeg\r\n\r\n").getBytes());
+
         FileInputStream fileInputStream = new FileInputStream(file);
         byte[] buffer = new byte[1024];
         int bytesRead;
@@ -51,8 +63,11 @@ public class InputQ {
         }
         fileInputStream.close();
     }
+    
+
     //responsible for reading the response body from the connection's input stream 
     //and building a string that contains the response data
+    
     private static void handleSuccessResponse(HttpURLConnection connection)
         throws IOException, JSONException{
             BufferedReader in = new BufferedReader(
@@ -64,36 +79,14 @@ public class InputQ {
                 response.append(inputLine);
             }
             in.close();
+
             JSONObject responseJson = new JSONObject(response.toString());
-            String genratedText = responseJson.getString("text"); 
-            try {
-                FileWriter writer = new FileWriter("Test-file/audio-test.txt");
-                writer.write(genratedText);
-                writer.close();
-            } catch (IOException e) {
-                System.out.println("audio file not found");
-            }
+            String genratedText = responseJson.getString("text");
+            questionString = genratedText; 
+
         }
-        */
-        //Mock response from a dummy (fake) audio record file
-    private static void handleSuccessResponseMock () {
-
-        String mockGeneratedText = "Mock Transcription Query: This is the mock query!";
-        //myInputQ = mockGeneratedText;
-
-        try {
-            FileWriter writer =  new FileWriter(FILE_PATH_INPUT);
-            writer.write(mockGeneratedText);
-            writer.close();
-
-        } catch (IOException e) {
-            System.out.println("Not able to write to InputQ-test file");
-        }
-        //return mockGeneratedText;
-    }
-
+        
     // response code is not successful
-    /* 
     private static void handleErrorResponse(HttpURLConnection connection) 
     throws IOException, JSONException {
         BufferedReader errorReader = new BufferedReader (
@@ -107,52 +100,61 @@ public class InputQ {
         errorReader.close();
         String errorResult = errorResponse.toString();
         System.out.println("Error Result: " + errorResult);
+        questionString = errorResult;
     }
-    */
 
     public String getInputQ() {
-        return myInputQ;
-    }
+        return audioInput;
 
-    public static void main(String[] args) {
-        
+    }
+    public String getTranscription() {
+        return questionString;
+    }
+    public void InputTranscription () throws IOException {
+
         File file = new File(FILE_PATH);
-    
-        /*
+        
         URL url = new URL(API_ENDPOINT);
+        
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
+
         String boundary = "Boundary-" + System.currentTimeMillis();
         connection.setRequestProperty(
             "Content-Type",
             "multipart/form-data; boundary=" + boundary
         );
         connection.setRequestProperty("Authorization", "Bearer " + TOKEN);
+
         OutputStream outputStream = connection.getOutputStream();
+
         writeParameterToOutputStream(outputStream, "model",MODEL, boundary);
+
         writeFileToOutputStream(outputStream, file, boundary);
+
         outputStream.write(("\r\n--" + boundary + "--\r\n").getBytes());
+
         outputStream.flush();
         outputStream.close();
+
         int responseCode = connection.getResponseCode();
-          */
-        /*
+          
+        
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            //Change to mock
+
             handleSuccessResponse(connection);
         } else {
             handleErrorResponse(connection);
+
         }
         connection.disconnect();
-        */
-        handleSuccessResponseMock();
         
-    }
+    } 
 
     /**
      * Setter for Mediator
      * @param m Mediator object
      */
-    public void setMediator(Mediator m) { mediator = m; }
+    public void setMediator(IMediator m) { mediator = m; }
 }

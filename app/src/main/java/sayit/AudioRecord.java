@@ -8,7 +8,7 @@ import javax.sound.sampled.*;
  */
 public class AudioRecord {
     // Objects needed for AudioRecord
-    Mediator mediator;
+    IMediator mediator;
     private AudioFormat audioFormat;
     private TargetDataLine targetLine;
     private final String PATH_NAME = "src/main/java/sayit/Test-files/question.wav";
@@ -67,5 +67,5 @@ public class AudioRecord {
      * Setter for Mediator
      * @param m Mediator object
      */
-    public void setMediator(Mediator m) { mediator = m; }
+    public void setMediator(IMediator m) { mediator = m; }
 }

@@ -2,15 +2,17 @@ package sayit;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import javax.swing.*;
-import java.io.*;
 
 /**
  * Put JPanels on AppFrame and make listeners for buttons
  */
 public class AppFrame extends JFrame {
     // Objects needed to update AppFrame
-    private Mediator mediator;
+    private IMediator mediator;
     private InputQ input;
     private OutputA output;
     private PromptHistory promptHistory;
@@ -124,8 +126,6 @@ public class AppFrame extends JFrame {
         });
     }
 
-    // public void addWindowListener(WindowEvent e) {}
-
     /**
      * Add new prompt from new question to prompt history and scroll frame
      */
@@ -134,7 +134,7 @@ public class AppFrame extends JFrame {
         input = mediator.getInputQ();
         output = mediator.getOutputA();
         promptHistory = mediator.getPromptHistory();
-        Prompt prompt = new Prompt(input.getInputQ(), output.getOutputA());
+        Prompt prompt = new Prompt(input.getTranscription(), output.getAnswer());
 
         // add the Q and A to promptHistory
         promptHistory.addPrompt(prompt);
@@ -147,5 +147,5 @@ public class AppFrame extends JFrame {
      * Setter for Mediator
      * @param m Mediator object
      */
-    public void setMediator(Mediator m) { mediator = m; }
+    public void setMediator(IMediator m) { mediator = m; }
 }

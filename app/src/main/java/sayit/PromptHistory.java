@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class PromptHistory {
-    Mediator mediator;
+    IMediator mediator;
     private int size = 0;
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
@@ -109,5 +109,5 @@ public class PromptHistory {
      * Setter for Mediator
      * @param m Mediator object
      */
-    public void setMediator(Mediator m) { mediator = m; }
+    public void setMediator(IMediator m) { mediator = m; }
 }

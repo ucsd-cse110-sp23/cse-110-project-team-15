@@ -8,7 +8,7 @@ import javax.swing.*;
  * prompts
  */
 public class Footer extends JPanel {
-    Mediator mediator;
+    IMediator mediator;
     private JButton clearSelectedButton;
     private JButton newButton;
     private JButton clearButton;
@@ -69,5 +69,5 @@ public class Footer extends JPanel {
      * Setter for Mediator
      * @param m Mediator object
      */
-    public void setMediator(Mediator m) { mediator = m; }
+    public void setMediator(IMediator m) { mediator = m; }
   }

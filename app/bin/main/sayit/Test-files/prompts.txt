@@ -1,6 +1,0 @@
-Mock Transcription Query: This is the mock query!
-This is the mock answer!
-Mock Transcription Query: This is the mock query!
-This is the mock answer!
-Mock Transcription Query: This is the mock query!
-This is the mock answer!
