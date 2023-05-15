@@ -4,7 +4,7 @@ public class MockOutputA implements Output {
 
     IMediator mediator;
     String mockPrompt = "";
-    String mockAnswer = "This is the mock answer!!!cwasont :)";
+    String mockAnswer = "This is the mock answer!!! :)";
 
     public MockOutputA(String question) {
         this.mockPrompt = question;
