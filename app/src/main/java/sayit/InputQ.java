@@ -6,17 +6,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.*;
 
 import org.json.JSONObject;
 import org.json.JSONException;
 
-
-import java.io.*;
-import java.net.*;
-import org.json.*;
-
 public class InputQ implements Input {
 
+    IMediator mediator;
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
@@ -158,4 +155,9 @@ public class InputQ implements Input {
         
     } 
 
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(IMediator m) { mediator = m; }
 }

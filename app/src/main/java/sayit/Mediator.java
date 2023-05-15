@@ -6,8 +6,8 @@ interface IMediator {
     public AudioRecord getAudioRecord();
     public Footer getFooter();
     public PromptHistory getPromptHistory();
-    public InputQ getInputQ();
-    public OutputA getOutputA();
+    public Input getInputQ();
+    public Output getOutputA();
     public Prompt getPrompt();
     public ScrollFrame getScrollFrame();
 }
