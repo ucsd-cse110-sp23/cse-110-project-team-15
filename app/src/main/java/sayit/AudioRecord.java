@@ -1,14 +1,14 @@
 package sayit;
-import java.awt.*;
-import java.awt.event.*;
+
 import java.io.*;
 import javax.sound.sampled.*;
-import javax.swing.*;
 
 /**
  * Responsible for audio-based functionality
  */
 public class AudioRecord {
+    // Objects needed for AudioRecord
+    IMediator mediator;
     private AudioFormat audioFormat;
     private TargetDataLine targetLine;
     private final String PATH_NAME = "src/main/java/sayit/Test-files/question.wav";
@@ -39,12 +39,12 @@ public class AudioRecord {
                     AudioInputStream recordingStream = new AudioInputStream(targetLine);
                     File outputFile = new File(PATH_NAME);
                     try {
-                        System.out.println("Started Recording");
+                        // System.out.println("Started Recording");
                         AudioSystem.write(recordingStream, AudioFileFormat.Type.WAVE, outputFile);
                     } catch (IOException e) {
                         System.out.println("AudioRecord.java: " + e);
                     }
-                    System.out.println("Stopped Recording");
+                    // System.out.println("Stopped Recording");
                 }
             };
 
@@ -62,4 +62,10 @@ public class AudioRecord {
         targetLine.stop();
         targetLine.close();
     }
+
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(IMediator m) { mediator = m; }
 }
