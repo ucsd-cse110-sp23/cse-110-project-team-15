@@ -1,4 +1,0 @@
-query1
-answer1
-query2
-answer2
