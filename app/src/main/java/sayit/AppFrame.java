@@ -31,8 +31,6 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
-    String startSt = "#Start#";
-    String endSt = "#End#";
 
     /**
      * Call all other necessary classes and setup AppFrame
@@ -58,51 +56,13 @@ public class AppFrame extends JFrame {
         newButton = footer.getNewButton();
         clearButton = footer.getClearButton();
         clearSelectedButton = footer.getClearSelectedButton();
-        addListeners();
-
-        // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-              e.getWindow().dispose();
-              System.out.println("JFrame Closed!\nYOUR MOM!");
-              try {
-                promptHistory = mediator.getPromptHistory();
-                FileOutputStream fout = new FileOutputStream(filePath);
-                String qnA;
-                byte[] array;
-                int size = promptHistory.getSize();
-                for (int i = 0; i < size; i++) {
-                    fout.write(startSt.getBytes());
-                    fout.write('\n');
-
-                    qnA = promptHistory.getQuery(i);
-                    array = qnA.getBytes();
-                    fout.write(array);
-                    fout.write('\n');
-                    
-                    qnA = promptHistory.getAnswer(i);
-                    array = qnA.getBytes();
-                    fout.write(array);
-                    fout.write('\n');
-
-                    fout.write(endSt.getBytes());
-                    if (i != size-1) {
-                        fout.write('\n');
-                    }
-                }
-                fout.close();
-              } catch(IOException ex) {
-                System.out.println(ex);
-              }
-            }
-        });
+        addListeners(filePath);
     }
 
     /**
      * Create functionality for when the new and clear buttons are pressed
      */
-    public void addListeners() {
+    public void addListeners(String filePath) {
         // start or stop recording when new button is pressed
         AudioRecord audio = mediator.getAudioRecord();
         newButton.addActionListener( 
@@ -133,6 +93,17 @@ public class AppFrame extends JFrame {
         clearSelectedButton.addActionListener((ActionEvent e) -> {
             scrollFrame.removeSelectedPrompts();
             repaint();
+        });
+
+        // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                e.getWindow().dispose();
+                System.out.println("JFrame Closed!\nYOUR MOM!");
+                promptHistory = mediator.getPromptHistory();
+                promptHistory.closeApp(filePath);
+            }
         });
     }
 
