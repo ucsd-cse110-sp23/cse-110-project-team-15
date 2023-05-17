@@ -12,14 +12,14 @@ class PromptHistoryTest {
     private PromptHistory myHistory;
     private PromptHistory newLineHistory;
     private final String FILE_TEST3_PATH = "src/test/java/sayit/Test-files/test-3.txt";
-    private final String FILE_EMPTY_PATH = "src/test/java/sayit/Test-files/empty.txt";
+    private final String FILE_KINDAEMPTY_PATH = "src/test/java/sayit/Test-files/kindaEmpty.txt";
 
     @BeforeEach
     void setup(){
         myHistory = new PromptHistory(); //Use my six line test file
         myHistory.setupPromptHistory(FILE_TEST3_PATH);
         newLineHistory = new PromptHistory();
-        newLineHistory.setupPromptHistory(FILE_EMPTY_PATH);
+        newLineHistory.setupPromptHistory(FILE_KINDAEMPTY_PATH);
     }
 
     @Test
@@ -45,7 +45,7 @@ class PromptHistoryTest {
     void testKindaEmpty(){
         //Pair 1:
         assertEquals(newLineHistory.getQuery(0), ""); //I think thats how the interaction would work if not then ""
-        assertEquals(newLineHistory.getAnswer(0), "\n");
+        assertEquals(newLineHistory.getAnswer(0), "");
         
         // Size Comparison
         assertEquals(newLineHistory.getSize(), 1);
