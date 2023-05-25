@@ -122,6 +122,13 @@ public class RequestHandler implements HttpHandler {
         
         if (query != null) {
             int index = Integer.parseInt(query.substring(query.indexOf("=") + 1));
+            
+            /* special case if query of -1 is passed, clear the prompts array */
+            if (index == -1) { 
+                prompts.clear();
+                return "Cleared all entries"; 
+            }
+            
             /* if the index is larger than array, just return -1 */
             if (index >= prompts.size()) { return "-1"; }
             

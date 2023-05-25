@@ -129,6 +129,13 @@ public class PromptHistory {
             out.write(question + "\n" + answer);
             out.flush();
             out.close();
+
+            // print the response for testing purposes
+            BufferedReader in = new BufferedReader(
+              new InputStreamReader(conn.getInputStream())
+            );
+            String response = in.readLine();
+            System.out.println("POST response: " + response);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("PromptHistory.java: " + e);
@@ -140,17 +147,62 @@ public class PromptHistory {
      * @param p Prompt to delete
      */
     public void removePrompt(Prompt p) {
+        // save index for calling DELETE on server
+        int index = prompts.indexOf(p);
+
+        /* delete prompts locally */
         prompts.remove(p);
         size--;
         System.out.println("# of prompts is: " + prompts.size());
+
+        /* delete prompts on server */
+        try {
+            // create URL (with query) to the server and create the connection
+            URL url = new URL(URL + "?=" + index);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            
+            // request the DELETE method on the server
+            conn.setRequestMethod("DELETE");
+
+            // print the response for testing purposes
+            BufferedReader in = new BufferedReader(
+              new InputStreamReader(conn.getInputStream())
+            );
+            String response = in.readLine();
+            System.out.println("DELETE response: " + response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("PromptHistory.java: " + e);
+        }
     }
 
     /**
      * Clear all prompts in the ArrayList, set size to 0, and do same on same on server using DELETE
      */
     public void clearPrompts() {
+        /* clear prompts locally */
         prompts.clear();
         size = 0;
+
+        /* clear prompts on server */
+        try {
+            // create URL (with query) to the server and create the connection
+            URL url = new URL(URL + "?=" + -1);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            
+            // request the DELETE method on the server
+            conn.setRequestMethod("DELETE");
+
+            // print the response for testing purposes
+            BufferedReader in = new BufferedReader(
+              new InputStreamReader(conn.getInputStream())
+            );
+            String response = in.readLine();
+            System.out.println("DELETE response: " + response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("PromptHistory.java: " + e);
+        }
     }
 
     /**
