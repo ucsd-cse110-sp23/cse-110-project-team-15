@@ -112,7 +112,7 @@ public class RequestHandler implements HttpHandler {
     /**
      * Delete a prompt from ArrayList prompts
      * @param httpExchange the request that the server receives
-     * @return response saying whether or not the DELETE succeeded
+     * @return String response saying whether or not the DELETE succeeded (-1 if not succeeded)
      * @throws IOException
      */
     private String handleDelete(HttpExchange httpExchange) throws IOException {

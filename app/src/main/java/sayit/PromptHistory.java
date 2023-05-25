@@ -1,6 +1,7 @@
 package sayit;
 
 import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 
 public class PromptHistory {
@@ -10,11 +11,13 @@ public class PromptHistory {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
     // other miscellaneous variables
-    String startSt = "#Start#";
-    String endSt = "#End#";
+    private final String startSt = "#Start#";
+    private final String endSt = "#End#";
+    private final String URL = "http://localhost:8100/";
 
     /**
-     * Read text file and pull relevant info, store it
+     * New: Load the prompts from server using GET
+     * Old: Read text file and pull relevant info, store it
      * @param String of relative path to txt file
      */
     public void setupPromptHistory(String filepath) {
@@ -96,17 +99,44 @@ public class PromptHistory {
     }
 
     /**
-     * Add a prompt to the ArrayList
+     * Add a prompt to the ArrayList and do same on same on server using POST
      * @param p Prompt to add
+     * @throws IOException
      */
     public void addPrompt(Prompt p) {
+        /* add to prompts locally */
         prompts.add(p);
         size++;
         System.out.println("# of prompts is: " + prompts.size());
+
+        /* add to prompts on server */
+        try {
+            String question = p.getQuery();
+            String answer = p.getAnswer();
+            
+            // create URL to the server and create the connection
+            URL url = new URL(URL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            
+            // request the POST method on the server
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            // write the question and answer to file that server can read and update its promtps array
+            OutputStreamWriter out = new OutputStreamWriter(
+                conn.getOutputStream()
+            );
+            out.write(question + "\n" + answer);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("PromptHistory.java: " + e);
+        }
     }
 
     /**
-     * remove a given prompt from prompts on given the prompt
+     * remove a given prompt from prompts on given the prompt and do same on same on server using DELETE
      * @param p Prompt to delete
      */
     public void removePrompt(Prompt p) {
@@ -116,7 +146,7 @@ public class PromptHistory {
     }
 
     /**
-     * Clear all prompts in the ArrayList and set size to 0
+     * Clear all prompts in the ArrayList, set size to 0, and do same on same on server using DELETE
      */
     public void clearPrompts() {
         prompts.clear();
