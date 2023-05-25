@@ -28,14 +28,14 @@ public class RequestHandler implements HttpHandler {
                 response = handleGet(httpExchange);
             } else if (method.equals("POST")) {
                 response = handlePost(httpExchange);
+            } else if (method.equals("DELETE")) {
+                response = handleDelete(httpExchange);
             } 
             // not sure when put/update will be needed, so I commented it out for now
             // else if (method.equals("PUT")) {
             //     response = handlePut(httpExchange);
             // } 
-            else if (method.equals("DELETE")) {
-                response = handleDelete(httpExchange);
-            } else {
+            else {
                 throw new Exception("Not Valid Request Method");
             }
         } catch (Exception e) {
@@ -110,37 +110,6 @@ public class RequestHandler implements HttpHandler {
     }
 
     /**
-     * Update a prompt in ArrayList prompts (I don't know when this would be needed, so I commented it out)
-     * @param httpExchange the request that the server receives
-     * @return response saying whether or not the POST succeeded
-     * @throws IOException
-     */
-    // private String handlePut(HttpExchange httpExchange) throws IOException {
-    //     InputStream inStream = httpExchange.getRequestBody();
-    //     Scanner scanner = new Scanner(inStream);
-    //     String postData = scanner.nextLine();
-    //     String language = postData.substring(
-    //             0,
-    //             postData.indexOf(",")), year = postData.substring(postData.indexOf(",") + 1);
-
-    //     // Store data in hashmap
-
-    //     String response;
-    //     if (data.containsKey(language)) {
-    //         String prevyear = data.get(language);
-    //         data.put(language, year);
-    //         response = "Updated entry {" + language + ", " + year + "}" + " (previous year:" + prevyear + ")";
-    //     } else {
-    //         data.put(language, year);
-    //         response = "Posted entry {" + language + ", " + year + "}";
-    //     }
-    //     System.out.println(response);
-    //     scanner.close();
-
-    //     return response;
-    // }
-
-    /**
      * Delete a prompt from ArrayList prompts
      * @param httpExchange the request that the server receives
      * @return response saying whether or not the DELETE succeeded
@@ -170,4 +139,35 @@ public class RequestHandler implements HttpHandler {
         }
         return response;
     }
+
+    /**
+     * Update a prompt in ArrayList prompts (I don't know when this would be needed, so I commented it out)
+     * @param httpExchange the request that the server receives
+     * @return response saying whether or not the POST succeeded
+     * @throws IOException
+     */
+    // private String handlePut(HttpExchange httpExchange) throws IOException {
+    //     InputStream inStream = httpExchange.getRequestBody();
+    //     Scanner scanner = new Scanner(inStream);
+    //     String postData = scanner.nextLine();
+    //     String language = postData.substring(
+    //             0,
+    //             postData.indexOf(",")), year = postData.substring(postData.indexOf(",") + 1);
+
+    //     // Store data in hashmap
+
+    //     String response;
+    //     if (data.containsKey(language)) {
+    //         String prevyear = data.get(language);
+    //         data.put(language, year);
+    //         response = "Updated entry {" + language + ", " + year + "}" + " (previous year:" + prevyear + ")";
+    //     } else {
+    //         data.put(language, year);
+    //         response = "Posted entry {" + language + ", " + year + "}";
+    //     }
+    //     System.out.println(response);
+    //     scanner.close();
+
+    //     return response;
+    // }
 }
