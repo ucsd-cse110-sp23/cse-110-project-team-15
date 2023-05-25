@@ -64,7 +64,6 @@ public class RequestHandler implements HttpHandler {
         
         if (query != null) {
             int index = Integer.parseInt(query.substring(query.indexOf("=") + 1));
-            
             /* if the index is larger than array, just return -1 */
             if (index >= prompts.size()) { return "-1"; }
 
@@ -75,7 +74,7 @@ public class RequestHandler implements HttpHandler {
             question = prompts.get(index).getQuery();
             answer = prompts.get(index).getAnswer();
 
-            /* if question was found, return its answer, else return not found */
+            /* set response to question + /D\ + answer, otherwise -1 --> (/D\ is the delimeter) */
             response = question + "/D\\" + answer;
             System.out.println("Prompt at index " + index + " is:\nQuestion:" + question + "\nAnswer:" + answer);
         }
@@ -151,29 +150,23 @@ public class RequestHandler implements HttpHandler {
         String response = "Invalid Delete request";
         URI uri = httpExchange.getRequestURI();
         String query = uri.getRawQuery();
+        
         if (query != null) {
-            String question = query.substring(query.indexOf("=") + 1);
-            question = question.replaceAll("%20", " ");
-            String answer = null;
+            int index = Integer.parseInt(query.substring(query.indexOf("=") + 1));
+            /* if the index is larger than array, just return -1 */
+            if (index >= prompts.size()) { return "-1"; }
             
-            /* Search through prompts, find question that matches query, set reponse to answer */
-            int i = 0;
-            for (Prompt p: prompts) {
-                if (p.getQuery().equals(question)) {
-                    answer = p.getAnswer();
-                    break;
-                }
-                i++;
-            }
+            String question = null;
+            String answer = null;
 
-            /* if question was found, delete it and its answer, else return not found */
-            if (answer != null) {
-                prompts.remove(i);
-                response = "Deleted entry {" + question + ", " + answer + "}";
-                System.out.println("Deleted entry {" + question + ", " + answer + "}");
-            } else {
-                response = "No data found for " + question;
-            }
+            /* Store the question and answer at given index and delete */
+            question = prompts.get(index).getQuery();
+            answer = prompts.get(index).getAnswer();
+            prompts.remove(index);
+
+            /* set response to the deleted question and answer */
+            response = "Deleted entry {" + question + ", " + answer + "}";
+            System.out.println("Deleted entry {" + question + ", " + answer + "}");
         }
         return response;
     }
