@@ -1,0 +1,7 @@
+Replace file preservation with server
+On server:
+- Store an ArrayList prompts that will preserve the prompts used in app
+- GET: at a given index, return a response in the form <question> + /D\ + <answer>
+    - /D\ is a delimeter for the question and answer
+- POST: from the input file, read the first line (question), then read the rest of the lines (answer) and store into prompts
+- DELETE: at a given index, just delete the question and answer in prompts
