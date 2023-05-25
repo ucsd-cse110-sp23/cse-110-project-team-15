@@ -1,23 +1,6 @@
 #Start#
-what is red and bad for your teeth?
-a
-
-mofugin
-
-
-#End#
-#Start#
-q2
-g
-h
-
-
-#End#
-#Start#
-q3
-answer tree?
-
-
+This is the mock question?
+This is the mock answer!!! :)
 #End#
 #Start#
 This is the mock question?

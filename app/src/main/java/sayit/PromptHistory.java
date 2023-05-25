@@ -4,9 +4,14 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class PromptHistory {
+    // Objects needed for PromptHistory
     IMediator mediator;
     private int size = 0;
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
+
+    // other miscellaneous variables
+    String startSt = "#Start#";
+    String endSt = "#End#";
 
     /**
      * Read text file and pull relevant info, store it
@@ -25,6 +30,8 @@ public class PromptHistory {
                     qLine = bufferedReader.readLine();
                 }
                 else if (lineLoop.equals("#End#")) {
+                    qLine = qLine.trim();
+                    aLine = aLine.trim();
                     Prompt questionAndAnswer = new Prompt(qLine, aLine);
                     prompts.add(questionAndAnswer);
                     size++;
@@ -114,6 +121,42 @@ public class PromptHistory {
     public void clearPrompts() {
         prompts.clear();
         size = 0;
+    }
+
+    /**
+     * Writes all prompts to txt file on closing of app
+     * @param filePath path to file to write to
+     */
+    public void closeApp(String filePath) {
+        try {
+            FileOutputStream fout = new FileOutputStream(filePath);
+            String qnA;
+            byte[] array;
+            for (int i = 0; i < size; i++) {
+                fout.write(startSt.getBytes());
+                fout.write('\n');
+
+                qnA = getQuery(i);
+                qnA = qnA.trim();
+                array = qnA.getBytes();
+                fout.write(array);
+                fout.write('\n');
+
+                qnA = getAnswer(i);
+                qnA = qnA.trim();
+                array = qnA.getBytes();
+                fout.write(array);
+                fout.write('\n');
+
+                fout.write(endSt.getBytes());
+                if (i != size-1) {
+                    fout.write('\n');
+                }
+            }
+            fout.close();
+        } catch(IOException ex) {
+            System.out.println(ex);
+        }
     }
 
     /**

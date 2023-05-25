@@ -15,13 +15,21 @@ public class App {
     SwingUtilities.invokeLater(() -> {
       /* comment this out for mock use */
       new MockMediator();
-
+      
       /* comment this out for real use */
       // try {
       //   new Mediator();
       // } catch (IOException | InterruptedException e) {
       //   e.printStackTrace();
       // }
+
+      // Start the web server
+      try {
+        Server.startServer();
+      } catch (IOException e) {
+        System.out.println("App.java: " + e);
+        e.printStackTrace();
+      }
     });
   }
 }

@@ -45,16 +45,16 @@ public class Iteration1Test {
     void testNewQuestionFull() throws IOException, InterruptedException {
         //Pair 1:
         assertEquals(myHistory.getQuery(0), "What's the best ice cream flavor");
-        assertEquals(myHistory.getAnswer(0), "Obviously it's cookie's and cream\n");
+        assertEquals(myHistory.getAnswer(0), "Obviously it's cookie's and cream");
         
         //Pair 2
         assertEquals(myHistory.getQuery(1), "Cats or dogs");
-        assertEquals(myHistory.getAnswer(1), "Dogs are more easily manipulatable so I'd choose them\n");
+        assertEquals(myHistory.getAnswer(1), "Dogs are more easily manipulatable so I'd choose them");
         
         //Pair 3
         assertEquals(myHistory.getQuery(2), "Would you go out on a date with me");
         assertEquals(myHistory.getAnswer(2),
-             "Unfortunaley I can not, but I would reccommend going outside and touching some grass\n");
+             "Unfortunaley I can not, but I would reccommend going outside and touching some grass");
 
         // Size comparison
         int size = myHistory.getSize();
