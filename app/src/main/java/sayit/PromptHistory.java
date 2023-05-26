@@ -22,7 +22,7 @@ public class PromptHistory {
         try {
             int i = 0;
             String response;
-            do {
+            while (true) {
                 // create URL (with query) to the server and create the connection
                 String query = String.valueOf(i);
                 URL url = new URL(URL + "?=" + query);
@@ -37,8 +37,18 @@ public class PromptHistory {
                 );
                 response = in.readLine();
                 System.out.println("GET response: " + response);
+
+                // check if the reponse is -1 (reached end of prompts on server)
+                if (response.equals("-1")) { break; }
+
+                // parse the response and store the question and answer in the prompts locally
+                String question = response.substring(0,response.indexOf("/D\\"));
+                String answer = response.substring(response.indexOf("/D\\"));
+                prompts.add(new Prompt(question,answer));
+
                 in.close();
-            } while(!response.equals("-1"));
+                i++;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("PromptHistory.java: " + e);
@@ -192,6 +202,38 @@ public class PromptHistory {
             System.out.println("PromptHistory.java: " + e);
         }
     }
+
+    // try {
+        //     FileReader fileReader = new FileReader(filepath);
+        //     BufferedReader bufferedReader = new BufferedReader(fileReader);
+        //     String lineLoop;
+        //     String qLine = "";    // query line
+        //     String aLine = "";   // answer line
+            
+        //     while (((lineLoop = bufferedReader.readLine()) != null)) {
+        //         if (lineLoop.equals("#Start#")) {
+        //             qLine = bufferedReader.readLine();
+        //         }
+        //         else if (lineLoop.equals("#End#")) {
+        //             qLine = qLine.trim();
+        //             aLine = aLine.trim();
+        //             Prompt questionAndAnswer = new Prompt(qLine, aLine);
+        //             prompts.add(questionAndAnswer);
+        //             size++;
+        //             aLine = "";
+        //         }
+        //         else {
+        //             aLine += lineLoop + '\n';
+        //         }
+        //     }
+
+
+        //     bufferedReader.close();
+        //     fileReader.close();
+        //   } 
+        //   catch (IOException e){
+        //     System.out.println(e);
+        //   }
 
     /**
      * Setter for Mediator
