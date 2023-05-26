@@ -13,6 +13,7 @@ public class Server {
     // initialize server port and hostname
     private static final int SERVER_PORT = 8100;
     private static final String SERVER_HOSTNAME = "localhost";
+    private static HttpServer server;
     
     /**
      * Starts the server at the given port and hostname
@@ -25,7 +26,7 @@ public class Server {
         ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
         // create a server
-        HttpServer server = HttpServer.create(
+        server = HttpServer.create(
         new InetSocketAddress(SERVER_HOSTNAME, SERVER_PORT),
             0
         );
@@ -34,6 +35,14 @@ public class Server {
         server.createContext("/", new RequestHandler(prompts));
         server.setExecutor(threadPoolExecutor);
         server.start();
+    }
+
+    /**
+     * Forcefully stops the server at the given port and hostname
+     * @throws IOException
+     */
+    public static void stopServer() throws IOException {
+        server.stop(0);
     }
 }
 

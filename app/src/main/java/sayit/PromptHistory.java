@@ -53,6 +53,39 @@ public class PromptHistory {
             e.printStackTrace();
             System.out.println("PromptHistory.java: " + e);
         }
+
+        // read from filePath for testing purposes
+        try {
+            FileReader fileReader = new FileReader(filepath);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String lineLoop;
+            String qLine = "";    // query line
+            String aLine = "";   // answer line
+            
+            while (((lineLoop = bufferedReader.readLine()) != null)) {
+                if (lineLoop.equals("#Start#")) {
+                    qLine = bufferedReader.readLine();
+                }
+                else if (lineLoop.equals("#End#")) {
+                    qLine = qLine.trim();
+                    aLine = aLine.trim();
+                    Prompt questionAndAnswer = new Prompt(qLine, aLine);
+                    prompts.add(questionAndAnswer);
+                    size++;
+                    aLine = "";
+                }
+                else {
+                    aLine += lineLoop + '\n';
+                }
+            }
+
+
+            bufferedReader.close();
+            fileReader.close();
+          } 
+          catch (IOException e){
+            System.out.println(e);
+          }
     }
 
     /**
@@ -202,38 +235,6 @@ public class PromptHistory {
             System.out.println("PromptHistory.java: " + e);
         }
     }
-
-    // try {
-        //     FileReader fileReader = new FileReader(filepath);
-        //     BufferedReader bufferedReader = new BufferedReader(fileReader);
-        //     String lineLoop;
-        //     String qLine = "";    // query line
-        //     String aLine = "";   // answer line
-            
-        //     while (((lineLoop = bufferedReader.readLine()) != null)) {
-        //         if (lineLoop.equals("#Start#")) {
-        //             qLine = bufferedReader.readLine();
-        //         }
-        //         else if (lineLoop.equals("#End#")) {
-        //             qLine = qLine.trim();
-        //             aLine = aLine.trim();
-        //             Prompt questionAndAnswer = new Prompt(qLine, aLine);
-        //             prompts.add(questionAndAnswer);
-        //             size++;
-        //             aLine = "";
-        //         }
-        //         else {
-        //             aLine += lineLoop + '\n';
-        //         }
-        //     }
-
-
-        //     bufferedReader.close();
-        //     fileReader.close();
-        //   } 
-        //   catch (IOException e){
-        //     System.out.println(e);
-        //   }
 
     /**
      * Setter for Mediator

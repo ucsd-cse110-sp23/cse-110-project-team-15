@@ -2,6 +2,8 @@ package sayit;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
@@ -30,7 +32,7 @@ public class Iteration1Test {
     private String mockQuestion = "";
 
     @BeforeEach
-    void setup(){
+    void setup() throws IOException{
         myHistory = new PromptHistory(); //Use my six line test file
         myHistory.setupPromptHistory(FILE_TEST3_PATH);
         newLineHistory = new PromptHistory();
@@ -39,6 +41,13 @@ public class Iteration1Test {
 
         inputQ = new MockInputQ();
         outputA = new MockOutputA();
+
+        Server.startServer();
+    }
+
+    @AfterEach
+    void closeServer() throws IOException {
+        Server.stopServer();
     }
 
     @Test
