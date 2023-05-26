@@ -43,7 +43,7 @@ public class PromptHistory {
 
                 // parse the response and store the question and answer in the prompts locally
                 String question = response.substring(0,response.indexOf("/D\\"));
-                String answer = response.substring(response.indexOf("/D\\"));
+                String answer = response.substring(response.indexOf("/D\\") + 3);
                 prompts.add(new Prompt(question,answer));
 
                 in.close();
