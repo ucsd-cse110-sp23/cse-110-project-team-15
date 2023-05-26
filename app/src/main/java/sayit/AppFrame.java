@@ -64,7 +64,7 @@ public class AppFrame extends JFrame {
      */
     public void addListeners(String filePath) {
         // start or stop recording when new button is pressed
-        AudioRecord audio = mediator.getAudioRecord();
+        IAudioRecord audio = mediator.getAudioRecord();
         newButton.addActionListener( 
             (ActionEvent e)  -> {
                 if (!isRecording) {
@@ -101,8 +101,6 @@ public class AppFrame extends JFrame {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 e.getWindow().dispose();
                 System.out.println("JFrame Closed!\nYOUR MOM!");
-                promptHistory = mediator.getPromptHistory();
-                promptHistory.closeApp(filePath);
             }
         });
     }

@@ -3,10 +3,16 @@ package sayit;
 import java.io.*;
 import javax.sound.sampled.*;
 
+interface IAudioRecord {
+    void startRecording();
+    void stopRecording();
+    void setMediator(IMediator m);
+}
+
 /**
  * Responsible for audio-based functionality
  */
-public class AudioRecord {
+public class AudioRecord implements IAudioRecord{
     // Objects needed for AudioRecord
     IMediator mediator;
     private AudioFormat audioFormat;
@@ -62,6 +68,30 @@ public class AudioRecord {
         targetLine.stop();
         targetLine.close();
     }
+
+    /**
+     * Setter for Mediator
+     * @param m Mediator object
+     */
+    public void setMediator(IMediator m) { mediator = m; }
+}
+
+/**
+ * Mock the AudioRecord class for testing purposes
+ */
+class MockAudioRecord implements IAudioRecord{
+    // Objects needed for MockAudioRecord
+    IMediator mediator;
+    
+    /**
+     * Start recording and create audio file with input audio
+     */
+    public void startRecording() {}
+    
+    /** 
+     * Stop recording and finalize audio file 
+     */
+    public void stopRecording() {}
 
     /**
      * Setter for Mediator

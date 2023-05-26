@@ -3,7 +3,7 @@ import java.io.*;
 
 interface IMediator {
     public AppFrame getAppFrame();
-    public AudioRecord getAudioRecord();
+    public IAudioRecord getAudioRecord();
     public Footer getFooter();
     public PromptHistory getPromptHistory();
     public Input getInputQ();
@@ -20,7 +20,7 @@ interface IMediator {
 class Mediator implements IMediator {
     // Objects to all classes used in app
     private AppFrame appFrame;
-    private AudioRecord audioRecord;
+    private IAudioRecord audioRecord;
     private Footer footer;
     private PromptHistory promptHistory;
     private Input inputQ;
@@ -79,7 +79,7 @@ class Mediator implements IMediator {
      * Getter for AudioRecord
      * @return audioRecord object
      */
-    public AudioRecord getAudioRecord() { return audioRecord; }
+    public IAudioRecord getAudioRecord() { return audioRecord; }
 
     /**
      * Getter for Footer
@@ -124,7 +124,7 @@ class Mediator implements IMediator {
 class MockMediator implements IMediator {
     // Objects to all classes used in app
     private AppFrame appFrame;
-    private AudioRecord audioRecord;
+    private IAudioRecord audioRecord;
     private Footer footer;
     private PromptHistory promptHistory;
     private Input inputQ;
@@ -156,7 +156,7 @@ class MockMediator implements IMediator {
         footer.setMediator(this);
 
         /* Create new AudioRecord */
-        audioRecord = new AudioRecord();
+        audioRecord = new MockAudioRecord();
         audioRecord.setMediator(this);
 
         /* Create new MockInputQ */
@@ -183,7 +183,7 @@ class MockMediator implements IMediator {
      * Getter for AudioRecord
      * @return audioRecord object
      */
-    public AudioRecord getAudioRecord() { return audioRecord; }
+    public IAudioRecord getAudioRecord() { return audioRecord; }
 
     /**
      * Getter for Footer

@@ -11,8 +11,6 @@ public class PromptHistory {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
     // other miscellaneous variables
-    private final String startSt = "#Start#";
-    private final String endSt = "#End#";
     private final String URL = "http://localhost:8100/";
 
     /**
@@ -22,37 +20,29 @@ public class PromptHistory {
      */
     public void setupPromptHistory(String filepath) {
         try {
-            FileReader fileReader = new FileReader(filepath);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String lineLoop;
-            String qLine = "";    // query line
-            String aLine = "";   // answer line
-            
-            while (((lineLoop = bufferedReader.readLine()) != null)) {
-                if (lineLoop.equals("#Start#")) {
-                    qLine = bufferedReader.readLine();
-                }
-                else if (lineLoop.equals("#End#")) {
-                    qLine = qLine.trim();
-                    aLine = aLine.trim();
-                    Prompt questionAndAnswer = new Prompt(qLine, aLine);
-                    prompts.add(questionAndAnswer);
-                    size++;
-                    aLine = "";
-                }
-                else {
-                    aLine += lineLoop + '\n';
-                }
-            }
+            int i = 0;
+            String response;
+            do {
+                // create URL (with query) to the server and create the connection
+                String query = String.valueOf(i);
+                URL url = new URL(URL + "?=" + query);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
+                // request the GET method on the server
+                conn.setRequestMethod("GET");
 
-            bufferedReader.close();
-            fileReader.close();
-          } 
-          catch (IOException e){
-            System.out.println(e);
-          }
-          System.out.println("# of prompts is: " + size);
+                // print the response for testing purposes
+                BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream())
+                );
+                response = in.readLine();
+                System.out.println("GET response: " + response);
+                in.close();
+            } while(!response.equals("-1"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("PromptHistory.java: " + e);
+        }
     }
 
     /**
@@ -107,7 +97,6 @@ public class PromptHistory {
         /* add to prompts locally */
         prompts.add(p);
         size++;
-        System.out.println("# of prompts is: " + prompts.size());
 
         /* add to prompts on server */
         try {
@@ -153,7 +142,6 @@ public class PromptHistory {
         /* delete prompts locally */
         prompts.remove(p);
         size--;
-        System.out.println("# of prompts is: " + prompts.size());
 
         /* delete prompts on server */
         try {
@@ -202,42 +190,6 @@ public class PromptHistory {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("PromptHistory.java: " + e);
-        }
-    }
-
-    /**
-     * Writes all prompts to txt file on closing of app
-     * @param filePath path to file to write to
-     */
-    public void closeApp(String filePath) {
-        try {
-            FileOutputStream fout = new FileOutputStream(filePath);
-            String qnA;
-            byte[] array;
-            for (int i = 0; i < size; i++) {
-                fout.write(startSt.getBytes());
-                fout.write('\n');
-
-                qnA = getQuery(i);
-                qnA = qnA.trim();
-                array = qnA.getBytes();
-                fout.write(array);
-                fout.write('\n');
-
-                qnA = getAnswer(i);
-                qnA = qnA.trim();
-                array = qnA.getBytes();
-                fout.write(array);
-                fout.write('\n');
-
-                fout.write(endSt.getBytes());
-                if (i != size-1) {
-                    fout.write('\n');
-                }
-            }
-            fout.close();
-        } catch(IOException ex) {
-            System.out.println(ex);
         }
     }
 

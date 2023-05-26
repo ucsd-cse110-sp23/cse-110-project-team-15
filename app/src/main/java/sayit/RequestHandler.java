@@ -39,7 +39,7 @@ public class RequestHandler implements HttpHandler {
                 throw new Exception("Not Valid Request Method");
             }
         } catch (Exception e) {
-            System.out.println("An erroneous request");
+            System.out.println("RequestHandler.java: An erroneous request");
             response = e.toString();
             e.printStackTrace();
         }
@@ -96,7 +96,7 @@ public class RequestHandler implements HttpHandler {
         String question = scanner.nextLine();
         /* get answer from rest of the files contents */
         String answer = "";
-        while (((answer += scanner.nextLine()) != null)) {}
+        while (scanner.hasNextLine()) { answer += scanner.nextLine(); }
         
         // Store question and answer in prompts
         prompts.add(new Prompt(question, answer));
