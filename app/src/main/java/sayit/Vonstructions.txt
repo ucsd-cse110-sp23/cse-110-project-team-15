@@ -1,8 +1,3 @@
-Note for later on:
-- might have to mock Server and newQuestionHandler
-    - so that tests can always run mock version while we run real version
-
-
 Refactoring to 3-tier architecture:
 - move all business logic to server 
     x- bring back file preservation, but do it on the server
@@ -57,5 +52,5 @@ In ServerTest:
 
 
 In FilePreservationTest:
-    - Create tests for loadPromptsHandler:
-        - Test "PUT": the beforePrompts matches with what is read into afterPrompts from the .txt file
+    x- Create tests for loadPromptsHandler:
+        x- Test "PUT": the beforePrompts matches with what is read into afterPrompts from the .txt file

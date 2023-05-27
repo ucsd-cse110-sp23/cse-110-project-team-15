@@ -15,7 +15,7 @@ public class InputQ implements IInput {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
-    private static final String FILE_PATH = "src/main/java/sayit/Test-files/question.wav";
+    private static final String FILE_PATH = "src/main/java/sayit/Server/BusinessLogic/Test-files/question.wav";
     private static final String FILE_PATH_INPUT = "Test-files/InputQ-test.txt";
     private String myInputQ = "Mock Transcription Query: This is the mock query!";
     private String audioInput = "";

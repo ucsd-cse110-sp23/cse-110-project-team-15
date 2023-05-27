@@ -5,6 +5,7 @@ package sayit.UI;
 
 import java.io.IOException;
 import javax.swing.SwingUtilities;
+import sayit.Server.MockServer;
 import sayit.Server.Server;
 
 /**
@@ -16,8 +17,11 @@ public class App {
       // Start the web server
       try {
         String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
-        Server.startServer(filePath);
-      } catch (IOException e) {
+        
+        /* Uncomment whichever server to use and comment out other */
+        MockServer.startServer(filePath);
+        //Server.startServer(filePath);
+      } catch (Exception e) {
         System.out.println("App.java: " + e);
         e.printStackTrace();
       }

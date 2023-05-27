@@ -9,7 +9,7 @@ import java.net.URL;
 
 import org.junit.jupiter.api.Test;
 
-import sayit.Server.Server;
+import sayit.Server.MockServer;
 import sayit.Server.BusinessLogic.Prompt;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,13 +29,13 @@ public class ServerTest {
 
     @AfterEach
     void closeServer() throws IOException {
-        Server.stopServer();
+        MockServer.stopServer();
     }
 
     @Test
-    void loadPromptsHandlerGetTest() throws IOException {
+    void loadPromptsHandlerGetTest() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        Server.startServer(FILE_TEST3_PATH);
+        MockServer.startServer(FILE_TEST3_PATH);
 
         // get the prompt at 0th index on the server
         URL url = new URL(loadPURL + "?=" + 0);
@@ -103,9 +103,9 @@ public class ServerTest {
     }
 
     @Test
-    void newQuestionHandlerGetTest() throws IOException {
+    void newQuestionHandlerGetTest() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        Server.startServer(FILE_EMPTY_PATH);
+        MockServer.startServer(FILE_EMPTY_PATH);
 
         // get Q&A from (mocked) ChatGPT on server
         String query = "Start";
@@ -139,9 +139,9 @@ public class ServerTest {
     }
 
     @Test
-    void newQuestionHandlerPostTest() throws IOException {
+    void newQuestionHandlerPostTest() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        Server.startServer(FILE_EMPTY_PATH);
+        MockServer.startServer(FILE_EMPTY_PATH);
         
         // add 2 prompts to server
         Prompt p1 = new Prompt("Is the ocean a soup?", "Whatever makes you happy.");
@@ -229,9 +229,9 @@ public class ServerTest {
     }
 
     @Test
-    void deletePromptHandlerDeleteTest() throws IOException {
+    void deletePromptHandlerDeleteTest() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        Server.startServer(FILE_TEST3_PATH);
+        MockServer.startServer(FILE_TEST3_PATH);
 
         // delete the second prompt on server
         String query = String.valueOf(1);
@@ -287,9 +287,9 @@ public class ServerTest {
     }
 
     @Test
-    void clearAllHandlerDeleteTest() throws IOException {
+    void clearAllHandlerDeleteTest() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        Server.startServer(FILE_TEST3_PATH);
+        MockServer.startServer(FILE_TEST3_PATH);
         
         // clear all prompts on the server
         URL url = new URL(clearAURL);

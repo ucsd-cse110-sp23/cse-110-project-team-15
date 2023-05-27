@@ -9,13 +9,12 @@ import java.net.URL;
 
 import org.junit.jupiter.api.Test;
 
-import sayit.Server.Server;
+import sayit.Server.MockServer;
 import sayit.Server.BusinessLogic.Prompt;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import java.util.ArrayList;
 
 public class FilePreserveTest {
     private final String FILE_EMPTY_PATH = "src/test/java/sayit/Test-files/empty.txt";
@@ -29,14 +28,14 @@ public class FilePreserveTest {
 
     @AfterEach
     void closeServer() throws IOException {
-        Server.stopServer();
+        MockServer.stopServer();
         new FileOutputStream(FILE_EMPTY_PATH).close();
     }
 
     @Test
-    void loadPromptsHandlerPutTest() throws IOException {
+    void loadPromptsHandlerPutTest() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        Server.startServer(FILE_EMPTY_PATH);
+        MockServer.startServer(FILE_EMPTY_PATH);
 
         // add 2 prompts to server
         Prompt p1 = new Prompt("Is the ocean a soup?", "Whatever makes you happy.");
@@ -123,8 +122,8 @@ public class FilePreserveTest {
 
 
         // close the server and open it again with the same FILE_EMPTY_PATH file
-        Server.stopServer();
-        Server.startServer(FILE_EMPTY_PATH);
+        MockServer.stopServer();
+        MockServer.startServer(FILE_EMPTY_PATH);
 
         // check that the same prompts were restored on server
         // get the prompt at 0th index on the server

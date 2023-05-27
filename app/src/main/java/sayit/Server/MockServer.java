@@ -21,7 +21,7 @@ import java.util.concurrent.*;
 /**
  * Responsible for starting the server
  */
-public class Server {
+public class MockServer {
     // initialize server port and hostname
     private static final int SERVER_PORT = 8100;
     private static final String SERVER_HOSTNAME = "localhost";
@@ -49,7 +49,7 @@ public class Server {
 
         // setup and start the server
         server.createContext("/load", new loadPromptsHandler(prompts, filePath));
-        server.createContext("/newQuestion", new newQuestionHandler(prompts));
+        server.createContext("/newQuestion", new MockNewQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));
         server.createContext("/deletePrompt", new deletePromptHandler(prompts));
         server.createContext("/createEmail", new createEmailHandler(prompts));
