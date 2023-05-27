@@ -4,6 +4,11 @@
 package sayit;
 
 import org.junit.jupiter.api.Test;
+
+import sayit.Server.Server;
+import sayit.Server.BusinessLogic.Prompt;
+import sayit.Server.BusinessLogic.PromptHistory;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;

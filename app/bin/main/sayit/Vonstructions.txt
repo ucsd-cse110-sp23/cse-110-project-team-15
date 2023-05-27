@@ -5,3 +5,39 @@ On server:
     - /D\ is a delimeter for the question and answer
 - POST: from the input file, read the first line (question), then read the rest of the lines (answer) and store into prompts
 - DELETE: at a given index, just delete the question and answer in prompts
+
+
+
+Refactoring to 3-tier architecture:
+- move all business logic to server 
+    - bring back file preservation, but do it on the server
+    - make different contexts for each functionality (different requestHandler for each)
+        x- /loadPrompts
+        x- /newQuestion 
+        x- /deletePrompt
+        x- /clearAll
+        - /createEmail
+        - /sendEmail
+x- make UI only show buttons, and prompts retreived from server
+    x- should no longer store anything 
+    x- buttons/functionalities should just be: 
+        x- making a request (which changes the prompts on the server) 
+        x- receving back a string response (used to update the UI)
+x- Only App, AppFrame, Footer, and ScrollFrame are needed for UI
+x- Rest of the classes should be doing stuff on the server
+
+
+
+In AppFrame:
+x- put the JPanels (scrollFrame, Footer) in
+x- in addListeners()
+    x- newButton: 
+        x- if not recording, request server to begin creating the wav file on its side
+        x- if is recording, request server to finalize wav file, input it into whisper, save the Q&A into its prompts, then return them back in response string
+            x- extract the Q&A from response string and add them to scrollFrame
+    x- clearButton:
+        x- clear out the scrollFrame
+        x- request server to clear its prompts
+    x- clearSelectedButton:
+        x- clear the selected prompts in scrollFrame, but make sure to keep an ArrayList of the indices of the prompts deleted
+        x- iterate through those indices and request server to delete whatever prompt at that index

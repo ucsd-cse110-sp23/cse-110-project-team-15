@@ -8,6 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.junit.jupiter.api.Test;
+
+import sayit.Server.Server;
+import sayit.Server.BusinessLogic.Prompt;
+import sayit.Server.BusinessLogic.PromptHistory;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

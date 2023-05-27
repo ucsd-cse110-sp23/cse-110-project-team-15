@@ -29,7 +29,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'sayit.App'
+    mainClass = 'sayit/UI.App'
 }
 
 tasks.named('test') {
