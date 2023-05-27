@@ -33,6 +33,7 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
+    public final String loadPURL = "http://localhost:8100/load";
     public final String newQURL = "http://localhost:8100/newQuestion";
     public final String clearAURL = "http://localhost:8100/clearAll";
     public final String deletePURL = "http://localhost:8100/deletePrompt";
@@ -49,6 +50,9 @@ public class AppFrame extends JFrame {
         scrollFrame = new ScrollFrame();
         footer = new Footer();
         isRecording = false;
+
+        // fill scrollFrame with the prompts from previous session
+        restore();
 
         // Make the main part of the frame the scrollFrame
         this.add(scrollFrame.getContentPane(), BorderLayout.CENTER);
@@ -111,7 +115,7 @@ public class AppFrame extends JFrame {
                         // request the GET method on the server
                         conn.setRequestMethod("GET");
 
-                        // parse and add Q&A from response to scrollFrame
+                        // parse from response and add to scrollFrame
                         BufferedReader in = new BufferedReader(
                             new InputStreamReader(conn.getInputStream())
                         );
@@ -181,5 +185,75 @@ public class AppFrame extends JFrame {
                 System.out.println("AppFrame: " + ex);
             }
         });
+
+        // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                e.getWindow().dispose();
+                System.out.println("JFrame Closed!\nYOUR MOM!");
+                
+                /* request server to write all its prompts into a preserve.txt file */
+                try {
+                    // create URL to the server and create the connection
+                    URL url = new URL(loadPURL);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                    // request the PUT method on the server
+                    conn.setRequestMethod("PUT");
+
+                    // won't call the handler correctly unless I do this?
+                    BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream())
+                    );
+                    in.readLine();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("AppFrame: " + ex);
+                }
+            }
+        });
+    }
+
+    /**
+     * Fill scrollFrame with the prompts from previous session (server response)
+     */
+    public void restore() {
+        /* loop to request server for each of its prompts */
+        try {
+            int i = 0;
+            String response;
+            while (true) {
+                // create URL (with query) to the server and create the connection
+                String query = String.valueOf(i);
+                URL url = new URL(loadPURL + "?=" + query);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                // request the GET method on the server
+                conn.setRequestMethod("GET");
+
+                // print the response for testing purposes
+                BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream())
+                );
+                response = in.readLine();
+                System.out.println("GET response: " + response);
+
+                // check if the reponse is -1 (reached end of prompts on server)
+                if (response.equals("-1")) { break; }
+
+                // parse the response and store the question and answer in the prompts locally
+                String question = response.substring(0,response.indexOf("/D\\"));
+                String answer = response.substring(response.indexOf("/D\\") + 3);
+                Prompt prompt = new Prompt(question,answer);
+                scrollFrame.addPrompt(prompt);
+
+                in.close();
+                i++;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("AppFrame: " + ex);
+        }
     }
 }

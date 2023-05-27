@@ -41,3 +41,8 @@ x- in addListeners()
     x- clearSelectedButton:
         x- clear the selected prompts in scrollFrame, but make sure to keep an ArrayList of the indices of the prompts deleted
         x- iterate through those indices and request server to delete whatever prompt at that index
+    x- addWindowListener:
+        x- request server to write all its prompts into a preserve.txt file
+    x- AppFrame constructor:
+        x- request server for all prompts in its preserve.txt file
+            x- add all of these prompts to scrollFrame

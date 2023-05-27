@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ServerTest {
     private PromptHistory myHistory;
     private final String FILE_EMPTY_PATH = "src/test/java/sayit/Test-files/empty.txt";
-    private final String URL = "http://localhost:8100/";
+    private final String URL = "http://localhost:8100/load";
 
     @BeforeEach
     void setup() throws IOException {

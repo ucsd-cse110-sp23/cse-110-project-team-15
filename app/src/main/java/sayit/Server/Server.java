@@ -10,6 +10,8 @@ import sayit.Server.Handlers.loadPromptsHandler;
 import sayit.Server.Handlers.newQuestionHandler;
 import sayit.Server.Handlers.sendEmailHandler;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -40,8 +42,11 @@ public class Server {
             0
         );
 
+        // restore prompts preserved from previous session
+        restore(prompts);
+
         // setup and start the server
-        server.createContext("/", new loadPromptsHandler(prompts));
+        server.createContext("/load", new loadPromptsHandler(prompts));
         server.createContext("/newQuestion", new newQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));
         server.createContext("/deletePrompt", new deletePromptHandler(prompts));
@@ -57,6 +62,45 @@ public class Server {
      */
     public static void stopServer() throws IOException {
         server.stop(0);
+    }
+
+    /**
+     * Fill prompts with the prompts from previous session (preserve.txt)
+     * @param prompts 
+     */
+    public static void restore(ArrayList<Prompt> prompts) {
+        // path to preserve.txt
+        String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
+        
+        // read from preserve.txt and fill prompts
+        final String startSt = "#Start#";
+        final String endSt = "#End#";
+        try {
+            FileReader fileReader = new FileReader(filePath);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String lineLoop;
+            String qLine = "";    // query line
+            String aLine = "";   // answer line
+            
+            while (((lineLoop = bufferedReader.readLine()) != null)) {
+                if (lineLoop.equals(startSt)) {
+                    qLine = bufferedReader.readLine();
+                } else if (lineLoop.equals(endSt)) {
+                    qLine = qLine.trim();
+                    aLine = aLine.trim();
+                    Prompt questionAndAnswer = new Prompt(qLine, aLine);
+                    prompts.add(questionAndAnswer);
+                    aLine = "";
+                } else {
+                    aLine += lineLoop + '\n';
+                }
+            }
+            bufferedReader.close();
+            fileReader.close();
+          } 
+          catch (IOException e){
+            System.out.println(e);
+          }
     }
 }
 

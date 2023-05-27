@@ -14,9 +14,6 @@ import sayit.Server.BusinessLogic.MockMediator;
 public class App {
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
-      // Create the UI
-      new AppFrame();
-
       // Start the web server
       try {
         Server.startServer();
@@ -24,6 +21,9 @@ public class App {
         System.out.println("App.java: " + e);
         e.printStackTrace();
       }
+
+      // Create the UI
+      new AppFrame();
     });
   }
 }

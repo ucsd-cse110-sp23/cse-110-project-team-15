@@ -12,6 +12,8 @@ public class PromptHistory {
 
     // other miscellaneous variables
     private final String URL = "http://localhost:8100/";
+    String startSt = "#Start#";
+    String endSt = "#End#";
 
     /**
      * New: Load the prompts from server using GET
@@ -233,6 +235,40 @@ public class PromptHistory {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("PromptHistory.java: " + e);
+        }
+    }
+
+    /**
+     * Writes all prompts to txt file on closing of app
+     * @param filePath path to file to write to
+     */
+    public void closeApp(String filePath) {
+        try {
+            FileOutputStream fout = new FileOutputStream(filePath);
+            String qnA;
+            byte[] array;
+            for (int i = 0; i < size; i++) {
+                fout.write(startSt.getBytes());
+                fout.write('\n');
+
+                qnA = getQuery(i);
+                array = qnA.getBytes();
+                fout.write(array);
+                fout.write('\n');
+                
+                qnA = getAnswer(i);
+                array = qnA.getBytes();
+                fout.write(array);
+                fout.write('\n');
+
+                fout.write(endSt.getBytes());
+                if (i != size-1) {
+                    fout.write('\n');
+                }
+            }
+            fout.close();
+        } catch(IOException ex) {
+            System.out.println(ex);
         }
     }
 
