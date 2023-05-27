@@ -2,11 +2,9 @@ package sayit.Server.BusinessLogic;
 
 import java.io.IOException;
 
-public class MockInputQ implements Input {
-    IMediator mediator;
+public class MockInputQ implements IInput {
     private static String mockInputString = "";
     public MockInputQ() {
-
         mockInputString = "This is the mock question?";
     }
 
@@ -17,10 +15,4 @@ public class MockInputQ implements Input {
     public void InputTranscription() throws IOException {
         mockInputString = "This is the mock question?";
     }
-
-    /**
-     * Setter for Mediator
-     * @param m Mediator object
-     */
-    public void setMediator(IMediator m) { mediator = m; }
 }

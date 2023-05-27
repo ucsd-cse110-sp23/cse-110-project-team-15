@@ -6,7 +6,6 @@ package sayit.UI;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
 import sayit.Server.Server;
-import sayit.Server.BusinessLogic.MockMediator;
 
 /**
  * Start running the app
@@ -16,7 +15,8 @@ public class App {
     SwingUtilities.invokeLater(() -> {
       // Start the web server
       try {
-        Server.startServer();
+        String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
+        Server.startServer(filePath);
       } catch (IOException e) {
         System.out.println("App.java: " + e);
         e.printStackTrace();

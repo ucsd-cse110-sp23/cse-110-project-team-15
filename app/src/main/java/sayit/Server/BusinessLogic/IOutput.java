@@ -2,8 +2,7 @@ package sayit.Server.BusinessLogic;
 
 import java.io.IOException;
 
-public interface Output {
+public interface IOutput {
     String getAnswer();
     public void makeAnswer(String question) throws IOException, InterruptedException;
-    void setMediator(IMediator m);
 }

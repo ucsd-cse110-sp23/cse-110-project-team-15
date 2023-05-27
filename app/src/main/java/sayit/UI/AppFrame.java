@@ -33,10 +33,10 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
-    public final String loadPURL = "http://localhost:8100/load";
-    public final String newQURL = "http://localhost:8100/newQuestion";
-    public final String clearAURL = "http://localhost:8100/clearAll";
-    public final String deletePURL = "http://localhost:8100/deletePrompt";
+    private final String loadPURL = "http://localhost:8100/load";
+    private final String newQURL = "http://localhost:8100/newQuestion";
+    private final String clearAURL = "http://localhost:8100/clearAll";
+    private final String deletePURL = "http://localhost:8100/deletePrompt";
 
     /**
      * Call all other necessary classes and setup AppFrame

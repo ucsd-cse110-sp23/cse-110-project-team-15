@@ -1,16 +1,11 @@
-Replace file preservation with server
-On server:
-- Store an ArrayList prompts that will preserve the prompts used in app
-- GET: at a given index, return a response in the form <question> + /D\ + <answer>
-    - /D\ is a delimeter for the question and answer
-- POST: from the input file, read the first line (question), then read the rest of the lines (answer) and store into prompts
-- DELETE: at a given index, just delete the question and answer in prompts
-
+Note for later on:
+- might have to mock Server and newQuestionHandler
+    - so that tests can always run mock version while we run real version
 
 
 Refactoring to 3-tier architecture:
 - move all business logic to server 
-    - bring back file preservation, but do it on the server
+    x- bring back file preservation, but do it on the server
     - make different contexts for each functionality (different requestHandler for each)
         x- /loadPrompts
         x- /newQuestion 
@@ -46,3 +41,21 @@ x- in addListeners()
     x- AppFrame constructor:
         x- request server for all prompts in its preserve.txt file
             x- add all of these prompts to scrollFrame
+
+
+
+In ServerTest:
+    x- Create tests for loadPromptsHandler:
+        x- Test "GET": returns the correct Q&A at given index
+    x- Create tests for newQuestionHandler:
+        x- Test "GET": returns Q&A received from (mocked) ChatGPT
+        x- Test "POST": check that it adds a Q&A into its prompts correctly
+    x- Create tests for deletePromptHandler:
+        x- Test "DELETE": check the size, and that the expected Q&A's that weren't deleted are still there
+    x- Create tests for clearAllHandler:
+        x- Test "DELETE": check the size, and that the first element doesn't exist
+
+
+In FilePreservationTest:
+    - Create tests for loadPromptsHandler:
+        - Test "PUT": the beforePrompts matches with what is read into afterPrompts from the .txt file

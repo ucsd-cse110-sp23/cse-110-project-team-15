@@ -2,9 +2,7 @@ package sayit.Server.BusinessLogic;
 
 import java.io.IOException;
 
-public class MockOutputA implements Output {
-
-    IMediator mediator;
+public class MockOutputA implements IOutput {
     String mockPrompt = "";
     String mockAnswer = "This is the mock answer!!! :)";
 
@@ -18,10 +16,4 @@ public class MockOutputA implements Output {
     public String getAnswer() {
         return this.mockAnswer;
     }
-    
-    /**
-     * Setter for Mediator
-     * @param m Mediator object
-     */
-    public void setMediator(IMediator m) { mediator = m; }
 }

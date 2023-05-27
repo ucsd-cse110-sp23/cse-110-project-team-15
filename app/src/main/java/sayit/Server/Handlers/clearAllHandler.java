@@ -8,6 +8,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * In charge of clearing all prompts in ArrayList prompts
+ */
 public class clearAllHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 

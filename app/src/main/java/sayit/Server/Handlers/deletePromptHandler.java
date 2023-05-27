@@ -8,6 +8,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * In charge of delete a prompt in ArrayList prompts at a given index
+ */
 public class deletePromptHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
@@ -68,7 +71,7 @@ public class deletePromptHandler implements HttpHandler {
             prompts.remove(index);
 
             /* set response to the deleted question and answer */
-            response = "Deleted at index " + index + ":\nQuestion: " + question + "\nAnswer: " + answer;
+            response = "Deleted at index: " + index + "\nQuestion: " + question + "\nAnswer: " + answer;
             System.out.println("deletePH: " + response);
         }
         return response;

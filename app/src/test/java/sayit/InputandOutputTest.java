@@ -5,10 +5,10 @@ package sayit;
 
 import org.junit.jupiter.api.Test;
 
-import sayit.Server.BusinessLogic.Input;
+import sayit.Server.BusinessLogic.IInput;
 import sayit.Server.BusinessLogic.MockInputQ;
 import sayit.Server.BusinessLogic.MockOutputA;
-import sayit.Server.BusinessLogic.Output;
+import sayit.Server.BusinessLogic.IOutput;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -18,8 +18,8 @@ import java.io.IOException;
 
 public class InputandOutputTest {
 
-    private Input inputQ;
-    private Output outputA;
+    private IInput inputQ;
+    private IOutput outputA;
     private static final String FILE_PATH_INPUT = "src/test/java/sayit/Test-files/InputQ-test.txt";
     private static final String FILE_PATH_OUTPUT = "src/test/java/sayit/Test-files/OutputA-test.txt";
     private String mockQuestion = "";
@@ -32,9 +32,7 @@ public class InputandOutputTest {
 
     @Test
     void test_input() {
-
         assertEquals("This is the mock question?", inputQ.getTranscription());
-      
     }
 
     @Test

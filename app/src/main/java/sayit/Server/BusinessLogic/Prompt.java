@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class Prompt extends JPanel {
-    IMediator mediator;
     // Get Icon
     // Load the icon image from a file
     ImageIcon icon = new ImageIcon("src/resources/delete.png");
@@ -159,10 +158,4 @@ public class Prompt extends JPanel {
     public JButton getDelete() {
         return deleteButton;
     }
-
-    /**
-     * Setter for Mediator
-     * @param m Mediator object
-     */
-    public void setMediator(IMediator m) { mediator = m; }
 }

@@ -2,8 +2,7 @@ package sayit.Server.BusinessLogic;
 
 import java.io.IOException;
 
-public interface Input {
+public interface IInput {
     void InputTranscription() throws IOException;
     String getTranscription();
-    void setMediator(IMediator m);
 }

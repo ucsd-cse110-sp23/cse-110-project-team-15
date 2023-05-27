@@ -11,9 +11,7 @@ import java.net.*;
 import org.json.JSONObject;
 import org.json.JSONException;
 
-public class InputQ implements Input {
-
-    IMediator mediator;
+public class InputQ implements IInput {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
@@ -157,10 +155,4 @@ public class InputQ implements Input {
         connection.disconnect();
         
     } 
-
-    /**
-     * Setter for Mediator
-     * @param m Mediator object
-     */
-    public void setMediator(IMediator m) { mediator = m; }
 }

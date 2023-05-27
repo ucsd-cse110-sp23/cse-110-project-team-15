@@ -7,11 +7,14 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * In charge of consulting WhisperAPI, as well as adding prompts manually into ArrayList prompts
+ */
 public class newQuestionHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IAudioRecord audio;
-    Input input;
-    Output output;
+    IInput input;
+    IOutput output;
 
     /**
      * Default constructor that initializes ArrayList prompts
@@ -35,7 +38,10 @@ public class newQuestionHandler implements HttpHandler {
         try {
             if (method.equals("GET")) {
                 response = handleGet(httpExchange);
-            } else {
+            } else if (method.equals("POST")) {
+                response = handlePost(httpExchange);
+            }
+            else {
                 throw new Exception("Not Valid Request Method");
             }
         } catch (Exception e) {
@@ -90,6 +96,34 @@ public class newQuestionHandler implements HttpHandler {
                 System.out.println("newQH: " + response);
             }
         }
+        return response;
+    }
+
+    /**
+     * Add a prompt to ArrayList prompts
+     * @param httpExchange the request that the server receives
+     * @return response saying whether or not the POST succeeded
+     * @throws IOException
+     */
+    private String handlePost(HttpExchange httpExchange) throws IOException {
+        /* setup reading from some input file */
+        InputStream inStream = httpExchange.getRequestBody();
+        Scanner scanner = new Scanner(inStream);
+        
+        /* get question from first line of file */
+        String question = scanner.nextLine();
+        /* get answer from rest of the files contents */
+        String answer = "";
+        while (scanner.hasNextLine()) { answer += scanner.nextLine(); }
+        
+        // Store question and answer in prompts
+        prompts.add(new Prompt(question, answer));
+
+        // return that prompt was added/posted
+        String response = "Posted entry:" + "\nQuestion: " + question + "\nAnswer: " + answer;
+        System.out.println("newQH: " + response);
+        scanner.close();
+
         return response;
     }
 }

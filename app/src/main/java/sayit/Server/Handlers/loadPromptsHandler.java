@@ -8,15 +8,20 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * In charge of getting a prompt at a given index, and recording prompts into preserve.txt
+ */
 public class loadPromptsHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
+    String filePath;
 
     /**
      * Default constructor that initializes ArrayList prompts
      * @param prompts
      */
-    public loadPromptsHandler(ArrayList<Prompt> prompts) {
+    public loadPromptsHandler(ArrayList<Prompt> prompts, String filePath) {
         this.prompts = prompts;
+        this.filePath = filePath;
     }
 
     /**
@@ -49,7 +54,7 @@ public class loadPromptsHandler implements HttpHandler {
     }
 
     /**
-     * Either get all prompts or get the question and answer at the corresponding index in prompts
+     * Get the question and answer at the corresponding index in prompts
      * @param httpExchange the request that the server receives
      * @return String response containing either all of prompts or question + /D\ + answer, otherwise -1 --> (/D\ is the delimeter)
      * @throws IOException
@@ -79,16 +84,16 @@ public class loadPromptsHandler implements HttpHandler {
     }
 
     /**
-     * Write all prompts in prompts into file preserve.txt
+     * Write all prompts in prompts into filePath
      * @param httpExchange the request that the server receives
      * @return response saying whether or not the POST succeeded
      * @throws IOException
      */
     private String handlePut(HttpExchange httpExchange) throws IOException {
         // path to preserve.txt
-        String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
+        // String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
 
-        // write to preserve.txt
+        // write to filePath
         final String startSt = "#Start#";
         final String endSt = "#End#";
         FileOutputStream fout = new FileOutputStream(filePath);
@@ -115,8 +120,8 @@ public class loadPromptsHandler implements HttpHandler {
         }
         fout.close();
         
-        // return that all prompts were written to preserve.txt
-        String response = "All Prompts were written to preserve.txt";
+        // return that all prompts were written to filePath
+        String response = "All Prompts were written to " + filePath;
         System.out.println("loadPH: " + response);
         return response;
     }

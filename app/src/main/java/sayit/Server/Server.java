@@ -30,7 +30,7 @@ public class Server {
      * Starts the server at the given port and hostname
      * @throws IOException
      */
-    public static void startServer() throws IOException {
+    public static void startServer(String filePath) throws IOException {
         // create a thread of pool to handle requests
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         // create an ArrayList to store prompts
@@ -43,10 +43,10 @@ public class Server {
         );
 
         // restore prompts preserved from previous session
-        restore(prompts);
+        restore(prompts, filePath);
 
         // setup and start the server
-        server.createContext("/load", new loadPromptsHandler(prompts));
+        server.createContext("/load", new loadPromptsHandler(prompts, filePath));
         server.createContext("/newQuestion", new newQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));
         server.createContext("/deletePrompt", new deletePromptHandler(prompts));
@@ -68,9 +68,9 @@ public class Server {
      * Fill prompts with the prompts from previous session (preserve.txt)
      * @param prompts 
      */
-    public static void restore(ArrayList<Prompt> prompts) {
+    public static void restore(ArrayList<Prompt> prompts, String filePath) {
         // path to preserve.txt
-        String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
+        // String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
         
         // read from preserve.txt and fill prompts
         final String startSt = "#Start#";
