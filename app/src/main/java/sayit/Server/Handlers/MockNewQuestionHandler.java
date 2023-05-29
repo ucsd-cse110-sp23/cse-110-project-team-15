@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * In charge of consulting WhisperAPI, as well as adding prompts manually into ArrayList prompts
  */
-public class MockNewQuestionHandler implements HttpHandler, InewQH {
+public class MockNewQuestionHandler implements HttpHandler, INQH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IAudioRecord audio;
     IInput input;
@@ -18,7 +18,7 @@ public class MockNewQuestionHandler implements HttpHandler, InewQH {
 
     /**
      * Default constructor that initializes ArrayList prompts
-     * @param prompts
+     * @param prompts ArrayList of prompts
      */
     public MockNewQuestionHandler(ArrayList<Prompt> prompts) {
         this.prompts = prompts;

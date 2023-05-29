@@ -60,7 +60,8 @@ public class ScrollFrame extends JFrame {
   }
 
   /**
-   * Remove selected prompts from scroll pane
+   * Remove selected prompts from scroll pane and record the indices
+   * @return ArrayList containing the indices of the removed prompts
    */
   public ArrayList<Integer> removeSelectedPrompts() {
     ArrayList<Integer> indices = new ArrayList<>();

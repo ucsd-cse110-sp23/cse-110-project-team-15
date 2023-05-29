@@ -16,7 +16,7 @@ public class deletePromptHandler implements HttpHandler {
 
     /**
      * Default constructor that initializes ArrayList prompts
-     * @param prompts
+     * @param prompts ArrayList of prompts
      */
     public deletePromptHandler(ArrayList<Prompt> prompts) {
         this.prompts = prompts;

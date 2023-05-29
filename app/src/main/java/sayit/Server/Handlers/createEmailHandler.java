@@ -13,7 +13,7 @@ public class createEmailHandler implements HttpHandler {
 
     /**
      * Default constructor that initializes ArrayList prompts
-     * @param prompts
+     * @param prompts ArrayList of prompts
      */
     public createEmailHandler(ArrayList<Prompt> prompts) {
         this.prompts = prompts;

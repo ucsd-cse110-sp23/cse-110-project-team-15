@@ -16,7 +16,7 @@ public class clearAllHandler implements HttpHandler {
 
     /**
      * Default constructor that initializes ArrayList prompts
-     * @param prompts
+     * @param prompts ArrayList of prompts
      */
     public clearAllHandler(ArrayList<Prompt> prompts) {
         this.prompts = prompts;
