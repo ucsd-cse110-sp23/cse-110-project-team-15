@@ -1,0 +1,56 @@
+Refactoring to 3-tier architecture:
+- move all business logic to server 
+    x- bring back file preservation, but do it on the server
+    - make different contexts for each functionality (different requestHandler for each)
+        x- /loadPrompts
+        x- /newQuestion 
+        x- /deletePrompt
+        x- /clearAll
+        - /createEmail
+        - /sendEmail
+x- make UI only show buttons, and prompts retreived from server
+    x- should no longer store anything 
+    x- buttons/functionalities should just be: 
+        x- making a request (which changes the prompts on the server) 
+        x- receving back a string response (used to update the UI)
+x- Only App, AppFrame, Footer, and ScrollFrame are needed for UI
+x- Rest of the classes should be doing stuff on the server
+
+
+
+In AppFrame:
+x- put the JPanels (scrollFrame, Footer) in
+x- in addListeners()
+    x- newButton: 
+        x- if not recording, request server to begin creating the wav file on its side
+        x- if is recording, request server to finalize wav file, input it into whisper, save the Q&A into its prompts, then return them back in response string
+            x- extract the Q&A from response string and add them to scrollFrame
+    x- clearButton:
+        x- clear out the scrollFrame
+        x- request server to clear its prompts
+    x- clearSelectedButton:
+        x- clear the selected prompts in scrollFrame, but make sure to keep an ArrayList of the indices of the prompts deleted
+        x- iterate through those indices and request server to delete whatever prompt at that index
+    x- addWindowListener:
+        x- request server to write all its prompts into a preserve.txt file
+    x- AppFrame constructor:
+        x- request server for all prompts in its preserve.txt file
+            x- add all of these prompts to scrollFrame
+
+
+
+In ServerTest:
+    x- Create tests for loadPromptsHandler:
+        x- Test "GET": returns the correct Q&A at given index
+    x- Create tests for newQuestionHandler:
+        x- Test "GET": returns Q&A received from (mocked) ChatGPT
+        x- Test "POST": check that it adds a Q&A into its prompts correctly
+    x- Create tests for deletePromptHandler:
+        x- Test "DELETE": check the size, and that the expected Q&A's that weren't deleted are still there
+    x- Create tests for clearAllHandler:
+        x- Test "DELETE": check the size, and that the first element doesn't exist
+
+
+In FilePreservationTest:
+    x- Create tests for loadPromptsHandler:
+        x- Test "PUT": the beforePrompts matches with what is read into afterPrompts from the .txt file
