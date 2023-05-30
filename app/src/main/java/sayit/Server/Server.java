@@ -10,6 +10,7 @@ import sayit.Server.Handlers.deletePromptHandler;
 import sayit.Server.Handlers.loadPromptsHandler;
 import sayit.Server.Handlers.newQuestionHandler;
 import sayit.Server.Handlers.sendEmailHandler;
+import sayit.Server.Handlers.startHandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -49,6 +50,7 @@ public class Server {
 
         // setup and start the server
         server.createContext("/load", new loadPromptsHandler(prompts, filePath));
+        server.createContext("/start", new startHandler());
         server.createContext("/newQuestion", new newQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));
         server.createContext("/deletePrompt", new deletePromptHandler(prompts));

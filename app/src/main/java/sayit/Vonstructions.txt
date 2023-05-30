@@ -17,7 +17,6 @@ x- Only App, AppFrame, Footer, and ScrollFrame are needed for UI
 x- Rest of the classes should be doing stuff on the server
 
 
-
 In AppFrame:
 x- put the JPanels (scrollFrame, Footer) in
 x- in addListeners()
@@ -38,7 +37,6 @@ x- in addListeners()
             x- add all of these prompts to scrollFrame
 
 
-
 In ServerTest:
     x- Create tests for loadPromptsHandler:
         x- Test "GET": returns the correct Q&A at given index
@@ -51,7 +49,32 @@ In ServerTest:
         x- Test "DELETE": check the size, and that the first element doesn't exist
 
 
-
 In FilePreservationTest:
     x- Create tests for loadPromptsHandler:
         x- Test "PUT": the beforePrompts matches with what is read into afterPrompts from the .txt file
+
+
+In startHandler:
+    x- For "GET": 
+        x- when requested to start, record audio
+        x- when requested to stop, get only the transcription of the question/prompt from ChatGPT (not an answer)
+    x- Mock it
+
+
+In newQuestionHandler (update):
+    x- In "GET":
+        x- change functionality to instead just take in a question (read from inputted file) rather than creating it with InputQ
+        x- the rest is the same where it just gets an answer for it, adds it to prompts, and sends a response with the Q&A
+    x- Remove IAudioRecord and InputQ (only need OutputA)
+    x- Fix mocking
+
+
+In AppFrame addListeners:
+    x- make Start button request startHandler "GET" to start and stop recording
+    - when stop recording, read back response, parse it, then call correct function with it
+        - if the first 2 or 1 words are "new question" or "question", call newQuestion(String question) and pass in the question portion from the response
+            x- requests newQuestionHandler with the question
+        - if the first 2 words are "clear all", call clearAll()
+            x- requests clearAllHandler to clear all prompts
+        - if the first 2 words are "delete prompt", call clearSelected()
+            x- requests deletePromptHandler to delete the selected prompts

@@ -4,6 +4,7 @@ import com.sun.net.httpserver.*;
 
 import sayit.Server.BusinessLogic.Prompt;
 import sayit.Server.Handlers.MockNewQuestionHandler;
+import sayit.Server.Handlers.MockStartHandler;
 import sayit.Server.Handlers.clearAllHandler;
 import sayit.Server.Handlers.createEmailHandler;
 import sayit.Server.Handlers.deletePromptHandler;
@@ -49,6 +50,7 @@ public class MockServer {
 
         // setup and start the server
         server.createContext("/load", new loadPromptsHandler(prompts, filePath));
+        server.createContext("/start", new MockStartHandler());
         server.createContext("/newQuestion", new MockNewQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));
         server.createContext("/deletePrompt", new deletePromptHandler(prompts));

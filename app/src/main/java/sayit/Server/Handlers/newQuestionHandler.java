@@ -12,8 +12,6 @@ import java.util.*;
  */
 public class newQuestionHandler implements HttpHandler, INQH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
-    IAudioRecord audio;
-    IInput input;
     IOutput output;
 
     /**
@@ -24,8 +22,6 @@ public class newQuestionHandler implements HttpHandler, INQH {
      */
     public newQuestionHandler(ArrayList<Prompt> prompts) throws IOException, InterruptedException {
         this.prompts = prompts;
-        audio = new AudioRecord();
-        input = new InputQ();
         output = new OutputA();
     }
 
@@ -59,44 +55,35 @@ public class newQuestionHandler implements HttpHandler, INQH {
     }
 
     /**
-     * Start or stop recording and get ChatGPT response
+     * With the inputted question, get the ChatGPT response to it
      * @param httpExchange the request that the server receives
-     * @return String response saying that it's recording, or containing question + /D\ + answer --> (/D\ is the delimeter)
+     * @return String response containing to the inputted question answer
      * @throws IOException
      * @throws InterruptedException
      */
     public String handleGet(HttpExchange httpExchange) throws IOException, InterruptedException {
         String response = "Invalid GET request";
-        URI uri = httpExchange.getRequestURI();
-        String query = uri.getRawQuery();
 
-        if (query != null) {
-            String recordStatus = query.substring(query.indexOf("=") + 1);
+        /* read question from request (file), input into whisper, and return ChatGPT response to question */
+        /* setup reading from some input file */
+        InputStream inStream = httpExchange.getRequestBody();
+        Scanner scanner = new Scanner(inStream);
+        
+        /* get question from first line of file */
+        String question = scanner.nextLine();
+        scanner.close();
 
-            /* if the recordStatus says "Start", start recording and return success response */
-            if (recordStatus.equals("Start")) {
-                audio.startRecording();
-                response = "Recording Successfully";
-                System.out.println("newQH: " + response);
-            }
+        /* get answer for the question */
+        output.makeAnswer(question);
+        String answer = output.getAnswer();
 
-            /* if the recordStatus says "Stop", stop recording, input into whisper, and return response of Q&A */
-            if (recordStatus.equals("Stop")) {
-                audio.stopRecording();
-                input.InputTranscription();
-                output.makeAnswer(input.getTranscription());
-                
-                String question = input.getTranscription();
-                String answer = output.getAnswer();
+        /* add the prompt to prompts */
+        Prompt prompt = new Prompt(question, answer);
+        prompts.add(prompt);
 
-                Prompt prompt = new Prompt(question, answer);
-                prompts.add(prompt);
-
-                /* set response to question + /D\ + answer --> (/D\ is the delimeter) */
-                response = question + "/D\\" + answer;
-                System.out.println("newQH: " + response);
-            }
-        }
+        /* set response to answer */
+        response = answer;
+        System.out.println("newQH: " + response);
         return response;
     }
 
