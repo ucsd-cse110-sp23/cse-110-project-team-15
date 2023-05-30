@@ -103,9 +103,9 @@ public class MockServer {
                 System.out.println((qLine = temp.get("Top").toString()));
                 System.out.println((aLine = temp.get("Bottom").toString()));
                 Prompt questionAndAnswer = new Prompt(qLine, aLine);
-                //prompts.add(questionAndAnswer);
+                // prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
             }
-        } 
+        }
         
         // read from preserve.txt and fill prompts
         final String startSt = "#Start#";

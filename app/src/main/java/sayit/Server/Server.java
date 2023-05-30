@@ -105,7 +105,7 @@ public class Server {
                 System.out.println("Top: " + (qLine = temp.get("Top").toString()));
                 System.out.println("Bottom: " + (aLine = temp.get("Bottom").toString()));
                 Prompt questionAndAnswer = new Prompt(qLine, aLine);
-                prompts.add(questionAndAnswer);
+                // prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
             }
 
         } 
@@ -127,7 +127,7 @@ public class Server {
                     qLine = qLine.trim();
                     aLine = aLine.trim();
                     Prompt questionAndAnswer = new Prompt(qLine, aLine);
-                    //prompts.add(questionAndAnswer);
+                    prompts.add(questionAndAnswer);
                     aLine = "";
                 } else {
                     aLine += lineLoop + '\n';
