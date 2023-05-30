@@ -37,7 +37,7 @@ public class Server {
     private static HttpServer server;
 
     //Mango Stuff
-    static String uri = "mongodb+srv://quistian241:Gura%40241@atlascluster.uikyhue.mongodb.net/?retryWrites=true&w=majority";
+    static String uri = "mongodb://quistian241:Gura%40241@ac-kumtned-shard-00-00.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-01.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-02.uikyhue.mongodb.net:27017/?ssl=true&replicaSet=atlas-fk9y1w-shard-0&authSource=admin&retryWrites=true&w=majority";
     
     /**
      * Starts the server at the given port and hostname
@@ -105,9 +105,8 @@ public class Server {
                 System.out.println("Top: " + (qLine = temp.get("Top").toString()));
                 System.out.println("Bottom: " + (aLine = temp.get("Bottom").toString()));
                 Prompt questionAndAnswer = new Prompt(qLine, aLine);
-                // prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
+                prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
             }
-
         } 
         
         // read from preserve.txt and fill prompts

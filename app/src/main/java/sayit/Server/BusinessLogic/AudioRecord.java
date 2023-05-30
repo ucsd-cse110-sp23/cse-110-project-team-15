@@ -17,7 +17,7 @@ public class AudioRecord implements IAudioRecord{
      */
     public void startRecording() {
         try {
-            audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
+            audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
 
             // handle info regarding the data line
             DataLine.Info dataInfo = new DataLine.Info(TargetDataLine.class, audioFormat);

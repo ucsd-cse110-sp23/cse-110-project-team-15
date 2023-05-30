@@ -8,12 +8,37 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/////////////////////////////////////////////////
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.ReturnDocument;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.result.UpdateResult;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.json.JsonWriterSettings;
+import static java.util.Arrays.*;
+
+import java.util.List;
+
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.*;
+/////////////////////////////////////////////////
+
 /**
  * In charge of getting a prompt at a given index, and recording prompts into preserve.txt
  */
 public class loadPromptsHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     String filePath;
+
+    // Mango Stuff
+    static String uri = "mongodb://quistian241:Gura%40241@ac-kumtned-shard-00-00.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-01.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-02.uikyhue.mongodb.net:27017/?ssl=true&replicaSet=atlas-fk9y1w-shard-0&authSource=admin&retryWrites=true&w=majority";
+    JsonWriterSettings prettyPrint = JsonWriterSettings.builder().indent(true).build();
 
     /**
      * Default constructor that initializes ArrayList prompts
@@ -90,8 +115,25 @@ public class loadPromptsHandler implements HttpHandler {
      * @throws IOException
      */
     private String handlePut(HttpExchange httpExchange) throws IOException {
-        // take the prompts array and send all the data to mangoDB
-        // do so by making a List<Doc> of a List<Doc>
+        // place prompts onto the mangoDB
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
+            MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
+            List<Document> susHist = new ArrayList<>();
+            String type, ques, ans;
+            for (int i = 0; i < prompts.size(); i++) {
+                type = "QnA";
+                ques = prompts.get(i).getQuery();
+                ans = prompts.get(i).getAnswer();
+                susHist.add(new Document("Type", type).append("Question", ques).append("Answer", ans));
+            }
+            Bson filter = eq("acc_email", "theRushiaIsReal@gmail.com");
+            Bson updateOperation = set("promptH", susHist);
+            UpdateResult updateResult = usersDB.updateOne(filter, updateOperation);
+            // System.out.println(usersDB.find(filter).first().toJson(prettyPrint));
+            // System.out.println(updateResult);
+        }
+        
 
         // write to filePath
         final String startSt = "#Start#";
