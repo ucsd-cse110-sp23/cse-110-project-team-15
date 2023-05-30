@@ -90,8 +90,8 @@ public class loadPromptsHandler implements HttpHandler {
      * @throws IOException
      */
     private String handlePut(HttpExchange httpExchange) throws IOException {
-        // path to preserve.txt
-        // String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
+        // take the prompts array and send all the data to mangoDB
+        // do so by making a List<Doc> of a List<Doc>
 
         // write to filePath
         final String startSt = "#Start#";

@@ -103,7 +103,7 @@ public class MockServer {
                 System.out.println((qLine = temp.get("Top").toString()));
                 System.out.println((aLine = temp.get("Bottom").toString()));
                 Prompt questionAndAnswer = new Prompt(qLine, aLine);
-                prompts.add(questionAndAnswer);
+                //prompts.add(questionAndAnswer);
             }
         } 
         
@@ -124,7 +124,7 @@ public class MockServer {
                     qLine = qLine.trim();
                     aLine = aLine.trim();
                     Prompt questionAndAnswer = new Prompt(qLine, aLine);
-                    //prompts.add(questionAndAnswer);
+                    prompts.add(questionAndAnswer);
                     aLine = "";
                 } else {
                     aLine += lineLoop + '\n';
