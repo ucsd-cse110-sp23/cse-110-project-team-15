@@ -84,8 +84,6 @@ public class MockServer {
      * @param userEmail a string for finding a specific user on the mongoDB
      */
     public static void restore(ArrayList<Prompt> prompts, String filePath) {
-        // path to preserve.txt
-        // String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
             MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
@@ -93,13 +91,15 @@ public class MockServer {
             // find a list of documents and iterate throw it using an iterator.
             // want to make the new inputs be user's email
             Document accUser = usersDB.find(eq("acc_email", "theRushiaIsReal@gmail.com")).first();
+            // gets us the promptH doc array
             List<Document> promptHist = (List<Document>) accUser.get("promptH");
             Document temp;
             String qLine;
             String aLine;
+            // iterate through and add the prompts to UI (essentially)
             for (Object prompt : promptHist) {
                 temp = (Document) prompt;
-                System.out.println((temp.get("Type")));
+                System.out.println((temp.get("Type"))); // should add a prompt constructor to make use of type
                 System.out.println((qLine = temp.get("Top").toString()));
                 System.out.println((aLine = temp.get("Bottom").toString()));
                 Prompt questionAndAnswer = new Prompt(qLine, aLine);

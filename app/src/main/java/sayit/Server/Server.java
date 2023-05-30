@@ -93,15 +93,17 @@ public class Server {
             // find a list of documents and iterate throw it using an iterator.
             // want to make the new inputs be user's email
             Document accUser = usersDB.find(eq("acc_email", "theRushiaIsReal@gmail.com")).first();
+            // gets us the promptH doc array
             List<Document> promptHist = (List<Document>) accUser.get("promptH");
             Document temp;
             String qLine;
             String aLine;
+            // iterate through and add the prompts to UI (essentially)
             for (Object prompt : promptHist) {
                 temp = (Document) prompt;
-                System.out.println((temp.get("Type")));
-                System.out.println((qLine = temp.get("Top").toString()));
-                System.out.println((aLine = temp.get("Bottom").toString()));
+                System.out.println("Type: " + (temp.get("Type"))); // should add a prompt constructor to make use of type
+                System.out.println("Top: " + (qLine = temp.get("Top").toString()));
+                System.out.println("Bottom: " + (aLine = temp.get("Bottom").toString()));
                 Prompt questionAndAnswer = new Prompt(qLine, aLine);
                 prompts.add(questionAndAnswer);
             }
