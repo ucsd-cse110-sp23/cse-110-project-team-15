@@ -38,7 +38,6 @@ public class loadPromptsHandler implements HttpHandler {
 
     /**
      * Default constructor that initializes ArrayList prompts
-     * 
      * @param prompts  ArrayList of prompts
      * @param filePath String of path to file to be written to
      */
@@ -49,7 +48,6 @@ public class loadPromptsHandler implements HttpHandler {
 
     /**
      * Receives request and appropriately calls either GET, POST, PUT, or DELETE
-     * 
      * @param httpExchange the request that the server receives
      */
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -79,12 +77,48 @@ public class loadPromptsHandler implements HttpHandler {
     }
 
     /**
+     * Write all prompts in prompts into database at given email
+     * @param httpExchange the request that the server receives
+     * @return response saying whether or not the PUT succeeded
+     * @throws IOException
+     */
+    private String handleGet(HttpExchange httpExchange) throws IOException {
+        try (MongoClient mongoClient = MongoClients.create(MONGO_URI)) {
+            MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
+            MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
+            Document accUser = usersDB.find(eq("acc_email",email.toString())).first();
+            if (accUser.get("acc_password", String.class) != null) {
+
+                // if the email exists and password is correct, then write the prompts in collection into server prompts
+                List<Document> susHist = new ArrayList<>();
+                String type, ques, ans;
+                for (int i = 0; i < prompts.size(); i++) {
+                    type = "QnA";
+                    ques = prompts.get(i).getQuery();
+                    ans = prompts.get(i).getAnswer();
+                    susHist.add(new Document("Type", type).append("Top", ques).append("Bottom", ans));
+                }
+                Bson filter = eq("acc_email", email.toString());
+                Bson updateOperation = set("promptH", susHist);
+                UpdateResult updateResult = usersDB.updateOne(filter, updateOperation);
+                // System.out.println(usersDB.find(filter).first().toJson(prettyPrint));
+                // System.out.println(updateResult);
+            } 
+        }
+
+        // return that all prompts were written to filePath
+        String response = "All Prompts were written to Mango";
+        System.out.println("loadPH: " + response);
+        return response;
+    }
+
+    /**
      * Read in an email and password, check if they're valid, and handle login (fills in prompts)
      * @param httpExchange the request that the server receives
      * @return String response that says either "Valid Login" or "Invalid Login"
      * @throws IOException
      */
-    private String handleGet(HttpExchange httpExchange) throws IOException {
+    private String handlePut(HttpExchange httpExchange) throws IOException {
         String response = "Invalid GET request";
         URI uri = httpExchange.getRequestURI();
         String query = uri.getRawQuery();
@@ -135,6 +169,8 @@ public class loadPromptsHandler implements HttpHandler {
                 } else if (!inputPassword.equals(accUser.get("acc_password", String.class))) {
                     response = "Invalid Login";
                 } else {
+                    // set email to the inputEmail
+                    email.append(inputEmail);
                     // gets us the promptH doc array
                     List<Document> promptHist = (List<Document>) accUser.get("promptH");
                     Document temp;
@@ -155,42 +191,6 @@ public class loadPromptsHandler implements HttpHandler {
                 }
             }
         }
-        System.out.println("loadPH: " + response);
-        return response;
-    }
-
-    /**
-     * Write all prompts in prompts into database
-     * @param httpExchange the request that the server receives
-     * @return response saying whether or not the PUT succeeded
-     * @throws IOException
-     */
-    private String handlePut(HttpExchange httpExchange) throws IOException {
-        try (MongoClient mongoClient = MongoClients.create(MONGO_URI)) {
-            MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
-            MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
-            Document accUser = usersDB.find(eq("acc_email",email.toString())).first();
-            if (accUser.get("acc_password", String.class) != null) {
-
-                // if the email exists and password is correct, then write the prompts in collection into server prompts
-                List<Document> susHist = new ArrayList<>();
-                String type, ques, ans;
-                for (int i = 0; i < prompts.size(); i++) {
-                    type = "QnA";
-                    ques = prompts.get(i).getQuery();
-                    ans = prompts.get(i).getAnswer();
-                    susHist.add(new Document("Type", type).append("Top", ques).append("Bottom", ans));
-                }
-                Bson filter = eq("acc_email", email.toString());
-                Bson updateOperation = set("promptH", susHist);
-                UpdateResult updateResult = usersDB.updateOne(filter, updateOperation);
-                // System.out.println(usersDB.find(filter).first().toJson(prettyPrint));
-                // System.out.println(updateResult);
-            } 
-        }
-
-        // return that all prompts were written to filePath
-        String response = "All Prompts were written to Mango";
         System.out.println("loadPH: " + response);
         return response;
     }

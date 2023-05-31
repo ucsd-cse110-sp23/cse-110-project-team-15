@@ -32,6 +32,7 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
+    private final String devURL = "http://localhost:8100/dev";
     private final String loadPURL = "http://localhost:8100/load";
     private final String startURL = "http://localhost:8100/start";
     private final String newQURL = "http://localhost:8100/newQuestion";
@@ -166,8 +167,8 @@ public class AppFrame extends JFrame {
                     URL url = new URL(loadPURL);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-                    // request the PUT method on the server
-                    conn.setRequestMethod("PUT");
+                    // request the GET method on the server and tell it to save the prompts to database
+                    conn.setRequestMethod("GET");
 
                     // won't call the handler correctly unless I do this?
                     BufferedReader in = new BufferedReader(
@@ -191,7 +192,7 @@ public class AppFrame extends JFrame {
             URL url = new URL(newQURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             
-            // request the GET method on the server
+            // request the PUT method on the server
             conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
 
@@ -282,7 +283,7 @@ public class AppFrame extends JFrame {
             while (true) {
                 // create URL (with query) to the server and create the connection
                 String query = String.valueOf(i);
-                URL url = new URL(loadPURL + "?=" + query);
+                URL url = new URL(devURL + "?=" + query);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 // request the GET method on the server

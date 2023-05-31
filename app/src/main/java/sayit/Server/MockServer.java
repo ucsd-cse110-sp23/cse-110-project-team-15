@@ -19,6 +19,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -30,6 +32,9 @@ public class MockServer {
     private static final String SERVER_HOSTNAME = "localhost";
     private static HttpServer server;
     
+    // Store username and passwords
+    private static Map<String, String> userCredentials = new HashMap<String, String>();
+
     /**
      * Starts the server at the given port and hostname
      * @throws IOException

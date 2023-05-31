@@ -78,11 +78,11 @@ In newQuestionHandler (update):
 In AppFrame addListeners:
     x- make Start button request startHandler "GET" to start and stop recording
     - when stop recording, read back response, parse it, then call correct function with it
-        - if the first 2 or 1 words are "new question" or "question", call newQuestion(String question) and pass in the question portion from the response
+        x- if the first 2 or 1 words are "new question" or "question", call newQuestion(String question) and pass in the question portion from the response
             x- requests newQuestionHandler with the question
-        - if the first 2 words are "clear all", call clearAll()
+        x- if the first 2 words are "clear all", call clearAll()
             x- requests clearAllHandler to clear all prompts
-        - if the first 2 words are "delete prompt", call clearSelected()
+        x- if the first 2 words are "delete prompt", call clearSelected()
             x- requests deletePromptHandler to delete the selected prompts
 
 
@@ -115,38 +115,7 @@ In loadPromptsHandler (update):
 
 
 Where ever ethan made his changes:
-    - request loadPH handleGet() with query = "autoLogin"
+    - request loadPH handlePut() with query = "autoLogin"
         - if the response says "Automatic Login", move on to homepage
         - otherwise if the response says "No Automatic Login",
-            - stay on account login page and call loadPH handleGet() w/o query and input the email and password from user into it
-
-
-
-try (MongoClient mongoClient = MongoClients.create(MONGO_URI)) {
-                MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
-                MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
-                Document accUser = usersDB.find(eq("acc_email",inputEmail)).first();
-                String password;
-                if (accUser.get("acc_password", String.class) != null) {
-                    password = accUser.get("acc_password", String.class);
-
-                    // if the email exists and password is correct, then write the prompts in collection into server prompts
-                    if (inputPassword.equals(password)) {
-                        List<Document> susHist = new ArrayList<>();
-                        String type, ques, ans;
-                        for (int i = 0; i < prompts.size(); i++) {
-                            type = "QnA";
-                            ques = prompts.get(i).getQuery();
-                            ans = prompts.get(i).getAnswer();
-                            susHist.add(new Document("Type", type).append("Top", ques).append("Bottom", ans));
-                        }
-                        Bson filter = eq("acc_email", inputEmail);
-                        Bson updateOperation = set("promptH", susHist);
-                        UpdateResult updateResult = usersDB.updateOne(filter, updateOperation);
-                        // System.out.println(usersDB.find(filter).first().toJson(prettyPrint));
-                        // System.out.println(updateResult);
-
-
-                    } 
-                }
-            }
+            x- stay on account login page and call loadPH handlePut() w/o query and input the email and password from user into it
