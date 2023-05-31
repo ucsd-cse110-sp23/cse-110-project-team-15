@@ -131,6 +131,20 @@ public class AppFrame extends JFrame {
                     /* the UI will not work properly until these are implemented correctly */
                     /* also don't worry about passing the tests, i broke it and ill fix it later */
                     
+                    String command  = response.toLowerCase();
+                    
+                    String[] words = command.split(" ");
+
+                    if (words.length >= 2 && words[0].equals("new") && words[1].equals("question")) {
+                        System.out.println(response.substring(response.indexOf(" ", 4) + 1).trim());
+                        newQuestion(response.substring(response.indexOf(" ", 4) + 1).trim());
+                    } else if (words.length >= 2 && words[0].equals("clear") && words[1].equals("all")) {
+                        clearAll();
+                    } else if (words.length >= 2 && words[0].equals("delete") && words[1].equals("prompt")) {
+                        deletePrompt();
+                    }
+                    // else do something with non-valid transcription from Whisper API
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     System.out.println("AppFrame: " + ex);
@@ -281,9 +295,7 @@ public class AppFrame extends JFrame {
                 System.out.println("GET response: " + response);
 
                 // check if the reponse is -1 (reached end of prompts on server)
-                if (response.equals("-1")) {
-                    break;
-                }
+                if (response.equals("-1")) { break; }
 
                 // parse the response and store the question and answer in the prompts locally
                 String question = response.substring(0, response.indexOf("/D\\"));
