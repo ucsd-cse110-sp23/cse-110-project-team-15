@@ -192,7 +192,7 @@ public class AppFrame extends JFrame {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             
             // request the GET method on the server
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
 
             // write the question to the file
