@@ -7,6 +7,7 @@ import sayit.Server.Handlers.MockNewQuestionHandler;
 import sayit.Server.Handlers.clearAllHandler;
 import sayit.Server.Handlers.createEmailHandler;
 import sayit.Server.Handlers.deletePromptHandler;
+import sayit.Server.Handlers.devHandler;
 import sayit.Server.Handlers.loadPromptsHandler;
 import sayit.Server.Handlers.newQuestionHandler;
 import sayit.Server.Handlers.sendEmailHandler;
@@ -38,6 +39,8 @@ public class Server {
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         // create an ArrayList to store prompts
         ArrayList<Prompt> prompts = new ArrayList<Prompt>();
+        // create a StringBuilder (to pass by reference) to store the email
+        StringBuilder email = new StringBuilder();
 
         // create a server
         server = HttpServer.create(
@@ -49,7 +52,8 @@ public class Server {
         restore(prompts, filePath);
 
         // setup and start the server
-        server.createContext("/load", new loadPromptsHandler(prompts, filePath));
+        server.createContext("/dev", new devHandler(prompts));
+        server.createContext("/load", new loadPromptsHandler(prompts, email));
         server.createContext("/start", new startHandler());
         server.createContext("/newQuestion", new newQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));

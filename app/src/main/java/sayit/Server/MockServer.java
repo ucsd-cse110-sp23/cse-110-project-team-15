@@ -8,9 +8,11 @@ import sayit.Server.Handlers.MockStartHandler;
 import sayit.Server.Handlers.clearAllHandler;
 import sayit.Server.Handlers.createEmailHandler;
 import sayit.Server.Handlers.deletePromptHandler;
+import sayit.Server.Handlers.devHandler;
 import sayit.Server.Handlers.loadPromptsHandler;
 import sayit.Server.Handlers.newQuestionHandler;
 import sayit.Server.Handlers.sendEmailHandler;
+import sayit.Server.Handlers.startHandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -38,6 +40,8 @@ public class MockServer {
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
         // create an ArrayList to store prompts
         ArrayList<Prompt> prompts = new ArrayList<Prompt>();
+        // create a StringBuilder (to pass by reference) to store the email
+        StringBuilder email = new StringBuilder();
 
         // create a server
         server = HttpServer.create(
@@ -49,7 +53,8 @@ public class MockServer {
         restore(prompts, filePath);
 
         // setup and start the server
-        server.createContext("/load", new loadPromptsHandler(prompts, filePath));
+        server.createContext("/dev", new devHandler(prompts));
+        server.createContext("/load", new loadPromptsHandler(prompts, email));
         server.createContext("/start", new MockStartHandler());
         server.createContext("/newQuestion", new MockNewQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));
