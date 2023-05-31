@@ -13,6 +13,8 @@ import java.net.URL;
 public class Login extends JFrame {
     private JTextField emailField;
     private JPasswordField passwordField;
+    String email;
+    String password;
     private final String loadPURL = "http://localhost:8100/load";
 
     public Login() {
@@ -44,11 +46,12 @@ public class Login extends JFrame {
          * - if the response says "Automatic Login", immediately go straight to AppFrame() (skip everything below this)
          * - otherwise if the response says "No Automatic Login", then execute code below
          */
+        
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String email = emailField.getText();
-                String password = new String(passwordField.getPassword());
+                email = emailField.getText().trim();
+                password = new String(passwordField.getPassword()).trim();
                 
                 /* 
                  * send request to loadPH handlePut() w/o query and input the email and password from user into it
@@ -69,8 +72,6 @@ public class Login extends JFrame {
                     OutputStreamWriter out = new OutputStreamWriter(
                         conn.getOutputStream()
                     );
-                    email = email.trim();
-                    password = password.trim();
                     out.write(email + "\n");
                     out.write(password);
                     out.flush();
@@ -86,7 +87,7 @@ public class Login extends JFrame {
                     if (response.equals("Valid Login")) {
                         JOptionPane.showMessageDialog(Login.this, "Login successful!");
                         dispose();
-                        new AutoLoginFrame();
+                        new AutoLoginFrame(email);
                     } else {
                         JOptionPane.showMessageDialog(Login.this, "Invalid username or password. Please try again.");
                     }
@@ -100,7 +101,9 @@ public class Login extends JFrame {
         createAccountButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new CreateAccountFrame();
+                email = emailField.getText().trim();
+                password = new String(passwordField.getPassword()).trim();
+                new CreateAccountFrame(email, password);
             }
         });
 

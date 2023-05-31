@@ -92,12 +92,12 @@ In devHandler:
 
 
 In loadPromptsHandler (update):
-    - update handleGet() (after making devHandler), that will read in an email and password and check if they're valid:
-        - if they are, do Cristian's reading mango in there to fill prompts (move the restore() in Server into there)
-            - store the email into the StringBuilder email
-            - return "Valid Login" response 
+    - update handlePut() (after making devHandler), that will read in an email and password and check if they're valid:
+        x- if they are, do Cristian's reading mango in there to fill prompts (move the restore() in Server into there)
+            x- store the email into the StringBuilder email
+            x- return "Valid Login" response 
         - otherwise, return "Invalid Login"
-    - also update handleGet() that will read a query
+    - also update handlePut() that will read a query
         - if the query says "autoLogin", check if the IP of the computer exists in the database
             - if it does, 
                 - store the email associated with that IP into StringBuilder email
@@ -105,13 +105,19 @@ In loadPromptsHandler (update):
                 x- return "Automatic Login"
             x- if it doesn't,
                 x- return "No Automatic Login"
+    - also update handlePut() that will read a different query
+        - if the query says "addLogin", 
+            - read from file to get IP and email from request
+            - store that email into StringBuilder email
+                - create a new User with the IP and email in the Mongo Users collection
+                - return "Added AutoLogin"
     - create handlePost() that will read in an email and password and check if the email already exists:
         - if it does, return "Email already used"
         - if it doesn't, 
             - ask Cristian how to add that email and password as a new entry into mongo
             - store the email into the StringBuilder email
             - return "Account Created"
-    x- update handlePut() to write the prompts to the database under the email that is currently logged into
+    x- update handleGet() to write the prompts to the database under the email that is currently logged into
 
 
 Where ever ethan made his changes:

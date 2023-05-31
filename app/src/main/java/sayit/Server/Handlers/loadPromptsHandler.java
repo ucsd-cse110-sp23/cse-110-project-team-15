@@ -19,9 +19,9 @@ import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.json.JsonWriterSettings;
-import static java.util.Arrays.*;
+import org.bson.types.ObjectId;
 
-import java.util.List;
+import static java.util.Arrays.*;
 
 import com.mongodb.client.*;
 import static com.mongodb.client.model.Filters.*;
@@ -170,6 +170,7 @@ public class loadPromptsHandler implements HttpHandler {
                     response = "Invalid Login";
                 } else {
                     // set email to the inputEmail
+                    email.setLength(0);
                     email.append(inputEmail);
                     // gets us the promptH doc array
                     List<Document> promptHist = (List<Document>) accUser.get("promptH");
@@ -196,7 +197,7 @@ public class loadPromptsHandler implements HttpHandler {
     }
 
     /**
-     * Read in an email and password, check if the email already exists, and handle creation of account
+     * Read in an email and password, check if the email already exists, and handle creation of account (add to mongo)
      * @param httpExchange the request that the server receives
      * @return response saying either "Email already used" or "Account Created"
      * @throws IOException
@@ -213,16 +214,39 @@ public class loadPromptsHandler implements HttpHandler {
         String inputPassword = scanner.nextLine();
         scanner.close();
 
-        /*
-         * check if the email already exists:
-         * if it does, return "Email already used"
-         * if it doesn't,
-         * ask Cristian how to add that email and password as a new entry into mongo
-         * store the email into the StringBuilder email
-         * return "Account Created"
-         */
+        try (MongoClient mongoClient = MongoClients.create(MONGO_URI)) {
+            MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
+            MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
 
-        response = "meep";
+            // find a list of documents and iterate throw it using an iterator.
+            
+            /*
+             * check if the email already exists:
+             * if it does, return "Email already used"
+             * if it doesn't,
+             * add that email and password as a new entry/account into mongo
+             * store the email into the StringBuilder email
+             * return "Account Created"
+             */
+
+            Document accUser = usersDB.find(eq("acc_email", inputEmail)).first();
+            if (accUser != null) {
+                response = "Email already used";
+            } else {
+                accUser = new Document("_id", new ObjectId());
+                accUser.append("acc_email", inputEmail)
+                        .append("acc_password", inputPassword)
+                        .append("promptH", new ArrayList<>())
+                        .append("maybe", "add send email info here? or in another collection");
+
+                usersDB.insertOne(accUser);
+                
+                // set email to the inputEmail
+                email.setLength(0);
+                email.append(inputEmail);
+                response = "Account Created";
+            }
+        }
         System.out.println("loadPH: " + response);
         return response;
     }

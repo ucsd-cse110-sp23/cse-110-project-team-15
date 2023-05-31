@@ -9,7 +9,7 @@ public class AutoLoginFrame extends JFrame {
 
     private JPasswordField passwordField;
 
-    public AutoLoginFrame() {
+    public AutoLoginFrame(String inputEmail) {
         setTitle("Set AutoLogin");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 200);
@@ -35,6 +35,11 @@ public class AutoLoginFrame extends JFrame {
         yesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                /*
+                 * For iteration 2:
+                 * - request loadPH handlePut() with query "autoLogin" to add IP and its associated email to mango
+                 * - input the IP and the email in the request
+                 */
                 new AppFrame();
             }
         });
