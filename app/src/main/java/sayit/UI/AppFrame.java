@@ -117,26 +117,12 @@ public class AppFrame extends JFrame {
                         new InputStreamReader(conn.getInputStream())
                     );
                     String response = in.readLine();
+                    in.close();
 
-                    /* for marlyn and jezebel */
-                    /* parse the response into to get the command, which are the first 2 words (new question, clear all, delete prompt) */
-                    /* call the correct function based on command [FunctionNames: newQuestion(question), clearAll(), deletePrompt()] */
-                    /* if its not any of these commands, do not do anything */
-                    // Example| response = "new question my dad left me?"
-                        // call newQuestion(String question) and pass in the "my dad left me?" part as an argument
-                    // Example| response = "clear all"
-                        // call clearAll()
-                    // Example| response = "delete prompt"
-                        // call deletePrompt()
-                    /* the UI will not work properly until these are implemented correctly */
-                    /* also don't worry about passing the tests, i broke it and ill fix it later */
-                    response = "new question my dad left me?";
                     String command  = response.toLowerCase();
-                    
                     String[] words = command.split(" ");
 
                     if (words.length >= 2 && words[0].equals("new") && words[1].equals("question")) {
-                        System.out.println(response.substring(response.indexOf(" ", 4) + 1).trim());
                         newQuestion(response.substring(response.indexOf(" ", 4) + 1).trim());
                     } else if (words.length >= 2 && words[0].equals("clear") && words[1].equals("all")) {
                         clearAll();
@@ -190,9 +176,9 @@ public class AppFrame extends JFrame {
             // create URL (with query) to the server and create the connection
             URL url = new URL(newQURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            
+
             // request the GET method on the server
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
 
             // write the question to the file

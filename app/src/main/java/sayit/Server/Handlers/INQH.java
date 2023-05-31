@@ -5,6 +5,6 @@ import com.sun.net.httpserver.HttpExchange;
 
 public interface INQH {
     void handle(HttpExchange httpExchange) throws IOException;
-    String handleGet(HttpExchange httpExchange) throws IOException, InterruptedException;
+    String handlePut(HttpExchange httpExchange) throws IOException, InterruptedException;
     String handlePost(HttpExchange httpExchange) throws IOException;
 }

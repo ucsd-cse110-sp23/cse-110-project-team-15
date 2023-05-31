@@ -32,9 +32,10 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "Request Received";
         String method = httpExchange.getRequestMethod();
+
         try {
-            if (method.equals("GET")) {
-                response = handleGet(httpExchange);
+            if (method.equals("PUT")) {
+                response = handlePut(httpExchange);
             } else if (method.equals("POST")) {
                 response = handlePost(httpExchange);
             }
@@ -61,8 +62,8 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
      * @throws IOException
      * @throws InterruptedException
      */
-    public String handleGet(HttpExchange httpExchange) throws IOException, InterruptedException {
-        String response = "Invalid GET request";
+    public String handlePut(HttpExchange httpExchange) throws IOException, InterruptedException {
+        String response = "Invalid PUT request";
 
         /* read question from request (file), input into whisper, and return ChatGPT response to question */
         /* setup reading from some input file */
@@ -97,7 +98,7 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         /* setup reading from some input file */
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
-        
+
         /* get question from first line of file */
         String question = scanner.nextLine();
         /* get answer from rest of the files contents */
