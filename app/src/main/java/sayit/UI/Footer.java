@@ -4,13 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * Panel for footer of app that will contain buttons for recording and clearing
- * prompts
+ * Panel for footer of app that will contain buttons for recording and clearing prompts
  */
 public class Footer extends JPanel {
-    private JButton clearSelectedButton;
-    private JButton newButton;
-    private JButton clearButton;
+    private JButton startButtion;
   
     Color backgroundColor = new Color(50, 205, 50);
   
@@ -20,47 +17,21 @@ public class Footer extends JPanel {
     Footer() {
       this.setPreferredSize(new Dimension(400, 60));
       this.setBackground(backgroundColor);
-      // Set the layout of the footer to a GridLayout with 1 row and 2 columns
-      GridLayout layout = new GridLayout(1, 2);
+      // Set the layout of the footer to a GridLayout with 1 row and 1 column
+      GridLayout layout = new GridLayout(1, 1);
       this.setLayout(layout);
   
       // add new question button to footer
-      newButton = new JButton("New Question");
-      newButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
-      this.add(newButton);
-  
-      // add clear button to footer
-      clearButton = new JButton("Clear All");
-      clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
-      this.add(clearButton);
-  
-      // add clear selected button to footer
-      clearSelectedButton = new JButton("Clear Selected");
-      clearSelectedButton.setFont(new Font("Sans-serif", Font.ITALIC, 20));
-      this.add(clearSelectedButton);
-    }
-  
+      startButtion = new JButton("Start");
+      startButtion.setFont(new Font("Sans-serif", Font.ITALIC, 20));
+      this.add(startButtion);
+   }
+ 
     /**
-     * Getter for newButton
+     * Getter for startButton
      * @return JButton of the newButton button in Footer
      */
-    public JButton getNewButton() {
-      return newButton;
-    }
-  
-    /**
-     * Getter for clearButton
-     * @return JButton of the clearButton button in Footer
-     */
-    public JButton getClearButton() {
-      return clearButton;
-    }
-  
-    /**
-     * Getter for clearSelectedButton
-     * @return JButton of the clearButton button in Footer
-     */
-    public JButton getClearSelectedButton() {
-      return clearSelectedButton;
+    public JButton getStartButton() {
+      return startButtion;
     }
   }

@@ -25,10 +25,9 @@ dependencies {
     
     // This dependency is used for whisper API functionality
     implementation files('../lib/json-20230227.jar')
-    
+
     // This is for Mango DB
     implementation 'org.mongodb:mongodb-driver-sync:4.9.1'
-    
 }
 
 application {

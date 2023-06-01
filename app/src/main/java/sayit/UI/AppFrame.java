@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,9 +25,7 @@ public class AppFrame extends JFrame {
     private Footer footer;
 
     // put all buttons used in app here
-    private JButton newButton;
-    private JButton clearButton;
-    private JButton clearSelectedButton;
+    private JButton startButton;
 
     // other miscellaneous variables
     boolean isRecording;
@@ -34,6 +33,7 @@ public class AppFrame extends JFrame {
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
     private final String loadPURL = "http://localhost:8100/load";
+    private final String startURL = "http://localhost:8100/start";
     private final String newQURL = "http://localhost:8100/newQuestion";
     private final String clearAURL = "http://localhost:8100/clearAll";
     private final String deletePURL = "http://localhost:8100/deletePrompt";
@@ -63,9 +63,7 @@ public class AppFrame extends JFrame {
         setVisible(true);
 
         // make functionality for buttons
-        newButton = footer.getNewButton();
-        clearButton = footer.getClearButton();
-        clearSelectedButton = footer.getClearSelectedButton();
+        startButton = footer.getStartButton();
         addListeners();
     }
 
@@ -73,117 +71,72 @@ public class AppFrame extends JFrame {
      * Create functionality for when the new and clear buttons are pressed
      */
     public void addListeners() {
-        newButton.addActionListener( 
-            (ActionEvent e)  -> {
-                /* if not recording, request server to begin creating the wav file on its side */
-                /* if is recording, request server to finalize wav file, input it into whisper, save the Q&A into its prompts, then return Q&A back in response string */
-                String response;
-                if (!isRecording) {
-                    try {
-                        // Some UI things
-                        newButton.setText("Stop Recording");
-                        newButton.setForeground(red);
-                        
-                        // create URL (with query) to the server and create the connection
-                        String query = "Start";
-                        URL url = new URL(newQURL + "?=" + query);
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        
-                        // request the GET method on the server
-                        conn.setRequestMethod("GET");
-
-                        // won't call the handler correctly unless I do this?
-                        BufferedReader in = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream())
-                        );
-                        in.readLine();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        System.out.println("AppFrame: " + ex);
-                    }
-                } else {
-                    try {
-                        // some UI things
-                        newButton.setText("New Question");
-                        newButton.setForeground(black);
-                        
-                        // create URL (with query) to the server and create the connection
-                        String query = "Stop";
-                        URL url = new URL(newQURL + "?=" + query);
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        
-                        // request the GET method on the server
-                        conn.setRequestMethod("GET");
-
-                        // parse from response and add to scrollFrame
-                        BufferedReader in = new BufferedReader(
-                            new InputStreamReader(conn.getInputStream())
-                        );
-                        response = in.readLine();
-                        String question = response.substring(0,response.indexOf("/D\\"));
-                        String answer = response.substring(response.indexOf("/D\\") + 3);
-                        Prompt prompt = new Prompt(question, answer);
-                        scrollFrame.addPrompt(prompt);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        System.out.println("AppFrame: " + ex);
-                    }
-                }
-                isRecording = !isRecording;
-            });
-
-        // delete all prompts in prompt history when clear button is pressed
-        clearButton.addActionListener(
-            (ActionEvent e) -> {
-                /* clear the scrollFrame */
-                scrollFrame.clearAllPrompts();
-
-                /* request server to clear all its prompts */
+        /* add functionality for start button */
+        /* if not recording, request server to begin creating the wav file on its side */
+        /* if is recording, request server to finalize wav file, input it into whisper, save the Q&A into its prompts, then return Q&A back in response string */
+        startButton.addActionListener((ActionEvent e) -> {
+            if (!isRecording) {
                 try {
-                    // create URL to the server and create the connection
-                    URL url = new URL(clearAURL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    // Some UI things
+                    startButton.setText("Stop Recording");
+                    startButton.setForeground(red);
 
-                    // request the DELETE method on the server
-                    conn.setRequestMethod("DELETE");
+                    // create URL (with query) to the server and create the connection
+                    String query = "Start";
+                    URL url = new URL(startURL + "?=" + query);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    
+                    // request the GET method on the server
+                    conn.setRequestMethod("GET");
 
                     // won't call the handler correctly unless I do this?
                     BufferedReader in = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream())
+                    new InputStreamReader(conn.getInputStream())
                     );
                     in.readLine();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     System.out.println("AppFrame: " + ex);
                 }
-            });
-
-        clearSelectedButton.addActionListener((ActionEvent e) -> {
-            /* delete selected prompts on scrollFrame */
-            ArrayList<Integer> indices = scrollFrame.removeSelectedPrompts();
-            repaint();
-
-            /* request server to delete its prompts at these indices */
-            try {
-                for (int i: indices) {
+            } else {
+                try {
+                    // some UI things
+                    startButton.setText("Start");
+                    startButton.setForeground(black);
+                    
                     // create URL (with query) to the server and create the connection
-                    String query = String.valueOf(i);
-                    URL url = new URL(deletePURL + "?=" + query);
+                    String query = "Stop";
+                    URL url = new URL(startURL + "?=" + query);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                    // request the DELETE method on the server
-                    conn.setRequestMethod("DELETE");
-
-                    // won't call the handler correctly unless I do this?
+                    
+                    // request the GET method on the server
+                    conn.setRequestMethod("GET");
+    
+                    // read the question/prompt and store it into response
                     BufferedReader in = new BufferedReader(
                         new InputStreamReader(conn.getInputStream())
                     );
-                    in.readLine();
+                    String response = in.readLine();
+                    in.close();
+
+                    String command  = response.toLowerCase();
+                    String[] words = command.split(" ");
+
+                    if (words.length >= 2 && words[0].equals("new") && words[1].equals("question")) {
+                        newQuestion(response.substring(response.indexOf(" ", 4) + 1).trim());
+                    } else if (words.length >= 2 && words[0].equals("clear") && words[1].equals("all")) {
+                        clearAll();
+                    } else if (words.length >= 2 && words[0].equals("delete") && words[1].equals("prompt")) {
+                        deletePrompt();
+                    }
+                    // else do something with non-valid transcription from Whisper API
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("AppFrame: " + ex);
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                System.out.println("AppFrame: " + ex);
             }
+            isRecording = !isRecording;
         });
 
         // setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -192,7 +145,7 @@ public class AppFrame extends JFrame {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 e.getWindow().dispose();
                 System.out.println("JFrame Closed!\nYOUR MOM!");
-                
+
                 /* request server to write all its prompts into a preserve.txt file */
                 try {
                     // create URL to the server and create the connection
@@ -204,8 +157,7 @@ public class AppFrame extends JFrame {
 
                     // won't call the handler correctly unless I do this?
                     BufferedReader in = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream())
-                    );
+                            new InputStreamReader(conn.getInputStream()));
                     in.readLine();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -213,6 +165,96 @@ public class AppFrame extends JFrame {
                 }
             }
         });
+    }
+
+    /**
+     * Make a request to newQH, input the question, then add the response prompt Q&A to scrollFrame
+     * @param question String of the question to be inputted
+     */
+    public void newQuestion(String question) {
+        try {
+            // create URL (with query) to the server and create the connection
+            URL url = new URL(newQURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("PUT");
+            conn.setDoOutput(true);
+
+            // write the question to the file
+            OutputStreamWriter out = new OutputStreamWriter(
+                conn.getOutputStream()
+            );
+            question = question.trim();
+            out.write(question);
+            out.flush();
+            out.close();
+
+            // read the answer from file
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream())
+            );
+            String response = in.readLine();
+            in.close();
+
+            // add the question and response (answer) to the scrollFrame
+            Prompt prompt = new Prompt(question, response);
+            scrollFrame.addPrompt(prompt);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("AppFrame: " + ex);
+        }
+    }
+
+    public void clearAll() {
+        // delete all prompts in prompt history when clear button is pressed
+        /* clear the scrollFrame */
+        scrollFrame.clearAllPrompts();
+
+        /* request server to clear all its prompts */
+        try {
+            // create URL to the server and create the connection
+            URL url = new URL(clearAURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // request the DELETE method on the server
+            conn.setRequestMethod("DELETE");
+
+            // won't call the handler correctly unless I do this?
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+            in.readLine();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("AppFrame: " + ex);
+        }
+    }
+
+    public void deletePrompt() {
+        /* delete selected prompts on scrollFrame */
+        ArrayList<Integer> indices = scrollFrame.removeSelectedPrompts();
+        repaint();
+
+        /* request server to delete its prompts at these indices */
+        try {
+            for (int i : indices) {
+                // create URL (with query) to the server and create the connection
+                String query = String.valueOf(i);
+                URL url = new URL(deletePURL + "?=" + query);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                // request the DELETE method on the server
+                conn.setRequestMethod("DELETE");
+
+                // won't call the handler correctly unless I do this?
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+                in.readLine();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("AppFrame: " + ex);
+        }
     }
 
     /**
@@ -234,18 +276,19 @@ public class AppFrame extends JFrame {
 
                 // print the response for testing purposes
                 BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream())
-                );
+                        new InputStreamReader(conn.getInputStream()));
                 response = in.readLine();
                 System.out.println("GET response: " + response);
 
                 // check if the reponse is -1 (reached end of prompts on server)
-                if (response.equals("-1")) { break; }
+                if (response.equals("-1")) {
+                    break;
+                }
 
                 // parse the response and store the question and answer in the prompts locally
-                String question = response.substring(0,response.indexOf("/D\\"));
+                String question = response.substring(0, response.indexOf("/D\\"));
                 String answer = response.substring(response.indexOf("/D\\") + 3);
-                Prompt prompt = new Prompt(question,answer);
+                Prompt prompt = new Prompt(question, answer);
                 scrollFrame.addPrompt(prompt);
 
                 in.close();

@@ -42,7 +42,8 @@ public class loadPromptsHandler implements HttpHandler {
 
     /**
      * Default constructor that initializes ArrayList prompts
-     * @param prompts
+     * @param prompts ArrayList of prompts
+     * @param filePath String of path to file to be written to
      */
     public loadPromptsHandler(ArrayList<Prompt> prompts, String filePath) {
         this.prompts = prompts;
