@@ -36,10 +36,6 @@ public class loadPromptsHandler implements HttpHandler {
     StringBuilder email;
     static final String MONGO_URI = "mongodb://quistian241:Gura%40241@ac-kumtned-shard-00-00.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-01.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-02.uikyhue.mongodb.net:27017/?ssl=true&replicaSet=atlas-fk9y1w-shard-0&authSource=admin&retryWrites=true&w=majority";
 
-    // Mango Stuff
-    static String uri = "mongodb://quistian241:Gura%40241@ac-kumtned-shard-00-00.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-01.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-02.uikyhue.mongodb.net:27017/?ssl=true&replicaSet=atlas-fk9y1w-shard-0&authSource=admin&retryWrites=true&w=majority";
-    JsonWriterSettings prettyPrint = JsonWriterSettings.builder().indent(true).build();
-
     /**
      * Default constructor that initializes ArrayList prompts
      * @param prompts  ArrayList of prompts
@@ -126,25 +122,6 @@ public class loadPromptsHandler implements HttpHandler {
         String response = "Invalid GET request";
         URI uri = httpExchange.getRequestURI();
         String query = uri.getRawQuery();
-
-        // place prompts onto the mangoDB
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
-            MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
-            MongoCollection<Document> ipDB = accDatabase.getCollection("IPs");
-            List<Document> susHist = new ArrayList<>();
-            String type, ques, ans;
-            for (int i = 0; i < prompts.size(); i++) {
-                type = "QnA";
-                ques = prompts.get(i).getQuery();
-                ans = prompts.get(i).getAnswer();
-                susHist.add(new Document("Type", type).append("Top", ques).append("Bottom", ans));
-            }
-            Bson filter = eq("acc_email", "emptyHist1800@gmail.com");
-            Bson updateOperation = set("promptH", susHist);
-            usersDB.updateOne(filter, updateOperation);
-        }
-        
 
         if (query != null) {
             String subQuery = query.substring(query.indexOf("=") + 1);
