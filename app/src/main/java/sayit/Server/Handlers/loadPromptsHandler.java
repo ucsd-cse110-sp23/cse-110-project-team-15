@@ -183,7 +183,7 @@ public class loadPromptsHandler implements HttpHandler {
                         temp = (Document) prompt;
                         type = (String)temp.get("Type"); // should add a prompt constructor to make use of type
                         qLine = (String)temp.get("Top");
-                        aLine = (String)temp.get("Bottom");
+                        aLine = temp.get("Bottom").toString();
 
                         Prompt questionAndAnswer = new Prompt(qLine, aLine);
                         prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format

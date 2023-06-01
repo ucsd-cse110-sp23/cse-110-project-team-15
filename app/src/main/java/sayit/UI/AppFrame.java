@@ -117,8 +117,13 @@ public class AppFrame extends JFrame {
                     BufferedReader in = new BufferedReader(
                         new InputStreamReader(conn.getInputStream())
                     );
-                    String response = in.readLine();
-
+                    
+                    String lineLoop;
+                    String response = "";
+                    while ((lineLoop = in.readLine()) != null) {
+                        response += lineLoop;
+                    }
+                    response = response.trim();
                     /* for marlyn and jezebel */
                     /* parse the response into to get the command, which are the first 2 words (new question, clear all, delete prompt) */
                     /* call the correct function based on command [FunctionNames: newQuestion(question), clearAll(), deletePrompt()] */
@@ -136,12 +141,12 @@ public class AppFrame extends JFrame {
                     
                     String[] words = command.split(" ");
 
-                    if (words.length >= 2 && words[0].equals("new") && words[1].equals("question")) {
+                    if (words.length >= 2 && words[0].contains("new") && words[1].contains("question")) {
                         System.out.println(response.substring(response.indexOf(" ", 4) + 1).trim());
                         newQuestion(response.substring(response.indexOf(" ", 4) + 1).trim());
-                    } else if (words.length >= 2 && words[0].equals("clear") && words[1].equals("all")) {
+                    } else if (words.length >= 2 && words[0].contains("clear") && words[1].contains("all")) {
                         clearAll();
-                    } else if (words.length >= 2 && words[0].equals("delete") && words[1].equals("prompt")) {
+                    } else if (words.length >= 2 && words[0].contains("delete") && words[1].contains("prompt")) {
                         deletePrompt();
                     }
                     // else do something with non-valid transcription from Whisper API
@@ -209,7 +214,12 @@ public class AppFrame extends JFrame {
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
             );
-            String response = in.readLine();
+            String lineLoop;
+            String response = "";
+            while ((lineLoop = in.readLine()) != null) {
+                response += lineLoop;
+            }
+            response = response.trim();
             in.close();
 
             // add the question and response (answer) to the scrollFrame
@@ -291,8 +301,13 @@ public class AppFrame extends JFrame {
 
                 // print the response for testing purposes
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream()));
-                response = in.readLine();
+                    new InputStreamReader(conn.getInputStream()));
+                String lineLoop;
+                response = "";
+                while ((lineLoop = in.readLine()) != null) {
+                    response += lineLoop;
+                }
+                response = response.trim();
                 System.out.println("GET response: " + response);
 
                 // check if the reponse is -1 (reached end of prompts on server)

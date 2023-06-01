@@ -59,7 +59,7 @@ public class Login extends JFrame {
                  * else, display "Invalid username or password. Please try again."
                  */
 
-                 try {
+                try {
                     // create URL (with query) to the server and create the connection
                     URL url = new URL(loadPURL);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -68,7 +68,7 @@ public class Login extends JFrame {
                     conn.setRequestMethod("PUT");
                     conn.setDoOutput(true);
         
-                    // write the question to the file
+                    // write the email and password to the file
                     OutputStreamWriter out = new OutputStreamWriter(
                         conn.getOutputStream()
                     );
