@@ -32,6 +32,7 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "Request Received";
         String method = httpExchange.getRequestMethod();
+
         try {
             if (method.equals("PUT")) {
                 response = handlePut(httpExchange);
@@ -97,7 +98,7 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         /* setup reading from some input file */
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
-        
+
         /* get question from first line of file */
         String question = scanner.nextLine();
         /* get answer from rest of the files contents */

@@ -16,6 +16,7 @@ public class MockInputQ implements IInput {
         //mockInputString = "This is the mock question?";
         //mockInputString = "new question hello everynyan?";
         //mockInputString = "delete prompt";
-        mockInputString = "clear all";
+        mockInputString = "new question This is the mock question?";
+        //mockInputString = "clear all";
     }
 }
