@@ -211,7 +211,7 @@ public class AppFrame extends JFrame {
         /* clear the scrollFrame */
         scrollFrame.clearAllPrompts();
 
-        /* request server to clear all its prompts */
+        /* request server to clear all the prompts */
         try {
             // create URL to the server and create the connection
             URL url = new URL(clearAURL);
