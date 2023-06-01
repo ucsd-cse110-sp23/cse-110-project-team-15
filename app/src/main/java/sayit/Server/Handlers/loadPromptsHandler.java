@@ -119,19 +119,18 @@ public class loadPromptsHandler implements HttpHandler {
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
             MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
+            MongoCollection<Document> ipDB = accDatabase.getCollection("IPs");
             List<Document> susHist = new ArrayList<>();
             String type, ques, ans;
             for (int i = 0; i < prompts.size(); i++) {
                 type = "QnA";
                 ques = prompts.get(i).getQuery();
                 ans = prompts.get(i).getAnswer();
-                susHist.add(new Document("Type", type).append("Question", ques).append("Answer", ans));
+                susHist.add(new Document("Type", type).append("Top", ques).append("Bottom", ans));
             }
-            Bson filter = eq("acc_email", "theRushiaIsReal@gmail.com");
+            Bson filter = eq("acc_email", "emptyHist1800@gmail.com");
             Bson updateOperation = set("promptH", susHist);
-            UpdateResult updateResult = usersDB.updateOne(filter, updateOperation);
-            // System.out.println(usersDB.find(filter).first().toJson(prettyPrint));
-            // System.out.println(updateResult);
+            usersDB.updateOne(filter, updateOperation);
         }
         
 

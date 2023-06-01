@@ -93,19 +93,19 @@ public class MockServer {
 
             // find a list of documents and iterate throw it using an iterator.
             // want to make the new inputs be user's email
-            Document accUser = usersDB.find(eq("acc_email", "theRushiaIsReal@gmail.com")).first();
+            Document accUser = usersDB.find(eq("acc_email", "emptyHist1800@gmail.com")).first();
             // gets us the promptH doc array
             List<Document> promptHist = (List<Document>) accUser.get("promptH");
             Document temp;
-            // List<Document> temp;
+            String type;
             String qLine;
             String aLine;
             // iterate through and add the prompts to UI (essentially)
             for (Object prompt : promptHist) {
                 temp = (Document) prompt;
-                System.out.println("Type: " + (temp.get("Type"))); // should add a prompt constructor to make use of type
-                System.out.println("Top: " + (qLine = (String)temp.get("Top")));
-                System.out.println("Bottom: " + (aLine = (String)temp.get("Bottom")));
+                type = (String) temp.get("Type");
+                qLine = (String)temp.get("Top");
+                aLine = (String)temp.get("Bottom");
 
                 Prompt questionAndAnswer = new Prompt(qLine, aLine);
                 prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
