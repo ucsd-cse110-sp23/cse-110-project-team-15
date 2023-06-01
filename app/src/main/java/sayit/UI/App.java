@@ -27,7 +27,7 @@ public class App {
       }
 
       // Create the UI
-      new AppFrame();
+      new Login();
     });
   }
 }

@@ -1,8 +1,0 @@
-#Start#
-This is the mock question?
-This is the mock answer!!! :)
-#End#
-#Start#
-This is the mock question?
-This is the mock answer!!! :)
-#End#

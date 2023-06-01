@@ -76,6 +76,7 @@ public class newQuestionHandler implements HttpHandler, INQH {
         /* get answer for the question */
         output.makeAnswer(question);
         String answer = output.getAnswer();
+        answer = answer.trim();
 
         /* add the prompt to prompts */
         Prompt prompt = new Prompt(question, answer);

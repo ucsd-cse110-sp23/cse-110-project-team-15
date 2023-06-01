@@ -32,6 +32,7 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
+    private final String devURL = "http://localhost:8100/dev";
     private final String loadPURL = "http://localhost:8100/load";
     private final String startURL = "http://localhost:8100/start";
     private final String newQURL = "http://localhost:8100/newQuestion";
@@ -116,17 +117,36 @@ public class AppFrame extends JFrame {
                     BufferedReader in = new BufferedReader(
                         new InputStreamReader(conn.getInputStream())
                     );
-                    String response = in.readLine();
-                    in.close();
-
+                    
+                    String lineLoop;
+                    String response = "";
+                    while ((lineLoop = in.readLine()) != null) {
+                        response += lineLoop;
+                    }
+                    response = response.trim();
+                    /* for marlyn and jezebel */
+                    /* parse the response into to get the command, which are the first 2 words (new question, clear all, delete prompt) */
+                    /* call the correct function based on command [FunctionNames: newQuestion(question), clearAll(), deletePrompt()] */
+                    /* if its not any of these commands, do not do anything */
+                    // Example| response = "new question my dad left me?"
+                        // call newQuestion(String question) and pass in the "my dad left me?" part as an argument
+                    // Example| response = "clear all"
+                        // call clearAll()
+                    // Example| response = "delete prompt"
+                        // call deletePrompt()
+                    /* the UI will not work properly until these are implemented correctly */
+                    /* also don't worry about passing the tests, i broke it and ill fix it later */
+                    
                     String command  = response.toLowerCase();
+                    
                     String[] words = command.split(" ");
 
-                    if (words.length >= 2 && words[0].equals("new") && words[1].equals("question")) {
+                    if (words.length >= 2 && words[0].contains("new") && words[1].contains("question")) {
+                        System.out.println(response.substring(response.indexOf(" ", 4) + 1).trim());
                         newQuestion(response.substring(response.indexOf(" ", 4) + 1).trim());
-                    } else if (words.length >= 2 && words[0].equals("clear") && words[1].equals("all")) {
+                    } else if (words.length >= 2 && words[0].contains("clear") && words[1].contains("all")) {
                         clearAll();
-                    } else if (words.length >= 2 && words[0].equals("delete") && words[1].equals("prompt")) {
+                    } else if (words.length >= 2 && words[0].contains("delete") && words[1].contains("prompt")) {
                         deletePrompt();
                     }
                     // else do something with non-valid transcription from Whisper API
@@ -152,8 +172,8 @@ public class AppFrame extends JFrame {
                     URL url = new URL(loadPURL);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-                    // request the PUT method on the server
-                    conn.setRequestMethod("PUT");
+                    // request the GET method on the server and tell it to save the prompts to database
+                    conn.setRequestMethod("GET");
 
                     // won't call the handler correctly unless I do this?
                     BufferedReader in = new BufferedReader(
@@ -176,8 +196,8 @@ public class AppFrame extends JFrame {
             // create URL (with query) to the server and create the connection
             URL url = new URL(newQURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
+            
+            // request the PUT method on the server
             conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
 
@@ -194,7 +214,12 @@ public class AppFrame extends JFrame {
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
             );
-            String response = in.readLine();
+            String lineLoop;
+            String response = "";
+            while ((lineLoop = in.readLine()) != null) {
+                response += lineLoop;
+            }
+            response = response.trim();
             in.close();
 
             // add the question and response (answer) to the scrollFrame
@@ -268,7 +293,7 @@ public class AppFrame extends JFrame {
             while (true) {
                 // create URL (with query) to the server and create the connection
                 String query = String.valueOf(i);
-                URL url = new URL(loadPURL + "?=" + query);
+                URL url = new URL(devURL + "?=" + query);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 // request the GET method on the server
@@ -276,14 +301,17 @@ public class AppFrame extends JFrame {
 
                 // print the response for testing purposes
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream()));
-                response = in.readLine();
+                    new InputStreamReader(conn.getInputStream()));
+                String lineLoop;
+                response = "";
+                while ((lineLoop = in.readLine()) != null) {
+                    response += lineLoop;
+                }
+                response = response.trim();
                 System.out.println("GET response: " + response);
 
                 // check if the reponse is -1 (reached end of prompts on server)
-                if (response.equals("-1")) {
-                    break;
-                }
+                if (response.equals("-1")) { break; }
 
                 // parse the response and store the question and answer in the prompts locally
                 String question = response.substring(0, response.indexOf("/D\\"));
