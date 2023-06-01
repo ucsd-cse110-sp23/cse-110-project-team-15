@@ -181,7 +181,7 @@ public class AppFrame extends JFrame {
             conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
 
-            // write the question to file
+            // write the question to the file
             OutputStreamWriter out = new OutputStreamWriter(
                 conn.getOutputStream()
             );
@@ -211,7 +211,7 @@ public class AppFrame extends JFrame {
         /* clear the scrollFrame */
         scrollFrame.clearAllPrompts();
 
-        /* request server to clear all the prompts */
+        /* request server to clear all its prompts */
         try {
             // create URL to the server and create the connection
             URL url = new URL(clearAURL);
