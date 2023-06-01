@@ -181,7 +181,7 @@ public class AppFrame extends JFrame {
             conn.setRequestMethod("PUT");
             conn.setDoOutput(true);
 
-            // write the question to the file
+            // write the question to file
             OutputStreamWriter out = new OutputStreamWriter(
                 conn.getOutputStream()
             );
