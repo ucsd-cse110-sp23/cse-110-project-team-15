@@ -24,11 +24,33 @@ public class ServerTest {
 
     @AfterEach
     void closeServer() throws IOException {
+    }
+
+    @Test
+    void loadPromptsHandlerGetTest() {
         assertEquals(1+1, 2);
     }
 
     @Test
     void loadPromptsHandlerPutTest() {
+        assertEquals(1+1, 2);
+    }
+    void newQuestionHandlerGetTest() {
+        assertEquals(1+1, 2);
+    }
+
+    @Test
+    void newQuestionHandlerPostTest() {
+        assertEquals(1+1, 2);
+    }
+
+    @Test
+    void deletePromptHandlerDeleteTest() {
+        assertEquals(1+1, 2);
+    }
+
+    @Test
+    void clearAllHandlerDeleteTest() {
         assertEquals(1+1, 2);
     }
 }
