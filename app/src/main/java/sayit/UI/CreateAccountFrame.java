@@ -42,7 +42,6 @@ public class CreateAccountFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String password = new String(passwordField.getPassword());
                 if (password.equals(inputPassword)) {
-                    JOptionPane.showMessageDialog(CreateAccountFrame.this, "Account Created!");
                     dispose();
 
                     /* 
@@ -84,6 +83,7 @@ public class CreateAccountFrame extends JFrame {
                             dispose();
                             new Login();
                         } else if (response.equals("Account Created")) {
+                            JOptionPane.showMessageDialog(CreateAccountFrame.this, "Account Created!");
                             new AutoLoginFrame(inputEmail);
                         }
                     } catch (Exception ex) {

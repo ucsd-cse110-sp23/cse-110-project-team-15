@@ -1,0 +1,4 @@
+In AppFrame.java
+- create a function somewhere called "createEmail(String subject)" 
+    - in this function, 
+- in the same place y'all made the string parsing, make another else if to call a function

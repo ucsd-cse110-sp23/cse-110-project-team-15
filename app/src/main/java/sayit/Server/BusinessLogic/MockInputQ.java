@@ -14,8 +14,8 @@ public class MockInputQ implements IInput {
 
     public void InputTranscription() throws IOException {
         //mockInputString = "This is the mock question?";
-        //mockInputString = "new question hello everynyan?";
+        mockInputString = "new question marlyn is too young?";
         //mockInputString = "delete prompt";
-        mockInputString = "clear all";
+        //mockInputString = "clear all";
     }
 }
