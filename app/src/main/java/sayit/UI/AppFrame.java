@@ -178,7 +178,6 @@ public class AppFrame extends JFrame {
      */
     public void newQuestion(String question) {
         try {
-            String command = "New Question";
             // create URL (with query) to the server and create the connection
             URL url = new URL(newQURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -191,7 +190,6 @@ public class AppFrame extends JFrame {
             OutputStreamWriter out = new OutputStreamWriter(
                 conn.getOutputStream()
             );
-            out.write(command + "\n");
             question = question.trim();
             out.write(question);
             out.flush();
@@ -209,7 +207,8 @@ public class AppFrame extends JFrame {
             response = response.trim();
             in.close();
 
-            // add the question and response (answer) to the scrollFrame
+            // add the command, question, and response (answer) to the scrollFrame
+            String command = "New Question";
             Prompt prompt = new Prompt(command, question, response);
             scrollFrame.addPrompt(prompt);
         } catch (Exception ex) {

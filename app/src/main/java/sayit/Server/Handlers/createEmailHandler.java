@@ -68,10 +68,10 @@ public class createEmailHandler implements HttpHandler, ICEH {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
-        /* get command from first line of file */
-        String command = scanner.nextLine();
+        /* set command to "Create Email" */
+        String command = "Create Email";
 
-        /* get subject from second line of file */
+        /* get subject from first line of file */
         String subject = scanner.nextLine();
         scanner.close();
 

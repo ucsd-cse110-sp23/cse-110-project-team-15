@@ -71,10 +71,10 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
-        /* get command from first line of file */
-        String command = scanner.nextLine();
+        /* set command to "New Question" */
+        String command = "New Question";
 
-        /* get question from second line of file */
+        /* get question from first line of file */
         String question = scanner.nextLine();
         scanner.close();
 
@@ -103,8 +103,8 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
-        /* get command from first line of file */
-        String command = scanner.nextLine();
+        /* set command to "New Question" */
+        String command = "New Question";
         /* get question from first line of file */
         String question = scanner.nextLine();
         /* get answer from rest of the files contents */

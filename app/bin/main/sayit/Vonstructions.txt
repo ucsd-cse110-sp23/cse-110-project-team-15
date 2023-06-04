@@ -47,21 +47,28 @@ In loadPromptsHandler (update):
 
 
 In createEmailHandler:
-    - (similar to newQH handlePut()) create a handlePut() method that does the following:
+    x- (similar to newQH handlePut()) create a handlePut() method that does the following:
         x- read the email subject from the input file
         x- call makeAnswer() from OutputA to get ChatGPT response
-        - add (the command), the email subject, then the ChatGPT response to prompts
-        - Optional: print - "createEH: " + response
-        - return response (which should be the ChatGPT's answer/reponse from makeAnswer())
+        x- add (the command), the email subject, then the ChatGPT response to prompts
+        x- Optional: print - "createEH: " + response
+        x- return response (which should be the ChatGPT's answer/reponse from makeAnswer())
 
 
 In AppFrame:
-    - create the createEmail(String subject) function
-        - request handlePut() in createEH and input the subject into it
-        - read its response (like it was done in newQuestion())
-        - add (the command), the subject, and the response into the scrollFrame
-    - parse the response from startHandler to also look for "create email"
-    - call createEmail(String subject) and pass in the rest of the response after "create email" (the subject) into it
+    Step 1:
+    - create a function called "createEmail(String subject)", which will do the following:
+        - request handlePut() in createEmailHandler and input (inside a file) the email subject into it 
+            - (it is similar to the code in newQuestion())
+        - read the server's response from its file (that file should contain the email contents to the email subject made from ChatGPT)
+            - (it is similar to how it was done in newQuestion())
+        - add the command (Create Email), the email subject, and the response into the scrollFrame
+    Step 2:
+    - in the same place y'all made the string parsing:
+        - parse the response from startHandler to also look for "create email"
+            - Ex| response = "create email to Jill let's meet at Geisel for our 7pm study session"
+        - call createEmail(String subject) and pass in entirety of response into it
+            - Ex| pass in all of "create email to Jill let's meet at Geisel for our 7pm study session", not just "to Jill let's meet at Geisel for our 7pm study session"
 
 
 In Prompts:
