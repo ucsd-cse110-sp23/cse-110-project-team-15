@@ -7,15 +7,17 @@ import sayit.Server.BusinessLogic.MockOutputA;
 import sayit.Server.BusinessLogic.Prompt;
 
 import java.io.*;
-import java.net.*;
 import java.util.*;
 
+/**
+ * In charge of creating an email by consulting ChatGPT to get the contents for an email subject
+ */
 public class MockCreateEmailHandler implements HttpHandler, ICEH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;
 
     /**
-     * Default constructor that initializes ArrayList prompts
+     * Default constructor that initializes ArrayList prompts and output
      * @param prompts ArrayList of prompts
      */
     public MockCreateEmailHandler(ArrayList<Prompt> prompts) {
@@ -51,9 +53,9 @@ public class MockCreateEmailHandler implements HttpHandler, ICEH {
     }
 
     /**
-     * With the inputted email subject, get the ChatGPT response to it
+     * With the inputted email subject, get the ChatGPT response (email contents) for it
      * @param httpExchange the request that the server receives
-     * @return String response containing to the inputted question answer
+     * @return String response containing to the inputted email subject's contents
      * @throws IOException
      * @throws InterruptedException
      */
@@ -61,7 +63,7 @@ public class MockCreateEmailHandler implements HttpHandler, ICEH {
     public String handlePut(HttpExchange httpExchange) throws IOException, InterruptedException {
         String response = "Invalid PUT request";
 
-        /* read question from request (file), input into whisper, and return ChatGPT response to question */
+        /* read email subject from request (file), input into whisper, and return ChatGPT response to subject */
         /* setup reading from some input file */
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);

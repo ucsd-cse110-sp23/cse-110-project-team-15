@@ -9,6 +9,9 @@ import sayit.Server.BusinessLogic.Prompt;
 import java.io.*;
 import java.util.*;
 
+/**
+ * In charge of creating an email by consulting ChatGPT to get the contents for an email subject
+ */
 public class createEmailHandler implements HttpHandler, ICEH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;

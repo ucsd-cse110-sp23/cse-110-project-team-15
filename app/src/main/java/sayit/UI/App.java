@@ -3,7 +3,6 @@
  */
 package sayit.UI;
 
-import java.io.IOException;
 import javax.swing.SwingUtilities;
 import sayit.Server.MockServer;
 import sayit.Server.Server;
@@ -18,7 +17,7 @@ public class App {
       try {
         /* Uncomment whichever server to use and comment out other */
         MockServer.startServer();
-        //Server.startServer(filePath);
+        //Server.startServer();
       } catch (Exception e) {
         System.out.println("App.java: " + e);
         e.printStackTrace();

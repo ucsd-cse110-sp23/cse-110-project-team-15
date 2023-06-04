@@ -49,9 +49,9 @@ public class indexHandler implements HttpHandler {
     }
 
     /**
-     * Get the question and answer at the corresponding index in prompts
+     * Get the command, query (question), and response (answer) at the corresponding index in prompts
      * @param httpExchange the request that the server receives
-     * @return String response containing either all of prompts or question + /D\ + answer, otherwise -1 --> (/D\ is the delimeter)
+     * @return String response containing either command + /C\ question + /D\ + answer, otherwise -1 --> (/C\ and /D\ are delimeters)
      * @throws IOException
      */
     private String handleGet(HttpExchange httpExchange) throws IOException {

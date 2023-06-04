@@ -3,7 +3,6 @@ package sayit.Server;
 import com.sun.net.httpserver.*;
 
 import sayit.Server.BusinessLogic.Prompt;
-import sayit.Server.Handlers.MockNewQuestionHandler;
 import sayit.Server.Handlers.clearAllHandler;
 import sayit.Server.Handlers.createEmailHandler;
 import sayit.Server.Handlers.deletePromptHandler;
@@ -13,13 +12,9 @@ import sayit.Server.Handlers.newQuestionHandler;
 import sayit.Server.Handlers.sendEmailHandler;
 import sayit.Server.Handlers.startHandler;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -30,9 +25,6 @@ public class Server {
     private static final int SERVER_PORT = 8100;
     private static final String SERVER_HOSTNAME = "localhost";
     private static HttpServer server;
-    
-    // Store username and passwords
-    private static Map<String, String> userCredentials = new HashMap<String, String>();
 
     /**
      * Starts the server at the given port and hostname

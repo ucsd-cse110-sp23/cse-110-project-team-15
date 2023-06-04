@@ -2,20 +2,22 @@ package sayit.Server.Handlers;
 
 import com.sun.net.httpserver.*;
 
-import sayit.Server.BusinessLogic.*;
+import sayit.Server.BusinessLogic.IOutput;
+import sayit.Server.BusinessLogic.OutputA;
+import sayit.Server.BusinessLogic.Prompt;
+
 import java.io.*;
-import java.net.*;
 import java.util.*;
 
 /**
- * In charge of consulting WhisperAPI, as well as adding prompts manually into ArrayList prompts
+ * In charge of consulting WhisperAPI, as well as adding prompts manually into ArrayList prompts (not used in app so could delete maybe)
  */
 public class newQuestionHandler implements HttpHandler, INQH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;
 
     /**
-     * Default constructor that initializes ArrayList prompts
+     * Default constructor that initializes ArrayList prompts and output
      * @param prompts ArrayList of prompts
      * @throws InterruptedException
      * @throws IOException
@@ -57,7 +59,7 @@ public class newQuestionHandler implements HttpHandler, INQH {
     /**
      * With the inputted question, get the ChatGPT response to it
      * @param httpExchange the request that the server receives
-     * @return String response containing to the inputted question answer
+     * @return String response containing to the inputted question's answer
      * @throws IOException
      * @throws InterruptedException
      */

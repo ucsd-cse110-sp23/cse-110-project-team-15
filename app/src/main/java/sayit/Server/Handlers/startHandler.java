@@ -2,10 +2,13 @@ package sayit.Server.Handlers;
 
 import com.sun.net.httpserver.*;
 
-import sayit.Server.BusinessLogic.*;
+import sayit.Server.BusinessLogic.AudioRecord;
+import sayit.Server.BusinessLogic.IAudioRecord;
+import sayit.Server.BusinessLogic.IInput;
+import sayit.Server.BusinessLogic.InputQ;
+
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 /**
  * In charge of consulting WhisperAPI and transcribing the question/prompt
@@ -15,7 +18,7 @@ public class startHandler implements HttpHandler, ISH {
     IInput input;
 
     /**
-     * Default constructor
+     * Default constructor that initializes audio and input
      * @throws InterruptedException
      * @throws IOException
      */
@@ -53,7 +56,7 @@ public class startHandler implements HttpHandler, ISH {
     /**
      * Start or stop recording and get ChatGPT response
      * @param httpExchange the request that the server receives
-     * @return String response saying that it's recording, or containing question
+     * @return String response saying that it's recording, or containing question (transcribed from audio)
      * @throws IOException
      * @throws InterruptedException
      */

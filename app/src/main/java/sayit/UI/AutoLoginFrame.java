@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 
 public class AutoLoginFrame extends JFrame {
 
-    private JPasswordField passwordField;
-
     public AutoLoginFrame(String inputEmail) {
         setTitle("Set AutoLogin");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
