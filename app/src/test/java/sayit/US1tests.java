@@ -108,7 +108,7 @@ public class US1tests {
     
                     // print the response for testing purposes
                     in = new BufferedReader(
-                            new InputStreamReader(conn.getInputStream()));
+                        new InputStreamReader(conn.getInputStream()));
                     response = in.readLine();
                     System.out.println("GET response: " + response);
     
@@ -116,10 +116,13 @@ public class US1tests {
                     if (response.equals("-1")) { break; }
     
                     // parse the response and store the question and answer in the prompts locally
-                    String question = response.substring(0, response.indexOf("/D\\"));
+                    String command = response.substring(0, response.indexOf("/C\\"));
+                    String question = response.substring(response.indexOf("/C\\") + 3, response.indexOf("/D\\"));
                     String answer = response.substring(response.indexOf("/D\\") + 3);
+                    String expectedC = String.format("New Question");
                     String expectedQ = String.format("Question %d?", i);
                     String expectedA = String.format("Answer %d.", i);
+                    assertEquals(expectedC, command);
                     assertEquals(expectedQ, question);
                     assertEquals(expectedA, answer);
     
