@@ -93,9 +93,9 @@ public class loadPromptsHandler implements HttpHandler {
                 List<Document> susHist = new ArrayList<>();
                 String type, ques, ans;
                 for (int i = 0; i < prompts.size(); i++) {
-                    type = "QnA";
+                    type = prompts.get(i).getCommand();
                     ques = prompts.get(i).getQuery();
-                    ans = prompts.get(i).getAnswer();
+                    ans = prompts.get(i).getReponse();
                     susHist.add(new Document("Type", type).append("Top", ques).append("Bottom", ans));
                 }
                 Bson filter = eq("acc_email", email.toString());
@@ -185,7 +185,7 @@ public class loadPromptsHandler implements HttpHandler {
                         qLine = (String)temp.get("Top");
                         aLine = temp.get("Bottom").toString();
 
-                        Prompt questionAndAnswer = new Prompt(qLine, aLine);
+                        Prompt questionAndAnswer = new Prompt(type, qLine, aLine);
                         prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
                     }
                     response = "Valid Login";

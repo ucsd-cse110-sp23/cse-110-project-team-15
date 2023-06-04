@@ -32,7 +32,7 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
-    private final String devURL = "http://localhost:8100/dev";
+    private final String indexURL = "http://localhost:8100/index";
     private final String loadPURL = "http://localhost:8100/load";
     private final String startURL = "http://localhost:8100/start";
     private final String newQURL = "http://localhost:8100/newQuestion";
@@ -193,6 +193,7 @@ public class AppFrame extends JFrame {
      */
     public void newQuestion(String question) {
         try {
+            String command = "New Question";
             // create URL (with query) to the server and create the connection
             URL url = new URL(newQURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -205,6 +206,7 @@ public class AppFrame extends JFrame {
             OutputStreamWriter out = new OutputStreamWriter(
                 conn.getOutputStream()
             );
+            out.write(command + "\n");
             question = question.trim();
             out.write(question);
             out.flush();
@@ -223,7 +225,7 @@ public class AppFrame extends JFrame {
             in.close();
 
             // add the question and response (answer) to the scrollFrame
-            Prompt prompt = new Prompt(question, response);
+            Prompt prompt = new Prompt(command, question, response);
             scrollFrame.addPrompt(prompt);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -293,7 +295,7 @@ public class AppFrame extends JFrame {
             while (true) {
                 // create URL (with query) to the server and create the connection
                 String query = String.valueOf(i);
-                URL url = new URL(devURL + "?=" + query);
+                URL url = new URL(indexURL + "?=" + query);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 // request the GET method on the server
@@ -314,9 +316,10 @@ public class AppFrame extends JFrame {
                 if (response.equals("-1")) { break; }
 
                 // parse the response and store the question and answer in the prompts locally
-                String question = response.substring(0, response.indexOf("/D\\"));
+                String command = response.substring(0, response.indexOf("/C\\"));
+                String question = response.substring(response.indexOf("/C\\") + 3, response.indexOf("/D\\"));
                 String answer = response.substring(response.indexOf("/D\\") + 3);
-                Prompt prompt = new Prompt(question, answer);
+                Prompt prompt = new Prompt(command, question, answer);
                 scrollFrame.addPrompt(prompt);
 
                 in.close();

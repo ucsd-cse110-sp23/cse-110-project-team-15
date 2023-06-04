@@ -19,9 +19,13 @@ public class Prompt extends JPanel {
     ImageIcon deleteSelectScaled = new ImageIcon(scaledDeleteSelect);
     ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
+    private String command;
+    private String query;
+    private String response;
+
     private boolean selected;
     private JTextArea queryField;
-    private JTextArea answerField;
+    private JTextArea responseField;
     JButton deleteButton;
 
     Color pink = new Color(227, 179, 171);
@@ -29,17 +33,21 @@ public class Prompt extends JPanel {
 
     /**
      * Default constructor
-     * @param query
-     * @param answer
+     * @param queryI
+     * @param responseI
      */
-    public Prompt(String query, String answer) {
+    public Prompt(String commandI, String queryI, String responseI) {
+
+        command = commandI;
+        query = queryI;
+        response = responseI;
 
         this.selected = false;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Format Query Field as a textbox
-        queryField = new JTextArea(query);
+        queryField = new JTextArea(commandI + ": " + queryI);
         queryField.setBackground(pink);
         queryField.setFont(new Font("Arial", Font.PLAIN, 14));
         queryField.setWrapStyleWord(true);
@@ -48,11 +56,11 @@ public class Prompt extends JPanel {
         queryField.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-              if (answerField.isVisible()) {
-                answerField.setVisible(false);
+              if (responseField.isVisible()) {
+                responseField.setVisible(false);
                 revalidate();
               } else {
-                answerField.setVisible(true);
+                responseField.setVisible(true);
                 revalidate();
               }
             }
@@ -98,24 +106,24 @@ public class Prompt extends JPanel {
         queryPanel.add(deletePanel, BorderLayout.EAST);
         queryPanel.setBackground(pink);
 
-        // Format Answer Field as a text box
-        answerField = new JTextArea(answer);
-        answerField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        answerField.setBackground(pink);
-        answerField.setFont(new Font("Arial", Font.PLAIN, 12));
-        answerField.setWrapStyleWord(true);
-        answerField.setLineWrap(true);
-        answerField.setEditable(false);
-        answerField.setPreferredSize(new Dimension(200, 50));
+        // Format Reponse Field as a text box
+        responseField = new JTextArea(responseI);
+        responseField.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        responseField.setBackground(pink);
+        responseField.setFont(new Font("Arial", Font.PLAIN, 12));
+        responseField.setWrapStyleWord(true);
+        responseField.setLineWrap(true);
+        responseField.setEditable(false);
+        responseField.setPreferredSize(new Dimension(200, 50));
 
         // Make it so that there is some space between the text and the border line
         Border paddingBorder2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-        Border compoundBorder2 = BorderFactory.createCompoundBorder(answerField.getBorder(), paddingBorder2);
-        answerField.setBorder(compoundBorder2);
+        Border compoundBorder2 = BorderFactory.createCompoundBorder(responseField.getBorder(), paddingBorder2);
+        responseField.setBorder(compoundBorder2);
 
         // Add text fields to prompt box
         this.add(queryPanel, BorderLayout.NORTH);
-        this.add(answerField, BorderLayout.CENTER);
+        this.add(responseField, BorderLayout.CENTER);
 
         // Format prompt box with some padding
         Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -123,8 +131,16 @@ public class Prompt extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         this.setBackground(blue);
 
-        answerField.setVisible(false);
+        responseField.setVisible(false);
         this.revalidate();
+    }
+
+    /**
+     * Getter for command of prompt
+     * @return String command of prompt
+     */
+    public String getCommand() {
+        return this.command;
     }
 
     /**
@@ -132,15 +148,15 @@ public class Prompt extends JPanel {
      * @return String query of prompt
      */
     public String getQuery() {
-        return this.queryField.getText();
+        return this.query;
     }
 
     /**
-     * Getter for answer of prompt
-     * @return String answer of prompt
+     * Getter for reponse of prompt
+     * @return String response of prompt
      */
-    public String getAnswer() {
-        return this.answerField.getText();
+    public String getReponse() {
+        return this.response;
     }
 
     /**

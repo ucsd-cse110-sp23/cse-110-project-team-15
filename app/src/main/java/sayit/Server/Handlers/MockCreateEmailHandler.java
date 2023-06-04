@@ -3,23 +3,24 @@ package sayit.Server.Handlers;
 import com.sun.net.httpserver.*;
 
 import sayit.Server.BusinessLogic.IOutput;
-import sayit.Server.BusinessLogic.OutputA;
+import sayit.Server.BusinessLogic.MockOutputA;
 import sayit.Server.BusinessLogic.Prompt;
 
 import java.io.*;
+import java.net.*;
 import java.util.*;
 
-public class createEmailHandler implements HttpHandler, ICEH {
+public class MockCreateEmailHandler implements HttpHandler, ICEH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;
 
     /**
-     * Default constructor that initializes ArrayList prompts and output
+     * Default constructor that initializes ArrayList prompts
      * @param prompts ArrayList of prompts
      */
-    public createEmailHandler(ArrayList<Prompt> prompts) {
+    public MockCreateEmailHandler(ArrayList<Prompt> prompts) {
         this.prompts = prompts;
-        output = new OutputA();
+        output = new MockOutputA();
     }
 
     /**
@@ -50,9 +51,9 @@ public class createEmailHandler implements HttpHandler, ICEH {
     }
 
     /**
-     * With the inputted email subject, get the ChatGPT response (email contents) for it
+     * With the inputted email subject, get the ChatGPT response to it
      * @param httpExchange the request that the server receives
-     * @return String response containing to the inputted email subject's contents
+     * @return String response containing to the inputted question answer
      * @throws IOException
      * @throws InterruptedException
      */
@@ -60,7 +61,7 @@ public class createEmailHandler implements HttpHandler, ICEH {
     public String handlePut(HttpExchange httpExchange) throws IOException, InterruptedException {
         String response = "Invalid PUT request";
 
-        /* read email subject from request (file), input into whisper, and return ChatGPT response to subject */
+        /* read question from request (file), input into whisper, and return ChatGPT response to question */
         /* setup reading from some input file */
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);

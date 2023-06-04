@@ -48,8 +48,8 @@ In loadPromptsHandler (update):
 
 In createEmailHandler:
     - (similar to newQH handlePut()) create a handlePut() method that does the following:
-        - read the email subject from the input file
-        - call makeAnswer() from OutputA to get ChatGPT response
+        x- read the email subject from the input file
+        x- call makeAnswer() from OutputA to get ChatGPT response
         - add (the command), the email subject, then the ChatGPT response to prompts
         - Optional: print - "createEH: " + response
         - return response (which should be the ChatGPT's answer/reponse from makeAnswer())
@@ -65,11 +65,11 @@ In AppFrame:
 
 
 In Prompts:
-    - change constructor to know have strings command, question, and answer
-        - optional: change question to top, and answer to bottom
-    - have to now fix everywhere where Prompt is used
-    - also have to do ethan's UI thing to include the command
-    
+    x- change constructor to know have strings command, question, and answer
+        x- optional: change answer to response
+    x- have to now fix everywhere where Prompt is used
+    x- also have to do ethan's UI thing to include the command
+
 
 Where ever ethan made his changes:
     - request loadPH handlePut() with query = "autoLogin"

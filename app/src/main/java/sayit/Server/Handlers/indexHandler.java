@@ -9,17 +9,16 @@ import java.net.*;
 import java.util.*;
 
 /**
- * In charge of getting a prompt at a given index, and recording prompts into preserve.txt
+ * In charge of getting a prompt at a given index
  */
-public class devHandler implements HttpHandler {
+public class indexHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
 
     /**
      * Default constructor that initializes ArrayList prompts
      * @param prompts ArrayList of prompts
-     * @param filePath String of path to file to be written to
      */
-    public devHandler(ArrayList<Prompt> prompts) {
+    public indexHandler(ArrayList<Prompt> prompts) {
         this.prompts = prompts;
     }
 
@@ -37,7 +36,7 @@ public class devHandler implements HttpHandler {
                 throw new Exception("Not Valid Request Method");
             }
         } catch (Exception e) {
-            System.out.println("loadPromptsHandler.java: An erroneous request");
+            System.out.println("indexHandler.java: An erroneous request");
             response = e.toString();
             e.printStackTrace();
         }
@@ -65,16 +64,18 @@ public class devHandler implements HttpHandler {
             /* if the index is larger than array, just return -1 */
             if (index >= prompts.size()) { return "-1"; }
 
+            String command = null;
             String question = null;
             String answer = null;
 
-            /* Store the question and answer at given index into response */
+            /* Store the command, question, and answer at given index into response */
+            command = prompts.get(index).getCommand();
             question = prompts.get(index).getQuery();
-            answer = prompts.get(index).getAnswer();
+            answer = prompts.get(index).getReponse();
 
-            /* set response to question + /D\ + answer, otherwise -1 --> (/D\ is the delimeter) */
-            response = question + "/D\\" + answer;
-            System.out.println("Prompt at index " + index + " is:\nQuestion:" + question + "\nAnswer:" + answer);
+            /* set response to command + /C\ question + /D\ + answer, otherwise -1 --> (/C\ and /D\ are delimeters) */
+            response = command + "/C\\" + question + "/D\\" + answer;
+            System.out.println("Prompt at index " + index + " is:\nCommand: " + command + "\nQuestion: " + question + "\nAnswer: " + answer);
         }
         return response;
     }

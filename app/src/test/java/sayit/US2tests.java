@@ -45,7 +45,7 @@ import java.util.ArrayList;
 
 public class US2tests {
     private final String FILE_EMPTY_PATH = "src/test/java/sayit/Test-files/empty.txt";
-    private final String devURL = "http://localhost:8100/dev";
+    private final String indexURL = "http://localhost:8100/index";
     private final String loadPURL = "http://localhost:8100/load";
     private final String startURL = "http://localhost:8100/start";
     private final String newQURL = "http://localhost:8100/newQuestion";
@@ -55,7 +55,7 @@ public class US2tests {
     @BeforeEach
     void startServer() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        MockServer.startServer(FILE_EMPTY_PATH);
+        MockServer.startServer();
     }
     @AfterEach
     void closeServer() throws IOException {

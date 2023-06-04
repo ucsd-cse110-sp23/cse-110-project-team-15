@@ -69,7 +69,10 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
-        /* get question from first line of file */
+        /* get command from first line of file */
+        String command = scanner.nextLine();
+
+        /* get question from second line of file */
         String question = scanner.nextLine();
         scanner.close();
 
@@ -78,7 +81,7 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         String answer = output.getAnswer();
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(question, answer);
+        Prompt prompt = new Prompt(command, question, answer);
         prompts.add(prompt);
 
         /* set response to answer */
@@ -98,6 +101,8 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
+        /* get command from first line of file */
+        String command = scanner.nextLine();
         /* get question from first line of file */
         String question = scanner.nextLine();
         /* get answer from rest of the files contents */
@@ -105,10 +110,10 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         while (scanner.hasNextLine()) { answer += scanner.nextLine(); }
         
         // Store question and answer in prompts
-        prompts.add(new Prompt(question, answer));
+        prompts.add(new Prompt(command, question, answer));
 
         // return that prompt was added/posted
-        String response = "Posted entry:" + "\nQuestion: " + question + "\nAnswer: " + answer;
+        String response = "Posted entry:" + "\nCommand: " + command + "\nQuestion: " + question + "\nAnswer: " + answer;
         System.out.println("newQH: " + response);
         scanner.close();
 

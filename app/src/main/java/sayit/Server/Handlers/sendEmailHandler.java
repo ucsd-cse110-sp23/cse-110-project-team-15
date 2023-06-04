@@ -75,7 +75,7 @@ public class sendEmailHandler implements HttpHandler {
 
             /* Store the question and answer at given index into response */
             question = prompts.get(index).getQuery();
-            answer = prompts.get(index).getAnswer();
+            answer = prompts.get(index).getReponse();
 
             /* set response to question + /D\ + answer, otherwise -1 --> (/D\ is the delimeter) */
             response = question + "/D\\" + answer;
@@ -102,7 +102,7 @@ public class sendEmailHandler implements HttpHandler {
         while (scanner.hasNextLine()) { answer += scanner.nextLine(); }
         
         // Store question and answer in prompts
-        prompts.add(new Prompt(question, answer));
+        //prompts.add(new Prompt(question, answer));
 
         // return that prompt was added/posted
         String response = "Posted entry {" + question + ", " + answer + "}";
@@ -140,7 +140,7 @@ public class sendEmailHandler implements HttpHandler {
 
             /* Store the question and answer at given index and delete */
             question = prompts.get(index).getQuery();
-            answer = prompts.get(index).getAnswer();
+            answer = prompts.get(index).getReponse();
             prompts.remove(index);
 
             /* set response to the deleted question and answer */

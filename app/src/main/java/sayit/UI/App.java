@@ -16,10 +16,8 @@ public class App {
     SwingUtilities.invokeLater(() -> {
       // Start the web server
       try {
-        String filePath = "src/main/java/sayit/Server/Handlers/preserve.txt";
-        
         /* Uncomment whichever server to use and comment out other */
-        MockServer.startServer(filePath);
+        MockServer.startServer();
         //Server.startServer(filePath);
       } catch (Exception e) {
         System.out.println("App.java: " + e);
