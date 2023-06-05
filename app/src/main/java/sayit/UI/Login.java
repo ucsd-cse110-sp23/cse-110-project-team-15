@@ -18,6 +18,14 @@ public class Login extends JFrame {
     private final String loadPURL = "http://localhost:8100/load";
 
     public Login() {
+        /*
+         * look for autoLoginFile
+         * if file exists
+         *      read file and set email & password to file contents
+         *      execute below try/catch, skip autoLogin, go to appFrame
+         * else
+         *      execute below try/catch
+         */
         setTitle("SayIt Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 200);
@@ -45,8 +53,7 @@ public class Login extends JFrame {
          * - request loadPH handlePut() with query = "autoLogin"
          * - if the response says "Automatic Login", immediately go straight to AppFrame() (skip everything below this)
          * - otherwise if the response says "No Automatic Login", then execute code below
-         */
-        
+         */    
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +67,7 @@ public class Login extends JFrame {
                  */
 
                 try {
-                    // create URL (with query) to the server and create the connection
+                    // create URL (without query) to the server and create the connection
                     URL url = new URL(loadPURL);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     
@@ -87,7 +94,7 @@ public class Login extends JFrame {
                     if (response.equals("Valid Login")) {
                         JOptionPane.showMessageDialog(Login.this, "Login successful!");
                         dispose();
-                        new AutoLoginFrame(email);
+                        new AutoLoginFrame(email);      //skip if autoLoginFile exists
                     } else {
                         JOptionPane.showMessageDialog(Login.this, "Invalid username or password. Please try again.");
                     }

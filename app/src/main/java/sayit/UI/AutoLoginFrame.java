@@ -38,6 +38,16 @@ public class AutoLoginFrame extends JFrame {
                  * - request loadPH handlePut() with query "autoLogin" to add IP and its associated email to mango
                  * - input the IP and the email in the request
                  */
+
+                /*
+                 * String autoLogin = handlePut(autoLogin)
+                 * if autoLogin == "No Automatic Login"
+                 *      //continue to login screen
+                 *      new AppFrame()
+                 * else
+                 *      skip to scroll frame loaded with email's prompt history
+                 */
+
                 new AppFrame();
             }
         });
