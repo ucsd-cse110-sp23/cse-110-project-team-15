@@ -62,16 +62,17 @@ public class deletePromptHandler implements HttpHandler {
         if (query != null) {
             int index = Integer.parseInt(query.substring(query.indexOf("=") + 1));
             
+            String command = null;
             String question = null;
             String answer = null;
 
-            /* Store the question and answer at given index and delete */
+            /* Store the command, question, and answer at given index into response */
+            command = prompts.get(index).getCommand();
             question = prompts.get(index).getQuery();
-            answer = prompts.get(index).getAnswer();
-            prompts.remove(index);
+            answer = prompts.get(index).getReponse();
 
-            /* set response to the deleted question and answer */
-            response = "Deleted at index: " + index + "\nQuestion: " + question + "\nAnswer: " + answer;
+            /* set response to command + /C\ question + /D\ + answer, otherwise -1 --> (/C\ and /D\ are delimeters) */
+            response = "Deleted at index: " + index + "\nCommand: " + command + "\nQuestion: " + question + "\nAnswer: " + answer;
             System.out.println("deletePH: " + response);
         }
         return response;

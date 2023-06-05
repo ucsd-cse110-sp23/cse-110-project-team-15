@@ -45,7 +45,7 @@ import java.util.ArrayList;
 
 public class US1tests {
     private final String FILE_EMPTY_PATH = "src/test/java/sayit/Test-files/empty.txt";
-    private final String devURL = "http://localhost:8100/dev";
+    private final String indexURL = "http://localhost:8100/index";
     private final String loadPURL = "http://localhost:8100/load";
     private final String startURL = "http://localhost:8100/start";
     private final String newQURL = "http://localhost:8100/newQuestion";
@@ -55,7 +55,7 @@ public class US1tests {
     @BeforeEach
     void startServer() throws IOException, InterruptedException {
         // start the server and fill its prompts with this file
-        MockServer.startServer(FILE_EMPTY_PATH);
+        MockServer.startServer();
     }
     @AfterEach
     void closeServer() throws IOException {
@@ -100,7 +100,7 @@ public class US1tests {
                 while (true) {
                     // create URL (with query) to the server and create the connection
                     String query = String.valueOf(i);
-                    url = new URL(devURL + "?=" + query);
+                    url = new URL(indexURL + "?=" + query);
                     conn = (HttpURLConnection) url.openConnection();
     
                     // request the GET method on the server
@@ -108,7 +108,7 @@ public class US1tests {
     
                     // print the response for testing purposes
                     in = new BufferedReader(
-                            new InputStreamReader(conn.getInputStream()));
+                        new InputStreamReader(conn.getInputStream()));
                     response = in.readLine();
                     System.out.println("GET response: " + response);
     
@@ -116,10 +116,13 @@ public class US1tests {
                     if (response.equals("-1")) { break; }
     
                     // parse the response and store the question and answer in the prompts locally
-                    String question = response.substring(0, response.indexOf("/D\\"));
+                    String command = response.substring(0, response.indexOf("/C\\"));
+                    String question = response.substring(response.indexOf("/C\\") + 3, response.indexOf("/D\\"));
                     String answer = response.substring(response.indexOf("/D\\") + 3);
+                    String expectedC = String.format("New Question");
                     String expectedQ = String.format("Question %d?", i);
                     String expectedA = String.format("Answer %d.", i);
+                    assertEquals(expectedC, command);
                     assertEquals(expectedQ, question);
                     assertEquals(expectedA, answer);
     
@@ -174,7 +177,7 @@ public class US1tests {
                 while (true) {
                     // create URL (with query) to the server and create the connection
                     String query = String.valueOf(i);
-                    url = new URL(devURL + "?=" + query);
+                    url = new URL(indexURL + "?=" + query);
                     conn = (HttpURLConnection) url.openConnection();
     
                     // request the GET method on the server

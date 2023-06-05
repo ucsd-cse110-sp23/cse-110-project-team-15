@@ -25,10 +25,6 @@ public class ScrollFrame extends JFrame {
     contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
     contentPane.setBackground(Color.BLUE);
 
-    // // Add multiple prompt objects to the content pane
-    // history = mediator.getPromptHistory();
-    // for (Prompt prompt: history.getHistoryArray()) { contentPane.add(prompt); }
-
     // Display the contents and enable scrolling
     scrollPane = new JScrollPane(contentPane);
     scrollPane.setPreferredSize(new Dimension(400, 400));

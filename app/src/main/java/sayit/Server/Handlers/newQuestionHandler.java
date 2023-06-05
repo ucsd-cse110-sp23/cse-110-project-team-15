@@ -2,20 +2,22 @@ package sayit.Server.Handlers;
 
 import com.sun.net.httpserver.*;
 
-import sayit.Server.BusinessLogic.*;
+import sayit.Server.BusinessLogic.IOutput;
+import sayit.Server.BusinessLogic.OutputA;
+import sayit.Server.BusinessLogic.Prompt;
+
 import java.io.*;
-import java.net.*;
 import java.util.*;
 
 /**
- * In charge of consulting WhisperAPI, as well as adding prompts manually into ArrayList prompts
+ * In charge of consulting WhisperAPI, as well as adding prompts manually into ArrayList prompts (not used in app so could delete maybe)
  */
 public class newQuestionHandler implements HttpHandler, INQH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;
 
     /**
-     * Default constructor that initializes ArrayList prompts
+     * Default constructor that initializes ArrayList prompts and output
      * @param prompts ArrayList of prompts
      * @throws InterruptedException
      * @throws IOException
@@ -57,7 +59,7 @@ public class newQuestionHandler implements HttpHandler, INQH {
     /**
      * With the inputted question, get the ChatGPT response to it
      * @param httpExchange the request that the server receives
-     * @return String response containing to the inputted question answer
+     * @return String response containing to the inputted question's answer
      * @throws IOException
      * @throws InterruptedException
      */
@@ -69,6 +71,9 @@ public class newQuestionHandler implements HttpHandler, INQH {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
+        /* set command to "New Question" */
+        String command = "New Question";
+
         /* get question from first line of file */
         String question = scanner.nextLine();
         scanner.close();
@@ -76,10 +81,9 @@ public class newQuestionHandler implements HttpHandler, INQH {
         /* get answer for the question */
         output.makeAnswer(question);
         String answer = output.getAnswer();
-        answer = answer.trim();
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(question, answer);
+        Prompt prompt = new Prompt(command, question, answer);
         prompts.add(prompt);
 
         /* set response to answer */
@@ -99,6 +103,8 @@ public class newQuestionHandler implements HttpHandler, INQH {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
+        /* set command to "New Question" */
+        String command = "New Question";
         /* get question from first line of file */
         String question = scanner.nextLine();
         /* get answer from rest of the files contents */
@@ -106,10 +112,10 @@ public class newQuestionHandler implements HttpHandler, INQH {
         while (scanner.hasNextLine()) { answer += scanner.nextLine(); }
         
         // Store question and answer in prompts
-        prompts.add(new Prompt(question, answer));
+        prompts.add(new Prompt(command, question, answer));
 
         // return that prompt was added/posted
-        String response = "Posted entry:" + "\nQuestion: " + question + "\nAnswer: " + answer;
+        String response = "Posted entry:" + "\nCommand: " + command + "\nQuestion: " + question + "\nAnswer: " + answer;
         System.out.println("newQH: " + response);
         scanner.close();
 

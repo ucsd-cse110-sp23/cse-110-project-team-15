@@ -3,12 +3,9 @@ package sayit.UI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -32,7 +29,7 @@ public class AppFrame extends JFrame {
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
-    private final String devURL = "http://localhost:8100/dev";
+    private final String indexURL = "http://localhost:8100/index";
     private final String loadPURL = "http://localhost:8100/load";
     private final String startURL = "http://localhost:8100/start";
     private final String newQURL = "http://localhost:8100/newQuestion";
@@ -52,7 +49,7 @@ public class AppFrame extends JFrame {
         footer = new Footer();
         isRecording = false;
 
-        // fill scrollFrame with the prompts from previous session
+        // fill scrollFrame with the prompts from server
         restore();
 
         // Make the main part of the frame the scrollFrame
@@ -63,13 +60,13 @@ public class AppFrame extends JFrame {
 
         setVisible(true);
 
-        // make functionality for buttons
+        // make functionality for start button
         startButton = footer.getStartButton();
         addListeners();
     }
 
     /**
-     * Create functionality for when the new and clear buttons are pressed
+     * Create functionality for when the start button is pressed
      */
     public void addListeners() {
         /* add functionality for start button */
@@ -124,21 +121,9 @@ public class AppFrame extends JFrame {
                         response += lineLoop;
                     }
                     response = response.trim();
-                    /* for marlyn and jezebel */
-                    /* parse the response into to get the command, which are the first 2 words (new question, clear all, delete prompt) */
-                    /* call the correct function based on command [FunctionNames: newQuestion(question), clearAll(), deletePrompt()] */
-                    /* if its not any of these commands, do not do anything */
-                    // Example| response = "new question my dad left me?"
-                        // call newQuestion(String question) and pass in the "my dad left me?" part as an argument
-                    // Example| response = "clear all"
-                        // call clearAll()
-                    // Example| response = "delete prompt"
-                        // call deletePrompt()
-                    /* the UI will not work properly until these are implemented correctly */
-                    /* also don't worry about passing the tests, i broke it and ill fix it later */
                     
+                    /* parse response and containing the prompt and call the correct function depending on its contents */
                     String command  = response.toLowerCase();
-                    
                     String[] words = command.split(" ");
 
                     if (words.length >= 2 && words[0].contains("new") && words[1].contains("question")) {
@@ -166,7 +151,7 @@ public class AppFrame extends JFrame {
                 e.getWindow().dispose();
                 System.out.println("JFrame Closed!\nYOUR MOM!");
 
-                /* request server to write all its prompts into a preserve.txt file */
+                /* request server to write all the prompts into mongo */
                 try {
                     // create URL to the server and create the connection
                     URL url = new URL(loadPURL);
@@ -177,7 +162,7 @@ public class AppFrame extends JFrame {
 
                     // won't call the handler correctly unless I do this?
                     BufferedReader in = new BufferedReader(
-                            new InputStreamReader(conn.getInputStream()));
+                        new InputStreamReader(conn.getInputStream()));
                     in.readLine();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -188,7 +173,7 @@ public class AppFrame extends JFrame {
     }
 
     /**
-     * Make a request to newQH, input the question, then add the response prompt Q&A to scrollFrame
+     * Make a request to newQH (input the question) to add the new prompt to its prompts, then add the response prompt Q&A to scrollFrame
      * @param question String of the question to be inputted
      */
     public void newQuestion(String question) {
@@ -222,8 +207,9 @@ public class AppFrame extends JFrame {
             response = response.trim();
             in.close();
 
-            // add the question and response (answer) to the scrollFrame
-            Prompt prompt = new Prompt(question, response);
+            // add the command, question, and response (answer) to the scrollFrame
+            String command = "New Question";
+            Prompt prompt = new Prompt(command, question, response);
             scrollFrame.addPrompt(prompt);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -231,6 +217,9 @@ public class AppFrame extends JFrame {
         }
     }
 
+    /**
+     * Make a request to clearAH to clear all its prompts, and clear all prompts in scrollframe
+     */
     public void clearAll() {
         // delete all prompts in prompt history when clear button is pressed
         /* clear the scrollFrame */
@@ -247,7 +236,7 @@ public class AppFrame extends JFrame {
 
             // won't call the handler correctly unless I do this?
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
+                new InputStreamReader(conn.getInputStream()));
             in.readLine();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -255,6 +244,9 @@ public class AppFrame extends JFrame {
         }
     }
 
+    /**
+     * Make a request to deletePH to delete its prompts at certain indices, and delete selected prompts in scrollframe
+     */
     public void deletePrompt() {
         /* delete selected prompts on scrollFrame */
         ArrayList<Integer> indices = scrollFrame.removeSelectedPrompts();
@@ -283,7 +275,7 @@ public class AppFrame extends JFrame {
     }
 
     /**
-     * Fill scrollFrame with the prompts from previous session (server response)
+     * Fill scrollFrame with the prompts from server
      */
     public void restore() {
         /* loop to request server for each of its prompts */
@@ -293,7 +285,7 @@ public class AppFrame extends JFrame {
             while (true) {
                 // create URL (with query) to the server and create the connection
                 String query = String.valueOf(i);
-                URL url = new URL(devURL + "?=" + query);
+                URL url = new URL(indexURL + "?=" + query);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 // request the GET method on the server
@@ -314,9 +306,10 @@ public class AppFrame extends JFrame {
                 if (response.equals("-1")) { break; }
 
                 // parse the response and store the question and answer in the prompts locally
-                String question = response.substring(0, response.indexOf("/D\\"));
+                String command = response.substring(0, response.indexOf("/C\\"));
+                String question = response.substring(response.indexOf("/C\\") + 3, response.indexOf("/D\\"));
                 String answer = response.substring(response.indexOf("/D\\") + 3);
-                Prompt prompt = new Prompt(question, answer);
+                Prompt prompt = new Prompt(command, question, answer);
                 scrollFrame.addPrompt(prompt);
 
                 in.close();

@@ -12,24 +12,16 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.FindOneAndUpdateOptions;
-import com.mongodb.client.model.ReturnDocument;
-import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.json.JsonWriterSettings;
 import org.bson.types.ObjectId;
 
-import static java.util.Arrays.*;
-
-import com.mongodb.client.*;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 
 /**
- * In charge of getting a prompt at a given index, and recording prompts into
- * preserve.txt
+ * In charge of reading and writing prompts to and from mongoDB for a specific email
  */
 public class loadPromptsHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
@@ -39,7 +31,6 @@ public class loadPromptsHandler implements HttpHandler {
     /**
      * Default constructor that initializes ArrayList prompts
      * @param prompts  ArrayList of prompts
-     * @param filePath String of path to file to be written to
      */
     public loadPromptsHandler(ArrayList<Prompt> prompts, StringBuilder email) {
         this.prompts = prompts;
@@ -77,7 +68,7 @@ public class loadPromptsHandler implements HttpHandler {
     }
 
     /**
-     * Write all prompts in prompts into database at given email
+     * Write all prompts in prompts into mongo at given email
      * @param httpExchange the request that the server receives
      * @return response saying whether or not the PUT succeeded
      * @throws IOException
@@ -93,9 +84,9 @@ public class loadPromptsHandler implements HttpHandler {
                 List<Document> susHist = new ArrayList<>();
                 String type, ques, ans;
                 for (int i = 0; i < prompts.size(); i++) {
-                    type = "QnA";
+                    type = prompts.get(i).getCommand();
                     ques = prompts.get(i).getQuery();
-                    ans = prompts.get(i).getAnswer();
+                    ans = prompts.get(i).getReponse();
                     susHist.add(new Document("Type", type).append("Top", ques).append("Bottom", ans));
                 }
                 Bson filter = eq("acc_email", email.toString());
@@ -106,16 +97,17 @@ public class loadPromptsHandler implements HttpHandler {
             } 
         }
 
-        // return that all prompts were written to filePath
+        // return that all prompts were written to mongo
         String response = "All Prompts were written to Mango";
         System.out.println("loadPH: " + response);
         return response;
     }
 
     /**
-     * Read in an email and password, check if they're valid, and handle login (fills in prompts)
+     * If the "autoLogin" query is passed, then handle autoLogin procedure with mongo (adding ip and email)
+     * Otherwise, read in an email and password, check if they're valid, and handle login (fills in prompts)
      * @param httpExchange the request that the server receives
-     * @return String response that says either "Valid Login" or "Invalid Login"
+     * @return String response that says either "Automatic Login", "No Automatic Login", "Valid Login", or "Invalid Login"
      * @throws IOException
      */
     private String handlePut(HttpExchange httpExchange) throws IOException {
@@ -125,20 +117,19 @@ public class loadPromptsHandler implements HttpHandler {
 
         if (query != null) {
             String subQuery = query.substring(query.indexOf("=") + 1);
-            /*
-             * if the subQuery == autoLogin, then login if the IP is stored in database, so
-             * return Automatic Login
-             */
-            /* else the IP doesn't exist in the database, so return No Automatic login */
             if (subQuery.equals("autoLogin")) {
+                /*
+                 * if the subQuery == autoLogin, then login if the IP is stored in database and Automatic Login
+                 * else the IP doesn't exist in the database, so return No Automatic Login 
+                 */
+                
                 /*
                  * store the email associated with that IP into StringBuilder email
                  * do Cristian's reading mongo thing to fill prompts
                  */
                 response = "Automatic Login";
-            } else {
                 response = "No Automatic Login";
-            }
+            } 
         } else {
             /* setup reading from some input file */
             InputStream inStream = httpExchange.getRequestBody();
@@ -185,7 +176,7 @@ public class loadPromptsHandler implements HttpHandler {
                         qLine = (String)temp.get("Top");
                         aLine = temp.get("Bottom").toString();
 
-                        Prompt questionAndAnswer = new Prompt(qLine, aLine);
+                        Prompt questionAndAnswer = new Prompt(type, qLine, aLine);
                         prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
                     }
                     response = "Valid Login";
@@ -217,18 +208,15 @@ public class loadPromptsHandler implements HttpHandler {
         try (MongoClient mongoClient = MongoClients.create(MONGO_URI)) {
             MongoDatabase accDatabase = mongoClient.getDatabase("AccountData");
             MongoCollection<Document> usersDB = accDatabase.getCollection("Users");
-
-            // find a list of documents and iterate throw it using an iterator.
             
             /*
              * check if the email already exists:
              * if it does, return "Email already used"
              * if it doesn't,
-             * add that email and password as a new entry/account into mongo
-             * store the email into the StringBuilder email
-             * return "Account Created"
+             *  add that email and password as a new entry/account into mongo
+             *  store the email into the StringBuilder email
+             *  return "Account Created"
              */
-
             Document accUser = usersDB.find(eq("acc_email", inputEmail)).first();
             if (accUser != null) {
                 response = "Email already used";

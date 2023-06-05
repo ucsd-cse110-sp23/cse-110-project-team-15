@@ -17,86 +17,12 @@ x- Only App, AppFrame, Footer, and ScrollFrame are needed for UI
 x- Rest of the classes should be doing stuff on the server
 
 
-In AppFrame:
-x- put the JPanels (scrollFrame, Footer) in
-x- in addListeners()
-    x- newButton: 
-        x- if not recording, request server to begin creating the wav file on its side
-        x- if is recording, request server to finalize wav file, input it into whisper, save the Q&A into its prompts, then return them back in response string
-            x- extract the Q&A from response string and add them to scrollFrame
-    x- clearButton:
-        x- clear out the scrollFrame
-        x- request server to clear its prompts
-    x- clearSelectedButton:
-        x- clear the selected prompts in scrollFrame, but make sure to keep an ArrayList of the indices of the prompts deleted
-        x- iterate through those indices and request server to delete whatever prompt at that index
-    x- addWindowListener:
-        x- request server to write all its prompts into a preserve.txt file
-    x- AppFrame constructor:
-        x- request server for all prompts in its preserve.txt file
-            x- add all of these prompts to scrollFrame
-
-
-In ServerTest:
-    x- Create tests for loadPromptsHandler:
-        x- Test "GET": returns the correct Q&A at given index
-    x- Create tests for newQuestionHandler:
-        x- Test "GET": returns Q&A received from (mocked) ChatGPT
-        x- Test "POST": check that it adds a Q&A into its prompts correctly
-    x- Create tests for deletePromptHandler:
-        x- Test "DELETE": check the size, and that the expected Q&A's that weren't deleted are still there
-    x- Create tests for clearAllHandler:
-        x- Test "DELETE": check the size, and that the first element doesn't exist
-
-
-In FilePreservationTest:
-    x- Create tests for loadPromptsHandler:
-        x- Test "PUT": the beforePrompts matches with what is read into afterPrompts from the .txt file
-
-
-Branch changes:
-    - mango: Server restore() and loadPH handlePut()
-    - voices: Server constructor, (new) startHandler, AppFrame, Footer
-    - accounts: Server constructor, loadPH handleGet(), (new) loadPH handlePut(), (new) devH 
-
-
-In startHandler:
-    x- For "GET": 
-        x- when requested to start, record audio
-        x- when requested to stop, get only the transcription of the question/prompt from ChatGPT (not an answer)
-    x- Mock it
-
-
-In newQuestionHandler (update):
-    x- In "GET":
-        x- change functionality to instead just take in a question (read from inputted file) rather than creating it with InputQ
-        x- the rest is the same where it just gets an answer for it, adds it to prompts, and sends a response with the Q&A
-    x- Remove IAudioRecord and InputQ (only need OutputA)
-    x- Fix mocking
-
-
-In AppFrame addListeners:
-    x- make Start button request startHandler "GET" to start and stop recording
-    - when stop recording, read back response, parse it, then call correct function with it
-        x- if the first 2 or 1 words are "new question" or "question", call newQuestion(String question) and pass in the question portion from the response
-            x- requests newQuestionHandler with the question
-        x- if the first 2 words are "clear all", call clearAll()
-            x- requests clearAllHandler to clear all prompts
-        x- if the first 2 words are "delete prompt", call clearSelected()
-            x- requests deletePromptHandler to delete the selected prompts
-
-
-In devHandler:
-    x- steal the current handleGet() from loadPromptsHandler (so that we can test the server prompts)
-    x- update mockServer when done
-
-
 In loadPromptsHandler (update):
-    - update handlePut() (after making devHandler), that will read in an email and password and check if they're valid:
+    x- update handlePut() (after making devHandler), that will read in an email and password and check if they're valid:
         x- if they are, do Cristian's reading mango in there to fill prompts (move the restore() in Server into there)
             x- store the email into the StringBuilder email
             x- return "Valid Login" response 
-        - otherwise, return "Invalid Login"
+        x- otherwise, return "Invalid Login"
     - also update handlePut() that will read a query
         - if the query says "autoLogin", check if the IP of the computer exists in the database
             - if it does, 
@@ -111,13 +37,45 @@ In loadPromptsHandler (update):
             - store that email into StringBuilder email
                 - create a new User with the IP and email in the Mongo Users collection
                 - return "Added AutoLogin"
-    - create handlePost() that will read in an email and password and check if the email already exists:
-        - if it does, return "Email already used"
-        - if it doesn't, 
-            - ask Cristian how to add that email and password as a new entry into mongo
-            - store the email into the StringBuilder email
-            - return "Account Created"
+    x- create handlePost() that will read in an email and password and check if the email already exists:
+        x- if it does, return "Email already used"
+        x- if it doesn't, 
+            x- ask Cristian how to add that email and password as a new entry into mongo
+            x- store the email into the StringBuilder email
+            x- return "Account Created"
     x- update handleGet() to write the prompts to the database under the email that is currently logged into
+
+
+In createEmailHandler:
+    x- (similar to newQH handlePut()) create a handlePut() method that does the following:
+        x- read the email subject from the input file
+        x- call makeAnswer() from OutputA to get ChatGPT response
+        x- add (the command), the email subject, then the ChatGPT response to prompts
+        x- Optional: print - "createEH: " + response
+        x- return response (which should be the ChatGPT's answer/reponse from makeAnswer())
+
+
+In AppFrame:
+    Step 1:
+    - create a function called "createEmail(String subject)", which will do the following:
+        - request handlePut() in createEmailHandler and input (inside a file) the email subject into it 
+            - (it is similar to the code in newQuestion())
+        - read the server's response from its file (that file should contain the email contents to the email subject made from ChatGPT)
+            - (it is similar to how it was done in newQuestion())
+        - add the command (Create Email), the email subject, and the response into the scrollFrame
+    Step 2:
+    - in the same place y'all made the string parsing:
+        - parse the response from startHandler to also look for "create email"
+            - Ex| response = "create email to Jill let's meet at Geisel for our 7pm study session"
+        - call createEmail(String subject) and pass in entirety of response into it
+            - Ex| pass in all of "create email to Jill let's meet at Geisel for our 7pm study session", not just "to Jill let's meet at Geisel for our 7pm study session"
+
+
+In Prompts:
+    x- change constructor to know have strings command, question, and answer
+        x- optional: change answer to response
+    x- have to now fix everywhere where Prompt is used
+    x- also have to do ethan's UI thing to include the command
 
 
 Where ever ethan made his changes:

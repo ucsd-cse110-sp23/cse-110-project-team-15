@@ -3,7 +3,7 @@ package sayit.Server.Handlers;
 import com.sun.net.httpserver.*;
 
 import sayit.Server.BusinessLogic.IOutput;
-import sayit.Server.BusinessLogic.OutputA;
+import sayit.Server.BusinessLogic.MockOutputA;
 import sayit.Server.BusinessLogic.Prompt;
 
 import java.io.*;
@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * In charge of creating an email by consulting ChatGPT to get the contents for an email subject
  */
-public class createEmailHandler implements HttpHandler, ICEH {
+public class MockCreateEmailHandler implements HttpHandler, ICEH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;
 
@@ -20,9 +20,9 @@ public class createEmailHandler implements HttpHandler, ICEH {
      * Default constructor that initializes ArrayList prompts and output
      * @param prompts ArrayList of prompts
      */
-    public createEmailHandler(ArrayList<Prompt> prompts) {
+    public MockCreateEmailHandler(ArrayList<Prompt> prompts) {
         this.prompts = prompts;
-        output = new OutputA();
+        output = new MockOutputA();
     }
 
     /**
