@@ -58,7 +58,6 @@ public class Login extends JFrame {
                  * if its response is "Valid Login", then display "Login successful", and go to AutoLoginFrame
                  * else, display "Invalid username or password. Please try again."
                  */
-
                 try {
                     // create URL (with query) to the server and create the connection
                     URL url = new URL(loadPURL);
