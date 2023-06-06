@@ -78,6 +78,7 @@ public class createEmailHandler implements HttpHandler, ICEH {
         /* get email contents for the subject */
         output.makeAnswer(subject);
         String content = output.getAnswer();
+        // add display name and best regards line here
 
         /* add the prompt to prompts */
         Prompt prompt = new Prompt(command, subject, content, null);

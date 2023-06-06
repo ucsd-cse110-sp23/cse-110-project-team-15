@@ -93,7 +93,7 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
     }
 
     /**
-     * Add a prompt to ArrayList prompts
+     * Add a prompt to ArrayList prompts (not used in app so could delete maybe)
      * @param httpExchange the request that the server receives
      * @return response saying whether or not the POST succeeded
      * @throws IOException

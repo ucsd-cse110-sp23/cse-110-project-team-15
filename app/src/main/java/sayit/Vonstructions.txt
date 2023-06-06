@@ -17,35 +17,6 @@ x- Only App, AppFrame, Footer, and ScrollFrame are needed for UI
 x- Rest of the classes should be doing stuff on the server
 
 
-In loadPromptsHandler (update):
-    x- update handlePut() (after making devHandler), that will read in an email and password and check if they're valid:
-        x- if they are, do Cristian's reading mango in there to fill prompts (move the restore() in Server into there)
-            x- store the email into the StringBuilder email
-            x- return "Valid Login" response 
-        x- otherwise, return "Invalid Login"
-    - also update handlePut() that will read a query
-        - if the query says "autoLogin", check if the IP of the computer exists in the database
-            - if it does, 
-                - store the email associated with that IP into StringBuilder email
-                - do Cristian's reading mongo thing to fill prompts
-                x- return "Automatic Login"
-            x- if it doesn't,
-                x- return "No Automatic Login"
-    - also update handlePut() that will read a different query
-        - if the query says "addLogin", 
-            - read from file to get IP and email from request
-            - store that email into StringBuilder email
-                - create a new User with the IP and email in the Mongo Users collection
-                - return "Added AutoLogin"
-    x- create handlePost() that will read in an email and password and check if the email already exists:
-        x- if it does, return "Email already used"
-        x- if it doesn't, 
-            x- ask Cristian how to add that email and password as a new entry into mongo
-            x- store the email into the StringBuilder email
-            x- return "Account Created"
-    x- update handleGet() to write the prompts to the database under the email that is currently logged into
-
-
 In createEmailHandler:
     x- (similar to newQH handlePut()) create a handlePut() method that does the following:
         x- read the email subject from the input file
@@ -89,8 +60,23 @@ In AppFrame:
     x- whenever a Prompt is created, pass in emailPrompt
 
 
-Where ever ethan made his changes:
-    - request loadPH handlePut() with query = "autoLogin"
-        - if the response says "Automatic Login", move on to homepage
-        - otherwise if the response says "No Automatic Login",
-            x- stay on account login page and call loadPH handlePut() w/o query and input the email and password from user into it
+In sendEmailHandler:
+    - from request, read:
+        - String fromEmail
+        - String password
+        - String toEmail
+        - String SMTPHost
+        - String TLSPort
+        - String subject
+        - String body
+    - call TLSSendEmail() with all that
+        - if it returns true, return "Email Successfully Sent"
+        - otherwise, return "Error with Email"
+
+
+In createEmailHandler:
+    - 
+    - from request, read:
+        x- subject
+        - displayName
+    - to the content (later stored in response), append "\nBest Regards\n" + displayName 
