@@ -61,21 +61,21 @@ In AppFrame:
 
 
 In sendEmailHandler:
-    - from request, read:
-        - String fromEmail
-        - String password
-        - String toEmail
-        - String SMTPHost
-        - String TLSPort
-        - String subject
-        - String body
-    - call TLSSendEmail() with all that
-        - if it returns true, return "Email Successfully Sent"
-        - otherwise, return "Error with Email"
+    x- from request, read:
+        x- String fromEmail
+        x- String password
+        x- String toEmail
+        x- String SMTPHost
+        x- String TLSPort
+        x- String subject
+        x- String body
+    x- call TLSSendEmail() with all that
+        x- if it returns true, return "Email Successfully Sent"
+        x- otherwise, return "Error with Email"
 
 
 In createEmailHandler:
-    - 
+    - change how M&J call the handlePut to include displayName when they're done
     - from request, read:
         x- subject
         - displayName
