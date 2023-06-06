@@ -80,7 +80,7 @@ public class createEmailHandler implements HttpHandler, ICEH {
         String content = output.getAnswer();
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(command, subject, content);
+        Prompt prompt = new Prompt(command, subject, content, null);
         prompts.add(prompt);
 
         /* set response to answer */

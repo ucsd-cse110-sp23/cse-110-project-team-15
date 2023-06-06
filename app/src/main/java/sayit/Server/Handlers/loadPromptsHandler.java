@@ -176,7 +176,7 @@ public class loadPromptsHandler implements HttpHandler {
                         qLine = (String)temp.get("Top");
                         aLine = temp.get("Bottom").toString();
 
-                        Prompt questionAndAnswer = new Prompt(type, qLine, aLine);
+                        Prompt questionAndAnswer = new Prompt(type, qLine, aLine, null);
                         prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
                     }
                     response = "Valid Login";

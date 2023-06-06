@@ -19,6 +19,14 @@ public class Prompt extends JPanel {
     ImageIcon deleteSelectScaled = new ImageIcon(scaledDeleteSelect);
     ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
+    // Get email icon
+    // Load the icon image from a file
+    ImageIcon emailIcon = new ImageIcon("src/resources/email.png");
+
+    // Scale the icon image to fit the button
+    Image scaledEmailIcon = emailIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+    ImageIcon emailIconScaled = new ImageIcon(scaledEmailIcon);
+
     private String command;
     private String query;
     private String response;
@@ -27,16 +35,19 @@ public class Prompt extends JPanel {
     private JTextArea queryField;
     private JTextArea responseField;
     JButton deleteButton;
+    JButton emailButton;
 
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
 
     /**
      * Default constructor
+     * @param commandI
      * @param queryI
      * @param responseI
+     * @param p
      */
-    public Prompt(String commandI, String queryI, String responseI) {
+    public Prompt(String commandI, String queryI, String responseI, StringBuilder emailPrompt) {
 
         command = commandI;
         query = queryI;
@@ -105,6 +116,31 @@ public class Prompt extends JPanel {
 
         queryPanel.add(deletePanel, BorderLayout.EAST);
         queryPanel.setBackground(pink);
+
+        // if the command is "Create Email", create an additional "emailButton" to indicate that an email is selected
+        if (command.equals("Create Email")) {
+            // Make email button
+            emailButton = new JButton(emailIconScaled);
+            emailButton.setPreferredSize(new Dimension(20, 20));
+            emailButton.setIcon(emailIconScaled);
+            emailButton.setBorder(BorderFactory.createEmptyBorder());
+            emailButton.setFocusPainted(false);
+
+            // Create a new JPanel to hold the delete button and set its preferred size
+            JPanel emailPanel = new JPanel();
+            emailPanel.setPreferredSize(new Dimension(25, 25));
+            emailPanel.add(emailButton);
+            emailPanel.setBackground(pink);
+            emailPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
+            queryPanel.add(emailPanel, BorderLayout.SOUTH);
+
+            // create listener for emailButton
+            emailButton.addActionListener(e -> {
+                emailPrompt.setLength(0);
+                emailPrompt.append(commandI + "/C\\" + queryI + "/D\\" + responseI);
+            });
+        }
 
         // Format Reponse Field as a text box
         responseField = new JTextArea(responseI);

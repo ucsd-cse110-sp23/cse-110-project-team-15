@@ -26,6 +26,7 @@ public class AppFrame extends JFrame {
 
     // other miscellaneous variables
     boolean isRecording;
+    StringBuilder emailPrompt;
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
@@ -44,10 +45,11 @@ public class AppFrame extends JFrame {
         setTitle("SayIt");
         setSize(400, 600);
 
-        // Set scrollFrame, footer, and isRecording
+        // Set scrollFrame, footer, isRecording, and emailPrompt
         scrollFrame = new ScrollFrame();
         footer = new Footer();
         isRecording = false;
+        emailPrompt = new StringBuilder();
 
         // fill scrollFrame with the prompts from server
         restore();
@@ -206,10 +208,10 @@ public class AppFrame extends JFrame {
             }
             response = response.trim();
             in.close();
-
+            
             // add the command, question, and response (answer) to the scrollFrame
             String command = "New Question";
-            Prompt prompt = new Prompt(command, question, response);
+            Prompt prompt = new Prompt(command, question, response, emailPrompt);
             scrollFrame.addPrompt(prompt);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -309,7 +311,7 @@ public class AppFrame extends JFrame {
                 String command = response.substring(0, response.indexOf("/C\\"));
                 String question = response.substring(response.indexOf("/C\\") + 3, response.indexOf("/D\\"));
                 String answer = response.substring(response.indexOf("/D\\") + 3);
-                Prompt prompt = new Prompt(command, question, answer);
+                Prompt prompt = new Prompt(command, question, answer, emailPrompt);
                 scrollFrame.addPrompt(prompt);
 
                 in.close();
