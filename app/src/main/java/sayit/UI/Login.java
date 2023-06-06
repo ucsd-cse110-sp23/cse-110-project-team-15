@@ -71,8 +71,8 @@ public class Login extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(Login.this, "Invalid username or password. Please try again.");
                 }
+                return;
             }
-            return;
         } catch (IOException ex){
             System.out.println(ex);
         } catch (Exception ex) {
