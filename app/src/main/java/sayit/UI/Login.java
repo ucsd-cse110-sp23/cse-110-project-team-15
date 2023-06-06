@@ -94,7 +94,7 @@ public class Login extends JFrame {
                     if (response.equals("Valid Login")) {
                         JOptionPane.showMessageDialog(Login.this, "Login successful!");
                         dispose();
-                        new AutoLoginFrame(email);      //skip if autoLoginFile exists
+                        new AutoLoginFrame(email, password);      //skip if autoLoginFile exists
                     } else {
                         JOptionPane.showMessageDialog(Login.this, "Invalid username or password. Please try again.");
                     }
