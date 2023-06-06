@@ -9,6 +9,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.File;  // Import the File class
+import java.io.FileReader;
+import java.io.IOException;  // Import the IOException class to handle errors
 
 public class Login extends JFrame {
     private JTextField emailField;
@@ -26,6 +29,56 @@ public class Login extends JFrame {
          * else
          *      execute below try/catch
          */
+        try {
+            File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
+            if(autoFile.exists()) {
+                String email;
+                String password;
+
+                BufferedReader reader = new BufferedReader(new FileReader(autoFile));
+                email = reader.readLine();
+                password = reader.readLine();
+                reader.close();
+
+                // create URL (without query) to the server and create the connection
+                URL url = new URL(loadPURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                
+                // request the PUT method on the server
+                conn.setRequestMethod("PUT");
+                conn.setDoOutput(true);
+    
+                // write the email and password to the file
+                OutputStreamWriter out = new OutputStreamWriter(
+                    conn.getOutputStream()
+                );
+                out.write(email + "\n");
+                out.write(password);
+                out.flush();
+                out.close();
+    
+                // read the answer from file
+                BufferedReader in = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream())
+                );
+                String response = in.readLine();
+                in.close();
+
+                if (response.equals("Valid Login")) {
+                    JOptionPane.showMessageDialog(Login.this, "Login successful!");
+                    dispose();
+                    new AppFrame();      //skip since autoLoginFile exists
+                } else {
+                    JOptionPane.showMessageDialog(Login.this, "Invalid username or password. Please try again.");
+                }
+            }
+            return;
+        } catch (IOException ex){
+            System.out.println(ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("AppFrame: " + ex);
+        }
         setTitle("SayIt Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 200);
