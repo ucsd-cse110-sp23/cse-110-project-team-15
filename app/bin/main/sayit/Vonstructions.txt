@@ -72,23 +72,21 @@ In AppFrame:
 
 
 In Prompts:
-    - create a variable (scrollFrame) of type ScrollFrame that will store a scrollframe instance
-    - create a setter that scrollframe can pass an instance of itself into:
-        - set the "scrollFrame" variable to the passed in instance
-    - if the command is "Create Email":
-        - create an additional button to indicate that an email is selected (similar to ethan's trash can icon)
-    - if the email button is pressed:
-        - set the icon to selected
-        - call the setter in ScrollFrame and pass itself into it
-    - create a function (unselectEmail) that sets the email icon to unselected
+    x- change constructor to also take in a StringBuilder emailPrompt
+        x- will store command, query (subject), and response into it
+    x- if the command is "Create Email":
+        x- create an additional button to be used to select an email
+    x- if the email button is pressed:
+        x- set emailPrompt that command, query, and response
+    x- fix everywehere where a Prompt is created
+        x- in handlers, put a null for the 4th parameter
+        x- in AppFrame, input emailPrompt
 
 
-In ScrollFrame: 
-    - create a variable (selectedEmail) of type Prompt that will store the prompt instance of the selected email
-    - create a setter that prompt can pass an instance of itself into:
-        - if "selectedEmail" is not null:
-            - go to the currently stored instance and call the unselectEmail() function for it
-        - set the "selectedEmail" variable to the passed in instance
+In AppFrame: 
+    x- create a StringBuilder emailPrompt 
+        x- to contain command, query (subject), and response
+    x- whenever a Prompt is created, pass in emailPrompt
 
 
 Where ever ethan made his changes:
