@@ -138,6 +138,8 @@ public class AppFrame extends JFrame {
                         deletePrompt();
                     } else if (words.length >= 2 && words[0].contains("create") && words[1].contains("email")) {
                         createEmail(response.substring(response.indexOf(" ", 7) + 1).trim());
+                    } else if (words.length >= 2 && words[0].contains("setup") && words[1].contains("email") || words.length >= 3 && words[0].contains("set") && words[1].contains("up") && words[2].contains("email")) {
+                        new SetupEmail();
                     }
                     // else do something with non-valid transcription from Whisper API
 
