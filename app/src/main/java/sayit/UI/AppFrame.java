@@ -207,7 +207,7 @@ public class AppFrame extends JFrame {
             }
             response = response.trim();
             in.close();
-
+            
             // add the command, question, and response (answer) to the scrollFrame
             String command = "Create Email";
             Prompt prompt = new Prompt(command, subject, response, emailPrompt);
