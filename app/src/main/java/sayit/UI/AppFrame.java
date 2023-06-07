@@ -156,6 +156,7 @@ public class AppFrame extends JFrame {
                     } else if (words.length >= 2 && words[0].contains("setup") && words[1].contains("email") || words.length >= 3 && words[0].contains("set") && words[1].contains("up") && words[2].contains("email")) {
                         new SetupEmail(firstName,lastName,displayName,emailAddress,emailPassword,SMTPHost,TLSPort, emailPrompt);
                     } else if (words.length >= 2 && words[0].contains("send") && words[1].contains("email")) {
+                        // parse for the email
                         String toEmail = command.substring(command.indexOf(" ", command.indexOf("to")) + 1).trim();
                         String[] toEmailArr = toEmail.split(" ");
                         for (int i = 0; i < toEmailArr.length; i++) { 
@@ -164,6 +165,7 @@ public class AppFrame extends JFrame {
                         }
                         toEmail = "";
                         for (String s: toEmailArr) { toEmail += s; }
+                        if (toEmail.charAt(toEmail.length() - 1) == '.') { toEmail = toEmail.substring(0, toEmail.length() - 1); }
 
                         System.out.println("toEmail: " + toEmail);
                         sendEmail(toEmail);
