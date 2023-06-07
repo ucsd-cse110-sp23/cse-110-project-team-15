@@ -36,6 +36,7 @@ public class AppFrame extends JFrame {
     private final String newQURL = "http://localhost:8100/newQuestion";
     private final String clearAURL = "http://localhost:8100/clearAll";
     private final String deletePURL = "http://localhost:8100/deletePrompt";
+    private final String createEURL = "http://localhost:8100/createEmail";
 
     /**
      * Call all other necessary classes and setup AppFrame
@@ -135,6 +136,8 @@ public class AppFrame extends JFrame {
                         clearAll();
                     } else if (words.length >= 2 && words[0].contains("delete") && words[1].contains("prompt")) {
                         deletePrompt();
+                    } else if (words.length >= 2 && words[0].contains("create") && words[1].contains("email")) {
+                        createEmail(response.substring(response.indexOf(" ", 7) + 1).trim());
                     }
                     // else do something with non-valid transcription from Whisper API
 
@@ -172,6 +175,47 @@ public class AppFrame extends JFrame {
                 }
             }
         });
+    }
+
+    public void createEmail(String subject) {
+        try {
+            // create URL (with query) to the server and create the connection
+            URL url = new URL(createEURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            
+            // request the PUT method on the server
+            conn.setRequestMethod("PUT");
+            conn.setDoOutput(true);
+
+            // write the question to the file
+            OutputStreamWriter out = new OutputStreamWriter(
+                conn.getOutputStream()
+            );
+            subject = subject.trim();
+            out.write(subject);
+            out.flush();
+            out.close();
+
+            // read the answer from file
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream())
+            );
+            String lineLoop;
+            String response = "";
+            while ((lineLoop = in.readLine()) != null) {
+                response += lineLoop;
+            }
+            response = response.trim();
+            in.close();
+
+            // add the command, question, and response (answer) to the scrollFrame
+            String command = "Create Email";
+            Prompt prompt = new Prompt(command, subject, response, emailPrompt);
+            scrollFrame.addPrompt(prompt);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("AppFrame: " + ex);
+        }
     }
 
     /**
