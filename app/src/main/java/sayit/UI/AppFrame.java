@@ -148,9 +148,19 @@ public class AppFrame extends JFrame {
                         createEmail(response.substring(response.indexOf(" ", 7) + 1).trim());
                     } else if (words.length >= 2 && words[0].contains("setup") && words[1].contains("email") || words.length >= 3 && words[0].contains("set") && words[1].contains("up") && words[2].contains("email")) {
                         dispose();
-                        new SetupEmail(firstName,lastName,displayName,emailAddress,emailPassword,SMTPHost,TLSPort);
+                        new SetupEmail(firstName,lastName,displayName,emailAddress,emailPassword,SMTPHost,TLSPort, emailPrompt);
                     } else if (words.length >= 2 && words[0].contains("send") && words[1].contains("email")) {
-                        sendEmail(words[3]);
+                        String toEmail = command.substring(command.indexOf(" ", command.indexOf("to")) + 1).trim();
+                        String[] toEmailArr = toEmail.split(" ");
+                        for (int i = 0; i < toEmailArr.length; i++) { 
+                            if (toEmailArr[i].equals("at")) { toEmailArr[i] = "@"; }
+                            else if (toEmailArr[i].equals("dot")) { toEmailArr[i] = "."; }
+                        }
+                        toEmail = "";
+                        for (String s: toEmailArr) { toEmail += s; }
+
+                        System.out.println("toEmail: " + toEmail);
+                        sendEmail(toEmail);
                     }
                     // else do something with non-valid transcription from Whisper API
 

@@ -30,7 +30,7 @@ public class SetupEmail extends JFrame {
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
 
-    SetupEmail(StringBuilder IFirstName, StringBuilder ILastName, StringBuilder IDisplayName, StringBuilder IEmailAddress, StringBuilder IEmailPassword, StringBuilder ISMTPHost, StringBuilder ITLSPort) {
+    SetupEmail(StringBuilder IFirstName, StringBuilder ILastName, StringBuilder IDisplayName, StringBuilder IEmailAddress, StringBuilder IEmailPassword, StringBuilder ISMTPHost, StringBuilder ITLSPort, StringBuilder emailPrompt) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Setup Email");
 
@@ -148,7 +148,9 @@ public class SetupEmail extends JFrame {
 
                 ITLSPort.setLength(0);
                 ITLSPort.append(TLSPort.getText().trim());
-                
+                // save all datq  \t database
+                // IDisplayName.toString()
+
                 AppFrame appFrame = new AppFrame();
                 dispose();
                 JOptionPane.showMessageDialog(appFrame, "Saved");
