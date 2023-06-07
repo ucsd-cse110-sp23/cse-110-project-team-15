@@ -11,7 +11,6 @@ public class ScrollFrame extends JFrame {
   // put all JPanels here
   private JPanel contentPane;
   private JScrollPane scrollPane;
-  private Prompt selectedEmail;
 
   /**
    * Call all other necessary classes and setup ScrollFrame
