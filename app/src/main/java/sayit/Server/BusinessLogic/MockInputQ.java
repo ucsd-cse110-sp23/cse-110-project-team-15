@@ -14,8 +14,9 @@ public class MockInputQ implements IInput {
 
     public void InputTranscription() throws IOException {
         //mockInputString = "new question haha fart?";
-        //mockInputString = "create email to jill to fard";
-        mockInputString = "setup email";
+        mockInputString = "send email to taylorvon525@gmail.com";
+        //mockInputString = "Create email to jill to meet";
+        //mockInputString = "setup email";
         //mockInputString = "delete prompt";
         //mockInputString = "clear all";
     }

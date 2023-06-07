@@ -37,6 +37,14 @@ public class AppFrame extends JFrame {
     private final String clearAURL = "http://localhost:8100/clearAll";
     private final String deletePURL = "http://localhost:8100/deletePrompt";
     private final String createEURL = "http://localhost:8100/createEmail";
+    private final String sendEURL = "http://localhost:8100/sendEmail";
+    StringBuilder firstName = new StringBuilder();
+    StringBuilder lastName = new StringBuilder();
+    StringBuilder displayName = new StringBuilder();
+    StringBuilder emailAddress = new StringBuilder("vrtaylor@ucsd.edu");
+    StringBuilder emailPassword = new StringBuilder("uzxbcwadxswbtsxg");
+    StringBuilder SMTPHost = new StringBuilder("smtp.gmail.com");
+    StringBuilder TLSPort = new StringBuilder("587");
 
     /**
      * Call all other necessary classes and setup AppFrame
@@ -139,7 +147,10 @@ public class AppFrame extends JFrame {
                     } else if (words.length >= 2 && words[0].contains("create") && words[1].contains("email")) {
                         createEmail(response.substring(response.indexOf(" ", 7) + 1).trim());
                     } else if (words.length >= 2 && words[0].contains("setup") && words[1].contains("email") || words.length >= 3 && words[0].contains("set") && words[1].contains("up") && words[2].contains("email")) {
-                        new SetupEmail();
+                        dispose();
+                        new SetupEmail(firstName,lastName,displayName,emailAddress,emailPassword,SMTPHost,TLSPort);
+                    } else if (words.length >= 2 && words[0].contains("send") && words[1].contains("email")) {
+                        sendEmail(words[3]);
                     }
                     // else do something with non-valid transcription from Whisper API
 
@@ -179,6 +190,67 @@ public class AppFrame extends JFrame {
         });
     }
 
+
+    /**
+     * Make a request to sendEH (input the fromEmail, password, toEmail, SMTPHost, TLSPort, subject, and body) to add the new prompt to its prompts, then add the response prompt to scrollFrame
+     * @param toEmail String of the toEmail to be inputted
+     */
+    public void sendEmail(String toEmail) {
+        try {
+            // create URL (with query) to the server and create the connection
+            URL url = new URL(sendEURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            
+            // request the PUT method on the server
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            /* get the subject and body from emailPrompt */
+            String ep = emailPrompt.toString();
+            String subject = ep.substring(ep.indexOf("/C\\") + 3, ep.indexOf("/D\\"));
+            String body = ep.substring(ep.indexOf("/D\\") + 3);
+
+            // write the question to the file
+            OutputStreamWriter out = new OutputStreamWriter(
+                conn.getOutputStream()
+            );
+            toEmail = toEmail.trim();
+            out.write(emailAddress.toString() + "\n");
+            out.write(emailPassword.toString() + "\n");
+            out.write(toEmail + "\n");
+            out.write(SMTPHost.toString() + "\n");
+            out.write(TLSPort.toString() + "\n");
+            out.write(subject + "\n");
+            out.write(body);
+            out.flush();
+            out.close();
+
+            // read the answer from file
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream())
+            );
+            String lineLoop;
+            String response = "";
+            while ((lineLoop = in.readLine()) != null) {
+                response += lineLoop;
+            }
+            response = response.trim();
+            in.close();
+            
+            // add the command, question, and response (answer) to the scrollFrame
+            String command = "Send Email";
+            Prompt prompt = new Prompt(command, toEmail, response, emailPrompt);
+            scrollFrame.addPrompt(prompt);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("AppFrame: " + ex);
+        }
+    }
+
+    /**
+     * Make a request to createEH (input the subject and displayName) to add the new prompt to its prompts, then add the response prompt to scrollFrame
+     * @param subject String of the subject to be inputted
+     */
     public void createEmail(String subject) {
         try {
             // create URL (with query) to the server and create the connection
@@ -194,7 +266,8 @@ public class AppFrame extends JFrame {
                 conn.getOutputStream()
             );
             subject = subject.trim();
-            out.write(subject);
+            out.write(subject + "\n");
+            out.write(displayName.toString());
             out.flush();
             out.close();
 

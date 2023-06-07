@@ -19,6 +19,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import com.sun.mail.imap.protocol.ID;
+
 public class SetupEmail extends JFrame {
     
     private JPanel contentPane;
@@ -28,7 +30,7 @@ public class SetupEmail extends JFrame {
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
 
-    SetupEmail() {
+    SetupEmail(StringBuilder IFirstName, StringBuilder ILastName, StringBuilder IDisplayName, StringBuilder IEmailAddress, StringBuilder IEmailPassword, StringBuilder ISMTPHost, StringBuilder ITLSPort) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Setup Email");
 
@@ -125,7 +127,28 @@ public class SetupEmail extends JFrame {
         // Add action listener to the save button
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Open the AppFrame class and display a "Saved" message
+                // save tne data to strings, open the AppFrame class, and display a "Saved" message
+                IFirstName.setLength(0);
+                IFirstName.append(firstName.getText().trim());
+
+                ILastName.setLength(0);
+                ILastName.append(lastName.getText().trim());
+
+                IDisplayName.setLength(0);
+                IDisplayName.append(displayName.getText().trim());
+
+                IEmailAddress.setLength(0);
+                IEmailAddress.append(emailAddress.getText().trim());
+
+                IEmailPassword.setLength(0);
+                IEmailPassword.append(emailPassword.getText().trim());
+
+                ISMTPHost.setLength(0);
+                ISMTPHost.append(SMTPHost.getText().trim());
+
+                ITLSPort.setLength(0);
+                ITLSPort.append(TLSPort.getText().trim());
+                
                 AppFrame appFrame = new AppFrame();
                 dispose();
                 JOptionPane.showMessageDialog(appFrame, "Saved");

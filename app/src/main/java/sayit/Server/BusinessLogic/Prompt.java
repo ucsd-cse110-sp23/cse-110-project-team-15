@@ -138,7 +138,7 @@ public class Prompt extends JPanel {
             // create listener for emailButton
             emailButton.addActionListener(e -> {
                 emailPrompt.setLength(0);
-                emailPrompt.append(commandI + "/C\\" + queryI + "/D\\" + responseI);
+                emailPrompt.append(queryI + "/D\\" + responseI);
             });
         }
 

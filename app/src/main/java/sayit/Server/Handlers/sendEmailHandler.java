@@ -37,7 +37,7 @@ public class sendEmailHandler implements HttpHandler {
                 throw new Exception("Not Valid Request Method");
             }
         } catch (Exception e) {
-            System.out.println("RequestHandler.java: An erroneous request");
+            System.out.println("sendEmailHandler.java: An erroneous request");
             response = e.toString();
             e.printStackTrace();
         }
@@ -60,6 +60,9 @@ public class sendEmailHandler implements HttpHandler {
         InputStream inStream = httpExchange.getRequestBody();
         Scanner scanner = new Scanner(inStream);
         
+        /* set command to "Send Email" */
+        String command = "Send Email";
+
         /* get fromEmail from first line of file */
         String fromEmail = scanner.nextLine();
         /* get password from second line of file */
@@ -87,6 +90,10 @@ public class sendEmailHandler implements HttpHandler {
         } else {
             response = "Error with Email";
         }
+
+        /* add the prompt to prompts */
+        Prompt prompt = new Prompt(command, subject, body, null);
+        prompts.add(prompt);
 
         // return that email was successfully/unsuccessfully sent
         System.out.println(response);

@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * In charge of creating an email by consulting ChatGPT to get the contents for an email subject
  */
-public class createEmailHandler implements HttpHandler, ICEH {
+public class createEmailHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;
 
@@ -33,6 +33,7 @@ public class createEmailHandler implements HttpHandler, ICEH {
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "Request Received";
         String method = httpExchange.getRequestMethod();
+        
         try {
             if (method.equals("PUT")) {
                 response = handlePut(httpExchange);
@@ -59,7 +60,6 @@ public class createEmailHandler implements HttpHandler, ICEH {
      * @throws IOException
      * @throws InterruptedException
      */
-    @Override
     public String handlePut(HttpExchange httpExchange) throws IOException, InterruptedException {
         String response = "Invalid PUT request";
 
@@ -73,20 +73,24 @@ public class createEmailHandler implements HttpHandler, ICEH {
 
         /* get subject from first line of file */
         String subject = scanner.nextLine();
-        //chatGPTSubject = "Create email " + subject + ", and end it with \"Best Regards, " + displayName + "\""; 
+        /* get subject from second line of file */
+        String displayName = "";
+        if (scanner.hasNext()) { displayName = scanner.nextLine(); }
         scanner.close();
+        /* create input to send to ChatGPT */
+        String chatGPTSubject = "Create email " + subject + " And end the email with \"Best Regards, " + displayName + "\"";
+        System.out.println("cgpts: " + chatGPTSubject);
         
-        /* get email contents for the subject */
-        output.makeAnswer(subject); // change to chatGPTSubject
-        String content = output.getAnswer();
-        // add display name and best regards line here
+        /* get email body for the subject */
+        output.makeAnswer(chatGPTSubject);
+        String body = output.getAnswer();
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(command, subject, content, null);
+        Prompt prompt = new Prompt(command, subject, body, null);
         prompts.add(prompt);
 
         /* set response to answer */
-        response = content;
+        response = body;
         System.out.println("createEH: " + response);
         return response;
     }
