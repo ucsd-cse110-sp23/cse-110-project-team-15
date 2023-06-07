@@ -77,7 +77,7 @@ public class createEmailHandler implements HttpHandler, ICEH {
         scanner.close();
         
         /* get email contents for the subject */
-        output.makeAnswer(chatGPTSubject);
+        output.makeAnswer(subject); // change to chatGPTSubject
         String content = output.getAnswer();
         // add display name and best regards line here
 
