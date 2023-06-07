@@ -75,8 +75,10 @@ public class sendEmailHandler implements HttpHandler {
         String TLSPort = scanner.nextLine();
         /* get subject from sixth line of file */
         String subject = scanner.nextLine();
-        /* get body from seventh line of file */
-        String body = scanner.nextLine();
+        /* get body from the rest line of file */
+        String body = "";
+        while (scanner.hasNext()) { body += scanner.nextLine() + "\n"; }
+        body = body.trim();
         scanner.close();
         
         /* 
@@ -92,7 +94,7 @@ public class sendEmailHandler implements HttpHandler {
         }
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(command, subject, body, null);
+        Prompt prompt = new Prompt(command, subject, response, null);
         prompts.add(prompt);
 
         // return that email was successfully/unsuccessfully sent

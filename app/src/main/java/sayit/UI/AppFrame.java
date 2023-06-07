@@ -136,7 +136,7 @@ public class AppFrame extends JFrame {
                     String lineLoop;
                     String response = "";
                     while ((lineLoop = in.readLine()) != null) {
-                        response += lineLoop;
+                        response += lineLoop + "\n";
                     }
                     response = response.trim();
                     
@@ -248,7 +248,7 @@ public class AppFrame extends JFrame {
             String lineLoop;
             String response = "";
             while ((lineLoop = in.readLine()) != null) {
-                response += lineLoop;
+                response += lineLoop + "\n";
             }
             response = response.trim();
             in.close();
@@ -272,7 +272,6 @@ public class AppFrame extends JFrame {
      */
     public void createEmail(String subject) {
         try {
-            System.out.println("DsiplayName createEmail(): " + displayName.toString());
             // create URL (with query) to the server and create the connection
             URL url = new URL(createEURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -298,7 +297,7 @@ public class AppFrame extends JFrame {
             String lineLoop;
             String response = "";
             while ((lineLoop = in.readLine()) != null) {
-                response += lineLoop;
+                response += lineLoop + "\n";
             }
             response = response.trim();
             in.close();
@@ -343,7 +342,7 @@ public class AppFrame extends JFrame {
             String lineLoop;
             String response = "";
             while ((lineLoop = in.readLine()) != null) {
-                response += lineLoop;
+                response += lineLoop + "\n";
             }
             response = response.trim();
             in.close();
@@ -438,7 +437,7 @@ public class AppFrame extends JFrame {
                 String lineLoop;
                 response = "";
                 while ((lineLoop = in.readLine()) != null) {
-                    response += lineLoop;
+                    response += lineLoop + "\n";
                 }
                 response = response.trim();
                 System.out.println("GET response: " + response);

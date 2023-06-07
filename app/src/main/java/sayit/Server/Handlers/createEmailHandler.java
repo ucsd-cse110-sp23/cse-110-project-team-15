@@ -83,7 +83,7 @@ public class createEmailHandler implements HttpHandler {
         
         /* get email body for the subject */
         output.makeAnswer(chatGPTSubject);
-        String body = output.getAnswer();
+        String body = output.getAnswer().trim();
 
         /* add the prompt to prompts */
         Prompt prompt = new Prompt(command, subject, body, null);

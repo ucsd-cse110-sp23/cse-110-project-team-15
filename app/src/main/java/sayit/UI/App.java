@@ -16,8 +16,8 @@ public class App {
       // Start the web server
       try {
         /* Uncomment whichever server to use and comment out other */
-        //MockServer.startServer();
-        Server.startServer();
+        MockServer.startServer();
+        //Server.startServer();
       } catch (Exception e) {
         System.out.println("App.java: " + e);
         e.printStackTrace();
