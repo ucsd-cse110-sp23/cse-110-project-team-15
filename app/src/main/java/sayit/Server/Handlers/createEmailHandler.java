@@ -73,10 +73,11 @@ public class createEmailHandler implements HttpHandler, ICEH {
 
         /* get subject from first line of file */
         String subject = scanner.nextLine();
+        //chatGPTSubject = subject + ", and end it with \"Best Regards, " + displayName + "\""; 
         scanner.close();
-
+        
         /* get email contents for the subject */
-        output.makeAnswer(subject);
+        output.makeAnswer(chatGPTSubject);
         String content = output.getAnswer();
         // add display name and best regards line here
 
