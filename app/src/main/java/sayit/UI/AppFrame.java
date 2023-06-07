@@ -38,13 +38,13 @@ public class AppFrame extends JFrame {
     private final String deletePURL = "http://localhost:8100/deletePrompt";
     private final String createEURL = "http://localhost:8100/createEmail";
     private final String sendEURL = "http://localhost:8100/sendEmail";
-    StringBuilder firstName = new StringBuilder();
-    StringBuilder lastName = new StringBuilder();
-    StringBuilder displayName = new StringBuilder();
-    StringBuilder emailAddress = new StringBuilder("vrtaylor@ucsd.edu");
-    StringBuilder emailPassword = new StringBuilder("uzxbcwadxswbtsxg");
-    StringBuilder SMTPHost = new StringBuilder("smtp.gmail.com");
-    StringBuilder TLSPort = new StringBuilder("587");
+    StringBuilder firstName;
+    StringBuilder lastName;
+    StringBuilder displayName;
+    StringBuilder emailAddress;
+    StringBuilder emailPassword;
+    StringBuilder SMTPHost;
+    StringBuilder TLSPort;
 
     /**
      * Call all other necessary classes and setup AppFrame
@@ -54,11 +54,18 @@ public class AppFrame extends JFrame {
         setTitle("SayIt");
         setSize(400, 600);
 
-        // Set scrollFrame, footer, isRecording, and emailPrompt
+        // initialize everything
         scrollFrame = new ScrollFrame();
         footer = new Footer();
         isRecording = false;
         emailPrompt = new StringBuilder();
+        firstName = new StringBuilder();
+        lastName = new StringBuilder();
+        displayName = new StringBuilder();
+        emailAddress = new StringBuilder();
+        emailPassword = new StringBuilder();
+        SMTPHost = new StringBuilder();
+        TLSPort = new StringBuilder();
 
         // fill scrollFrame with the prompts from server
         restore();
@@ -147,7 +154,6 @@ public class AppFrame extends JFrame {
                     } else if (words.length >= 2 && words[0].contains("create") && words[1].contains("email")) {
                         createEmail(response.substring(response.indexOf(" ", 7) + 1).trim());
                     } else if (words.length >= 2 && words[0].contains("setup") && words[1].contains("email") || words.length >= 3 && words[0].contains("set") && words[1].contains("up") && words[2].contains("email")) {
-                        dispose();
                         new SetupEmail(firstName,lastName,displayName,emailAddress,emailPassword,SMTPHost,TLSPort, emailPrompt);
                     } else if (words.length >= 2 && words[0].contains("send") && words[1].contains("email")) {
                         String toEmail = command.substring(command.indexOf(" ", command.indexOf("to")) + 1).trim();
@@ -254,6 +260,9 @@ public class AppFrame extends JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("AppFrame: " + ex);
+            String command = "Send Email";
+            Prompt prompt = new Prompt(command, toEmail, "Error with Email", emailPrompt);
+            scrollFrame.addPrompt(prompt);
         }
     }
 
@@ -263,6 +272,7 @@ public class AppFrame extends JFrame {
      */
     public void createEmail(String subject) {
         try {
+            System.out.println("DsiplayName createEmail(): " + displayName.toString());
             // create URL (with query) to the server and create the connection
             URL url = new URL(createEURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

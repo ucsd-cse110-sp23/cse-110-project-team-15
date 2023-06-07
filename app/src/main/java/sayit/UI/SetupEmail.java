@@ -134,8 +134,10 @@ public class SetupEmail extends JFrame {
                 ILastName.setLength(0);
                 ILastName.append(lastName.getText().trim());
 
+                System.out.println("DsiplayName before: " + IDisplayName.toString());
                 IDisplayName.setLength(0);
                 IDisplayName.append(displayName.getText().trim());
+                System.out.println("DsiplayName after: " + IDisplayName.toString());
 
                 IEmailAddress.setLength(0);
                 IEmailAddress.append(emailAddress.getText().trim());
@@ -151,9 +153,9 @@ public class SetupEmail extends JFrame {
                 // save all datq  \t database
                 // IDisplayName.toString()
 
-                AppFrame appFrame = new AppFrame();
+                //AppFrame appFrame = new AppFrame();
+                JOptionPane.showMessageDialog(null, "Saved");
                 dispose();
-                JOptionPane.showMessageDialog(appFrame, "Saved");
             }
         });
 
@@ -161,8 +163,8 @@ public class SetupEmail extends JFrame {
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Open the AppFrame class and display a "Canceled" message
-                AppFrame appFrame = new AppFrame();
-                JOptionPane.showMessageDialog(appFrame, "Canceled");
+                //AppFrame appFrame = new AppFrame();
+                JOptionPane.showMessageDialog(null, "Canceled");
                 dispose();
             }
         });
