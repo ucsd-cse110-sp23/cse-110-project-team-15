@@ -93,7 +93,7 @@ public class US4tests {
         assertEquals("Valid Login", response);
 
         // check that autoFile is created with correct login credentials
-        MockAutoLoginFrame myAutoFrame = new MockAutoLoginFrame(email, password);
+        MockAutoLoginFrame myAutoFrame = new MockAutoLoginFrame();
         myAutoFrame.storeLoginCredentials(email, password);
         File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
         assertTrue(autoFile.exists());
@@ -111,7 +111,7 @@ public class US4tests {
     @Test
     void autoLoginTest() throws IOException, InterruptedException {
         // create autoLogin file
-        MockAutoLoginFrame myAutoFrame = new MockAutoLoginFrame("test", "test");
+        MockAutoLoginFrame myAutoFrame = new MockAutoLoginFrame();
         myAutoFrame.storeLoginCredentials("test", "test");
         File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
 
