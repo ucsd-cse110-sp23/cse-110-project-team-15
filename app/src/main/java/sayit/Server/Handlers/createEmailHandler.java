@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * In charge of creating an email by consulting ChatGPT to get the contents for an email subject
  */
-public class createEmailHandler implements HttpHandler {
+public class createEmailHandler implements HttpHandler, ICEH {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     IOutput output;
 
@@ -33,7 +33,6 @@ public class createEmailHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String response = "Request Received";
         String method = httpExchange.getRequestMethod();
-        
         try {
             if (method.equals("PUT")) {
                 response = handlePut(httpExchange);
@@ -60,6 +59,7 @@ public class createEmailHandler implements HttpHandler {
      * @throws IOException
      * @throws InterruptedException
      */
+    @Override
     public String handlePut(HttpExchange httpExchange) throws IOException, InterruptedException {
         String response = "Invalid PUT request";
 
@@ -73,24 +73,18 @@ public class createEmailHandler implements HttpHandler {
 
         /* get subject from first line of file */
         String subject = scanner.nextLine();
-        /* get subject from second line of file */
-        String displayName = "";
-        if (scanner.hasNext()) { displayName = scanner.nextLine(); }
         scanner.close();
-        /* create input to send to ChatGPT */
-        String chatGPTSubject = "Create email " + subject + " And end the email with \"Best Regards, " + displayName + "\"";
-        System.out.println("cgpts: " + chatGPTSubject);
-        
-        /* get email body for the subject */
-        output.makeAnswer(chatGPTSubject);
-        String body = output.getAnswer().trim();
+
+        /* get email contents for the subject */
+        output.makeAnswer(subject);
+        String content = output.getAnswer();
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(command, subject, body, null);
+        Prompt prompt = new Prompt(command, subject, content);
         prompts.add(prompt);
 
         /* set response to answer */
-        response = body;
+        response = content;
         System.out.println("createEH: " + response);
         return response;
     }

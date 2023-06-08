@@ -1,7 +1,6 @@
 package sayit.Server.BusinessLogic;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,14 +19,6 @@ public class Prompt extends JPanel {
     ImageIcon deleteSelectScaled = new ImageIcon(scaledDeleteSelect);
     ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-    // Get email icon
-    // Load the icon image from a file
-    ImageIcon emailIcon = new ImageIcon("src/resources/email.png");
-
-    // Scale the icon image to fit the button
-    Image scaledEmailIcon = emailIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-    ImageIcon emailIconScaled = new ImageIcon(scaledEmailIcon);
-
     private String command;
     private String query;
     private String response;
@@ -36,19 +27,16 @@ public class Prompt extends JPanel {
     private JTextArea queryField;
     private JTextArea responseField;
     JButton deleteButton;
-    JButton emailButton;
 
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
 
     /**
      * Default constructor
-     * @param commandI
      * @param queryI
      * @param responseI
-     * @param p
      */
-    public Prompt(String commandI, String queryI, String responseI, StringBuilder emailPrompt) {
+    public Prompt(String commandI, String queryI, String responseI) {
 
         command = commandI;
         query = queryI;
@@ -65,6 +53,18 @@ public class Prompt extends JPanel {
         queryField.setWrapStyleWord(true);
         queryField.setLineWrap(true);
         queryField.setEditable(false);
+        queryField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              if (responseField.isVisible()) {
+                responseField.setVisible(false);
+                revalidate();
+              } else {
+                responseField.setVisible(true);
+                revalidate();
+              }
+            }
+          });
 
         // Make it so that there is some space between the text and the border line
         Border paddingBorder1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -76,20 +76,6 @@ public class Prompt extends JPanel {
         JPanel queryPanel = new JPanel(new BorderLayout());
         queryPanel.add(queryField, BorderLayout.CENTER);
         queryPanel.setBorder(queryPanelBorder);
-
-        // if the command is "Create Email", create an additional "emailButton" to indicate that an email is selected
-        if (command.equals("Create Email")) {
-            // Make email button
-            emailButton = new JButton(emailIconScaled);
-            emailButton.setPreferredSize(new Dimension(20, 20));
-            emailButton.setFocusPainted(false);
-
-            // create listener for emailButton
-            emailButton.addActionListener(e -> {
-                emailPrompt.setLength(0);
-                emailPrompt.append(queryI + "/D\\" + responseI);
-            });
-        }
 
         // Make delete button
         deleteButton = new JButton(scaledIcon);
@@ -110,32 +96,14 @@ public class Prompt extends JPanel {
             }
         });
 
+        // Create a new JPanel to hold the delete button and set its preferred size
+        JPanel deletePanel = new JPanel();
+        deletePanel.setPreferredSize(new Dimension(25, 25));
+        deletePanel.add(deleteButton);
+        deletePanel.setBackground(pink);
+        deletePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 
-        // Create expand button
-        JButton expandButton = new JButton("v");
-        expandButton.setPreferredSize(new Dimension(20, 20));
-        //expandButton.setBorder(null);
-        expandButton.setFocusPainted(false);
-
-        // Add ActionListener to toggle visibility of the responseField
-        expandButton.addActionListener(e -> {
-            if (responseField.isVisible()) {
-                responseField.setVisible(false);
-                revalidate();
-            } else {
-                responseField.setVisible(true);
-                revalidate();
-            }
-        });
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 0));
-        buttonPanel.setOpaque(false);
-
-        if (command.equals("Create Email")) { buttonPanel.add(emailButton); }
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(expandButton);
-        queryPanel.add(buttonPanel, BorderLayout.EAST);
-
+        queryPanel.add(deletePanel, BorderLayout.EAST);
         queryPanel.setBackground(pink);
 
         // Format Reponse Field as a text box
@@ -146,6 +114,7 @@ public class Prompt extends JPanel {
         responseField.setWrapStyleWord(true);
         responseField.setLineWrap(true);
         responseField.setEditable(false);
+        responseField.setPreferredSize(new Dimension(200, 50));
 
         // Make it so that there is some space between the text and the border line
         Border paddingBorder2 = BorderFactory.createEmptyBorder(5, 5, 5, 5);

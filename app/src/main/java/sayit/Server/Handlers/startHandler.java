@@ -41,7 +41,7 @@ public class startHandler implements HttpHandler, ISH {
                 throw new Exception("Not Valid Request Method");
             }
         } catch (Exception e) {
-            System.out.println("startHandler.java: An erroneous request");
+            System.out.println("newQuestionHandler.java: An erroneous request");
             response = e.toString();
             e.printStackTrace();
         }

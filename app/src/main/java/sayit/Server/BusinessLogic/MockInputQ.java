@@ -13,10 +13,7 @@ public class MockInputQ implements IInput {
     }
 
     public void InputTranscription() throws IOException {
-        // mockInputString = "new question haha fart?";
-        // mockInputString = "send email to taylorvon525 at gmail dot com.";
-        //mockInputString = "Create email to jill to meet";
-        mockInputString = "setup email";
+        mockInputString = "new question i like my coffee diabetic?";
         //mockInputString = "delete prompt";
         //mockInputString = "clear all";
     }

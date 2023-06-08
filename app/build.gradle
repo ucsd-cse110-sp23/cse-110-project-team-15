@@ -28,10 +28,6 @@ dependencies {
 
     // This is for Mango DB
     implementation 'org.mongodb:mongodb-driver-sync:4.9.1'
-
-    // This dependency is used for javax API functionality
-    implementation files('../lib/javax.mail.jar')
-    implementation files('../lib/activation.jar')
 }
 
 application {

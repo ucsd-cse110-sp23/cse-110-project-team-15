@@ -80,7 +80,7 @@ public class MockCreateEmailHandler implements HttpHandler, ICEH {
         String content = output.getAnswer();
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(command, subject, content, null);
+        Prompt prompt = new Prompt(command, subject, content);
         prompts.add(prompt);
 
         /* set response to answer */

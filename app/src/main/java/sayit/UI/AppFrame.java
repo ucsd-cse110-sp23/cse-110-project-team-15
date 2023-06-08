@@ -26,7 +26,6 @@ public class AppFrame extends JFrame {
 
     // other miscellaneous variables
     boolean isRecording;
-    StringBuilder emailPrompt;
     Color black = new Color(0, 0, 0);
     Color red = new Color(255, 0, 0);
     Color pink = new Color(227, 179, 171);
@@ -36,16 +35,6 @@ public class AppFrame extends JFrame {
     private final String newQURL = "http://localhost:8100/newQuestion";
     private final String clearAURL = "http://localhost:8100/clearAll";
     private final String deletePURL = "http://localhost:8100/deletePrompt";
-    private final String createEURL = "http://localhost:8100/createEmail";
-    private final String sendEURL = "http://localhost:8100/sendEmail";
-    private final String setupURL = "http://localhost:8100/setupEmail";
-    StringBuilder firstName;
-    StringBuilder lastName;
-    StringBuilder displayName;
-    StringBuilder emailAddress;
-    StringBuilder emailPassword;
-    StringBuilder SMTPHost;
-    StringBuilder TLSPort;
 
     /**
      * Call all other necessary classes and setup AppFrame
@@ -55,18 +44,10 @@ public class AppFrame extends JFrame {
         setTitle("SayIt");
         setSize(400, 600);
 
-        // initialize everything
+        // Set scrollFrame, footer, and isRecording
         scrollFrame = new ScrollFrame();
         footer = new Footer();
         isRecording = false;
-        emailPrompt = new StringBuilder();
-        firstName = new StringBuilder();
-        lastName = new StringBuilder();
-        displayName = new StringBuilder();
-        emailAddress = new StringBuilder();
-        emailPassword = new StringBuilder();
-        SMTPHost = new StringBuilder();
-        TLSPort = new StringBuilder();
 
         // fill scrollFrame with the prompts from server
         restore();
@@ -137,7 +118,7 @@ public class AppFrame extends JFrame {
                     String lineLoop;
                     String response = "";
                     while ((lineLoop = in.readLine()) != null) {
-                        response += lineLoop + "\n";
+                        response += lineLoop;
                     }
                     response = response.trim();
                     
@@ -152,24 +133,6 @@ public class AppFrame extends JFrame {
                         clearAll();
                     } else if (words.length >= 2 && words[0].contains("delete") && words[1].contains("prompt")) {
                         deletePrompt();
-                    } else if (words.length >= 2 && words[0].contains("create") && words[1].contains("email")) {
-                        createEmail(response.substring(response.indexOf(" ", 7) + 1).trim());
-                    } else if (words.length >= 2 && words[0].contains("setup") && words[1].contains("email") || words.length >= 3 && words[0].contains("set") && words[1].contains("up") && words[2].contains("email")) {
-                        new SetupEmail(firstName,lastName,displayName,emailAddress,emailPassword,SMTPHost,TLSPort, emailPrompt);
-                    } else if (words.length >= 2 && words[0].contains("send") && words[1].contains("email")) {
-                        // parse for the email
-                        String toEmail = command.substring(command.indexOf(" ", command.indexOf("to")) + 1).trim();
-                        String[] toEmailArr = toEmail.split(" ");
-                        for (int i = 0; i < toEmailArr.length; i++) { 
-                            if (toEmailArr[i].equals("at")) { toEmailArr[i] = "@"; }
-                            else if (toEmailArr[i].equals("dot")) { toEmailArr[i] = "."; }
-                        }
-                        toEmail = "";
-                        for (String s: toEmailArr) { toEmail += s; }
-                        if (toEmail.charAt(toEmail.length() - 1) == '.') { toEmail = toEmail.substring(0, toEmail.length() - 1); }
-
-                        System.out.println("toEmail: " + toEmail);
-                        sendEmail(toEmail);
                     }
                     // else do something with non-valid transcription from Whisper API
 
@@ -209,112 +172,6 @@ public class AppFrame extends JFrame {
         });
     }
 
-
-    /**
-     * Make a request to sendEH (input the fromEmail, password, toEmail, SMTPHost, TLSPort, subject, and body) to add the new prompt to its prompts, then add the response prompt to scrollFrame
-     * @param toEmail String of the toEmail to be inputted
-     */
-    public void sendEmail(String toEmail) {
-        try {
-            // create URL (with query) to the server and create the connection
-            URL url = new URL(sendEURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            
-            // request the PUT method on the server
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-
-            /* get the subject and body from emailPrompt */
-            String ep = emailPrompt.toString();
-            String subject = ep.substring(ep.indexOf("/C\\") + 3, ep.indexOf("/D\\"));
-            String body = ep.substring(ep.indexOf("/D\\") + 3);
-
-            // write the question to the file
-            OutputStreamWriter out = new OutputStreamWriter(
-                conn.getOutputStream()
-            );
-            toEmail = toEmail.trim();
-            out.write(emailAddress.toString() + "\n");
-            out.write(emailPassword.toString() + "\n");
-            out.write(toEmail + "\n");
-            out.write(SMTPHost.toString() + "\n");
-            out.write(TLSPort.toString() + "\n");
-            out.write(subject + "\n");
-            out.write(body);
-            out.flush();
-            out.close();
-
-            // read the answer from file
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream())
-            );
-            String lineLoop;
-            String response = "";
-            while ((lineLoop = in.readLine()) != null) {
-                response += lineLoop + "\n";
-            }
-            response = response.trim();
-            in.close();
-            
-            // add the command, question, and response (answer) to the scrollFrame
-            String command = "Send Email";
-            Prompt prompt = new Prompt(command, toEmail, response, emailPrompt);
-            scrollFrame.addPrompt(prompt);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("AppFrame: " + ex);
-            String command = "Send Email";
-            Prompt prompt = new Prompt(command, toEmail, "Error with Email", emailPrompt);
-            scrollFrame.addPrompt(prompt);
-        }
-    }
-
-    /**
-     * Make a request to createEH (input the subject and displayName) to add the new prompt to its prompts, then add the response prompt to scrollFrame
-     * @param subject String of the subject to be inputted
-     */
-    public void createEmail(String subject) {
-        try {
-            // create URL (with query) to the server and create the connection
-            URL url = new URL(createEURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            
-            // request the PUT method on the server
-            conn.setRequestMethod("PUT");
-            conn.setDoOutput(true);
-
-            // write the question to the file
-            OutputStreamWriter out = new OutputStreamWriter(
-                conn.getOutputStream()
-            );
-            subject = subject.trim();
-            out.write(subject + "\n");
-            out.write(displayName.toString());
-            out.flush();
-            out.close();
-
-            // read the answer from file
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream())
-            );
-            String lineLoop;
-            String response = "";
-            while ((lineLoop = in.readLine()) != null) {
-                response += lineLoop + "\n";
-            }
-            response = response.trim();
-            in.close();
-            
-            // add the command, question, and response (answer) to the scrollFrame
-            String command = "Create Email";
-            Prompt prompt = new Prompt(command, subject, response, emailPrompt);
-            scrollFrame.addPrompt(prompt);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("AppFrame: " + ex);
-        }
-    }
-
     /**
      * Make a request to newQH (input the question) to add the new prompt to its prompts, then add the response prompt Q&A to scrollFrame
      * @param question String of the question to be inputted
@@ -345,14 +202,14 @@ public class AppFrame extends JFrame {
             String lineLoop;
             String response = "";
             while ((lineLoop = in.readLine()) != null) {
-                response += lineLoop + "\n";
+                response += lineLoop;
             }
             response = response.trim();
             in.close();
-            
+
             // add the command, question, and response (answer) to the scrollFrame
             String command = "New Question";
-            Prompt prompt = new Prompt(command, question, response, emailPrompt);
+            Prompt prompt = new Prompt(command, question, response);
             scrollFrame.addPrompt(prompt);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -440,7 +297,7 @@ public class AppFrame extends JFrame {
                 String lineLoop;
                 response = "";
                 while ((lineLoop = in.readLine()) != null) {
-                    response += lineLoop + "\n";
+                    response += lineLoop;
                 }
                 response = response.trim();
                 System.out.println("GET response: " + response);
@@ -452,111 +309,12 @@ public class AppFrame extends JFrame {
                 String command = response.substring(0, response.indexOf("/C\\"));
                 String question = response.substring(response.indexOf("/C\\") + 3, response.indexOf("/D\\"));
                 String answer = response.substring(response.indexOf("/D\\") + 3);
-                Prompt prompt = new Prompt(command, question, answer, emailPrompt);
+                Prompt prompt = new Prompt(command, question, answer);
                 scrollFrame.addPrompt(prompt);
 
                 in.close();
                 i++;
             }
-
-            // read and update StringBuilders
-            // create URL (with query) to the server and create the connection
-            String query = "fn";
-            URL url = new URL(setupURL + "?=" + query);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
-            conn.setRequestMethod("GET");
-
-            // print the response for testing purposes
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-            firstName.append(in.readLine());
-            in.close();
-
-            // create URL (with query) to the server and create the connection
-            query = "ln";
-            url = new URL(setupURL + "?=" + query);
-            conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
-            conn.setRequestMethod("GET");
-
-            // print the response for testing purposes
-            in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-            lastName.append(in.readLine());
-            in.close();
-
-            // create URL (with query) to the server and create the connection
-            query = "dn";
-            url = new URL(setupURL + "?=" + query);
-            conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
-            conn.setRequestMethod("GET");
-
-            // print the response for testing purposes
-            in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-            displayName.append(in.readLine());
-            in.close();
-
-            // create URL (with query) to the server and create the connection
-            query = "fe";
-            url = new URL(setupURL + "?=" + query);
-            conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
-            conn.setRequestMethod("GET");
-
-            // print the response for testing purposes
-            in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-            emailAddress.append(in.readLine());
-            in.close();
-
-            // create URL (with query) to the server and create the connection
-            query = "fp";
-            url = new URL(setupURL + "?=" + query);
-            conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
-            conn.setRequestMethod("GET");
-
-            // print the response for testing purposes
-            in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-            emailPassword.append(in.readLine());
-            in.close();
-
-            // create URL (with query) to the server and create the connection
-            query = "smtp";
-            url = new URL(setupURL + "?=" + query);
-            conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
-            conn.setRequestMethod("GET");
-
-            // print the response for testing purposes
-            in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-            SMTPHost.append(in.readLine());
-            in.close();
-
-            // create URL (with query) to the server and create the connection
-            query = "tlsp";
-            url = new URL(setupURL + "?=" + query);
-            conn = (HttpURLConnection) url.openConnection();
-
-            // request the GET method on the server
-            conn.setRequestMethod("GET");
-
-            // print the response for testing purposes
-            in = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()));
-            TLSPort.append(in.readLine());
-            in.close();
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("AppFrame: " + ex);

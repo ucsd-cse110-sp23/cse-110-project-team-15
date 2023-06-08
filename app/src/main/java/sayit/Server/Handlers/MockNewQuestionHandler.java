@@ -80,10 +80,10 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
 
         /* get answer for the question */
         output.makeAnswer(question);
-        String answer = output.getAnswer().trim();
+        String answer = output.getAnswer();
 
         /* add the prompt to prompts */
-        Prompt prompt = new Prompt(command, question, answer, null);
+        Prompt prompt = new Prompt(command, question, answer);
         prompts.add(prompt);
 
         /* set response to answer */
@@ -93,7 +93,7 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
     }
 
     /**
-     * Add a prompt to ArrayList prompts (not used in app so could delete maybe)
+     * Add a prompt to ArrayList prompts
      * @param httpExchange the request that the server receives
      * @return response saying whether or not the POST succeeded
      * @throws IOException
@@ -112,7 +112,7 @@ public class MockNewQuestionHandler implements HttpHandler, INQH {
         while (scanner.hasNextLine()) { answer += scanner.nextLine(); }
         
         // Store question and answer in prompts
-        prompts.add(new Prompt(command, question, answer, null));
+        prompts.add(new Prompt(command, question, answer));
 
         // return that prompt was added/posted
         String response = "Posted entry:" + "\nCommand: " + command + "\nQuestion: " + question + "\nAnswer: " + answer;
