@@ -84,7 +84,7 @@ public class CreateAccountFrame extends JFrame {
                             new Login();
                         } else if (response.equals("Account Created")) {
                             JOptionPane.showMessageDialog(CreateAccountFrame.this, "Account Created!");
-                            new AutoLoginFrame(inputEmail);
+                            new AutoLoginFrame(inputEmail, inputPassword);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();

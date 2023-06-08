@@ -4,10 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;  // Import the File class
+import java.io.IOException;  // Import the IOException class to handle errors
+import java.io.FileWriter;   // Import the FileWriter class
 
 public class AutoLoginFrame extends JFrame {
 
-    public AutoLoginFrame(String inputEmail) {
+    public AutoLoginFrame(String inputEmail, String inputPassword) {
         setTitle("Set AutoLogin");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 200);
@@ -30,14 +33,21 @@ public class AutoLoginFrame extends JFrame {
         panel.add(label, BorderLayout.NORTH);
         panel.add(buttonPanel, BorderLayout.CENTER);
 
+
         yesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                /*
-                 * For iteration 2:
-                 * - request loadPH handlePut() with query "autoLogin" to add IP and its associated email to mango
-                 * - input the IP and the email in the request
-                 */
+                //storeLoginCredentials(inputEmail, inputPassword);
+                try {
+                    File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
+                    autoFile.createNewFile();
+                    FileWriter myWriter = new FileWriter(autoFile);
+                    myWriter.write(inputEmail + "\n" + inputPassword);
+                    myWriter.close();
+                    System.out.println("Successfully wrote to the file.");
+                } catch (IOException ex){
+                    System.out.println(ex);
+                }
                 new AppFrame();
             }
         });
@@ -51,5 +61,22 @@ public class AutoLoginFrame extends JFrame {
 
         add(panel);
         setVisible(true);
+    }
+
+    /*
+     * creates file with login credentials to be used for auto login in the future
+     * @param inputEmail the user's email
+     * @param inputPassword the user's pasword
+     */
+    public void storeLoginCredentials(String inputEmail, String inputPassword) {
+        try {
+            File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
+            FileWriter myWriter = new FileWriter(autoFile);
+            myWriter.write(inputEmail + "\n" + inputPassword);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException ex){
+            System.out.println(ex);
+        }
     }
 }
