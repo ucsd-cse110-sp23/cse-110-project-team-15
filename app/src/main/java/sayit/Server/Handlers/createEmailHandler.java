@@ -76,7 +76,7 @@ public class createEmailHandler implements HttpHandler, ICEH {
         scanner.close();
 
         /* get email contents for the subject */
-        output.makeAnswer(subject);
+        output.makeAnswer("Create email " + subject);
         String content = output.getAnswer();
 
         /* add the prompt to prompts */
