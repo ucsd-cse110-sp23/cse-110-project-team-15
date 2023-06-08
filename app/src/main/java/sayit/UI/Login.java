@@ -31,12 +31,12 @@ public class Login extends JFrame {
          */
         try {
             File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
-            String email;
-            String password;
+            if(autoFile.exists()) {
+                String email;
+                String password;
 
-            BufferedReader reader = new BufferedReader(new FileReader(autoFile));
-            email = reader.readLine();
-            if(email != null) {
+                BufferedReader reader = new BufferedReader(new FileReader(autoFile));
+                email = reader.readLine();
                 password = reader.readLine();
                 reader.close();
 
@@ -72,9 +72,6 @@ public class Login extends JFrame {
                     JOptionPane.showMessageDialog(Login.this, "Invalid username or password. Please try again.");
                 }
                 return;
-            }
-            else {
-                reader.close();
             }
         } catch (IOException ex){
             System.out.println(ex);
