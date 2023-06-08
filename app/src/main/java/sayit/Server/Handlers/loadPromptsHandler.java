@@ -179,13 +179,13 @@ public class loadPromptsHandler implements HttpHandler {
                     email.append(inputEmail);
                     // gets us the promptH doc array
                     List<Document> promptHist = (List<Document>) accUser.get("promptH");
-                    firstName = (StringBuilder) accUser.get("firstName");
-                    lastName = (StringBuilder) accUser.get("lastName");
-                    displayName = (StringBuilder) accUser.get("displayName");
-                    fromEmail = (StringBuilder) accUser.get("fromEmail");
-                    fromPassword = (StringBuilder) accUser.get("fromPassword");
-                    SMTPHost = (StringBuilder) accUser.get("SMTPHost");
-                    TLSPort = (StringBuilder) accUser.get("TLSPort");
+                    firstName.append(accUser.get("firstName"));
+                    lastName.append(accUser.get("lastName"));
+                    displayName.append(accUser.get("displayName"));
+                    fromEmail.append(accUser.get("fromEmail"));
+                    fromPassword.append(accUser.get("fromPassword"));
+                    SMTPHost.append(accUser.get("SMTPHost"));
+                    TLSPort.append(accUser.get("TLSPort"));
                     Document temp;
                     String type;
                     String qLine;
