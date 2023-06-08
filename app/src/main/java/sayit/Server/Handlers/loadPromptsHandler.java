@@ -225,9 +225,16 @@ public class loadPromptsHandler implements HttpHandler {
                 accUser.append("acc_email", inputEmail)
                         .append("acc_password", inputPassword)
                         .append("promptH", new ArrayList<>())
-                        .append("maybe", "add send email info here? or in another collection");
+                        .append("firstName", "")
+                        .append("lastName", "")
+                        .append("displayName", "")
+                        .append("fromEmail", "")
+                        .append("fromPassword", "")
+                        .append("SMTPHost", "")
+                        .append("TLSPort", "");
 
                 usersDB.insertOne(accUser);
+
                 
                 // set email to the inputEmail
                 email.setLength(0);
