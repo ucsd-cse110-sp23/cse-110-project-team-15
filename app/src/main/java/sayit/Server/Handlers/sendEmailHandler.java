@@ -90,7 +90,7 @@ public class sendEmailHandler implements HttpHandler {
         if(em.TLSSendEmail(fromEmail, password, toEmail, SMTPHost, TLSPort, subject, body)) {
             response = "Email Successfully Sent";
         } else {
-            response = "Error with Email";
+            response = "Error with SMTP Host";
         }
 
         /* add the prompt to prompts */
