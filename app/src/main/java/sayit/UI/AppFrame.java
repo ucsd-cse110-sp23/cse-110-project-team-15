@@ -209,7 +209,6 @@ public class AppFrame extends JFrame {
         });
     }
 
-
     /**
      * Make a request to sendEH (input the fromEmail, password, toEmail, SMTPHost, TLSPort, subject, and body) to add the new prompt to its prompts, then add the response prompt to scrollFrame
      * @param toEmail String of the toEmail to be inputted
@@ -288,6 +287,7 @@ public class AppFrame extends JFrame {
                 conn.getOutputStream()
             );
             subject = subject.trim();
+
             out.write(subject + "\n");
             out.write(displayName.toString());
             out.flush();
