@@ -4,7 +4,7 @@ package sayit;
 import com.sun.net.httpserver.*;
 
 import sayit.Server.BusinessLogic.Prompt;
-import sayit.UI.AutoLoginFrame;
+import sayit.UI.MockAutoLoginFrame;
 
 import java.io.*;
 import java.net.*;
@@ -93,7 +93,7 @@ public class US4tests {
         assertEquals("Valid Login", response);
 
         // check that autoFile is created with correct login credentials
-        AutoLoginFrame myAutoFrame = new AutoLoginFrame(email, password);
+        MockAutoLoginFrame myAutoFrame = new MockAutoLoginFrame(email, password);
         myAutoFrame.storeLoginCredentials(email, password);
         File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
         assertTrue(autoFile.exists());
@@ -111,7 +111,7 @@ public class US4tests {
     @Test
     void autoLoginTest() throws IOException, InterruptedException {
         // create autoLogin file
-        AutoLoginFrame myAutoFrame = new AutoLoginFrame("test", "test");
+        MockAutoLoginFrame myAutoFrame = new MockAutoLoginFrame("test", "test");
         myAutoFrame.storeLoginCredentials("test", "test");
         File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
 
