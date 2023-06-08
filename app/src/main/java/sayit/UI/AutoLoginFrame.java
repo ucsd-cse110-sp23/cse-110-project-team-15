@@ -37,7 +37,20 @@ public class AutoLoginFrame extends JFrame {
         yesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                //storeLoginCredentials(inputEmail, inputPassword);
+                /*
+                 * For iteration 2:
+                 * - request loadPH handlePut() with query "autoLogin" to add IP and its associated email to mango
+                 * - input the IP and the email in the request
+                 */
+
+                /*
+                 * String autoLogin = handlePut(autoLogin)
+                 * if autoLogin == "No Automatic Login"
+                 *      //continue to login screen
+                 *      new AppFrame()
+                 * else
+                 *      skip to scroll frame loaded with email's prompt history
+                 */
                 try {
                     File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
                     autoFile.createNewFile();
@@ -48,6 +61,7 @@ public class AutoLoginFrame extends JFrame {
                 } catch (IOException ex){
                     System.out.println(ex);
                 }
+
                 new AppFrame();
             }
         });

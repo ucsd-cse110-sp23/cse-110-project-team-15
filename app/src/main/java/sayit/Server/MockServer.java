@@ -7,10 +7,14 @@ import sayit.Server.Handlers.MockCreateEmailHandler;
 import sayit.Server.Handlers.MockNewQuestionHandler;
 import sayit.Server.Handlers.MockStartHandler;
 import sayit.Server.Handlers.clearAllHandler;
+import sayit.Server.Handlers.createEmailHandler;
 import sayit.Server.Handlers.deletePromptHandler;
 import sayit.Server.Handlers.indexHandler;
 import sayit.Server.Handlers.loadPromptsHandler;
+import sayit.Server.Handlers.newQuestionHandler;
 import sayit.Server.Handlers.sendEmailHandler;
+import sayit.Server.Handlers.setupEmailHandler;
+import sayit.Server.Handlers.startHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -38,6 +42,13 @@ public class MockServer {
         ArrayList<Prompt> prompts = new ArrayList<Prompt>();
         // create a StringBuilder (to pass by reference) to store the email
         StringBuilder email = new StringBuilder();
+        StringBuilder firstName = new StringBuilder();
+        StringBuilder lastName = new StringBuilder();
+        StringBuilder displayName = new StringBuilder();
+        StringBuilder fromEmail = new StringBuilder();
+        StringBuilder fromPassword = new StringBuilder();
+        StringBuilder SMTPHost = new StringBuilder();
+        StringBuilder TLSPort = new StringBuilder();
 
         // create a server
         server = HttpServer.create(
@@ -46,8 +57,9 @@ public class MockServer {
         );
 
         // setup and start the server
+        server.createContext("/setupEmail", new setupEmailHandler(email, firstName, lastName, displayName, fromEmail, fromPassword, SMTPHost, TLSPort));
         server.createContext("/index", new indexHandler(prompts));
-        server.createContext("/load", new loadPromptsHandler(prompts, email));
+        server.createContext("/load", new loadPromptsHandler(prompts, email, firstName, lastName, displayName, fromEmail, fromPassword, SMTPHost, TLSPort));
         server.createContext("/start", new MockStartHandler());
         server.createContext("/newQuestion", new MockNewQuestionHandler(prompts));
         server.createContext("/clearAll", new clearAllHandler(prompts));
