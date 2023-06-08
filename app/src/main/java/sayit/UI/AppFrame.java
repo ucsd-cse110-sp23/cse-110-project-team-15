@@ -38,6 +38,7 @@ public class AppFrame extends JFrame {
     private final String deletePURL = "http://localhost:8100/deletePrompt";
     private final String createEURL = "http://localhost:8100/createEmail";
     private final String sendEURL = "http://localhost:8100/sendEmail";
+    private final String setupURL = "http://localhost:8100/setupEmail";
     StringBuilder firstName;
     StringBuilder lastName;
     StringBuilder displayName;
@@ -457,6 +458,105 @@ public class AppFrame extends JFrame {
                 in.close();
                 i++;
             }
+
+            // read and update StringBuilders
+            // create URL (with query) to the server and create the connection
+            String query = "fn";
+            URL url = new URL(setupURL + "?=" + query);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("GET");
+
+            // print the response for testing purposes
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
+            firstName.append(in.readLine());
+            in.close();
+
+            // create URL (with query) to the server and create the connection
+            query = "ln";
+            url = new URL(setupURL + "?=" + query);
+            conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("GET");
+
+            // print the response for testing purposes
+            in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
+            lastName.append(in.readLine());
+            in.close();
+
+            // create URL (with query) to the server and create the connection
+            query = "dn";
+            url = new URL(setupURL + "?=" + query);
+            conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("GET");
+
+            // print the response for testing purposes
+            in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
+            displayName.append(in.readLine());
+            in.close();
+
+            // create URL (with query) to the server and create the connection
+            query = "fe";
+            url = new URL(setupURL + "?=" + query);
+            conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("GET");
+
+            // print the response for testing purposes
+            in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
+            emailAddress.append(in.readLine());
+            in.close();
+
+            // create URL (with query) to the server and create the connection
+            query = "fp";
+            url = new URL(setupURL + "?=" + query);
+            conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("GET");
+
+            // print the response for testing purposes
+            in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
+            emailPassword.append(in.readLine());
+            in.close();
+
+            // create URL (with query) to the server and create the connection
+            query = "smtp";
+            url = new URL(setupURL + "?=" + query);
+            conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("GET");
+
+            // print the response for testing purposes
+            in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
+            SMTPHost.append(in.readLine());
+            in.close();
+
+            // create URL (with query) to the server and create the connection
+            query = "tlsp";
+            url = new URL(setupURL + "?=" + query);
+            conn = (HttpURLConnection) url.openConnection();
+
+            // request the GET method on the server
+            conn.setRequestMethod("GET");
+
+            // print the response for testing purposes
+            in = new BufferedReader(
+                new InputStreamReader(conn.getInputStream()));
+            TLSPort.append(in.readLine());
+            in.close();
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("AppFrame: " + ex);
