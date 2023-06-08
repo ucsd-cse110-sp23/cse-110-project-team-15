@@ -127,6 +127,17 @@ public class loadPromptsHandler implements HttpHandler {
                  * store the email associated with that IP into StringBuilder email
                  * do Cristian's reading mongo thing to fill prompts
                  */
+
+
+                 /*
+                  * search mongo for ip
+                        if ip exists
+                            get email
+                            response = email
+                        else
+                            response = "No Automatic Login"
+                    return response
+                  */
                 response = "Automatic Login";
                 response = "No Automatic Login";
             } 
