@@ -77,6 +77,20 @@ public class Prompt extends JPanel {
         queryPanel.add(queryField, BorderLayout.CENTER);
         queryPanel.setBorder(queryPanelBorder);
 
+        // if the command is "Create Email", create an additional "emailButton" to indicate that an email is selected
+        if (command.equals("Create Email")) {
+            // Make email button
+            emailButton = new JButton(emailIconScaled);
+            emailButton.setPreferredSize(new Dimension(20, 20));
+            emailButton.setFocusPainted(false);
+
+            // create listener for emailButton
+            emailButton.addActionListener(e -> {
+                emailPrompt.setLength(0);
+                emailPrompt.append(queryI + "/D\\" + responseI);
+            });
+        }
+
         // Make delete button
         deleteButton = new JButton(scaledIcon);
         deleteButton.setPreferredSize(new Dimension(20, 20));
@@ -117,36 +131,12 @@ public class Prompt extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 0));
         buttonPanel.setOpaque(false);
 
+        if (command.equals("Create Email")) { buttonPanel.add(emailButton); }
         buttonPanel.add(deleteButton);
         buttonPanel.add(expandButton);
         queryPanel.add(buttonPanel, BorderLayout.EAST);
 
         queryPanel.setBackground(pink);
-
-        // if the command is "Create Email", create an additional "emailButton" to indicate that an email is selected
-        if (command.equals("Create Email")) {
-            // Make email button
-            emailButton = new JButton(emailIconScaled);
-            emailButton.setPreferredSize(new Dimension(20, 20));
-            emailButton.setIcon(emailIconScaled);
-            emailButton.setBorder(BorderFactory.createEmptyBorder());
-            emailButton.setFocusPainted(false);
-
-            // Create a new JPanel to hold the delete button and set its preferred size
-            JPanel emailPanel = new JPanel();
-            emailPanel.setPreferredSize(new Dimension(25, 25));
-            emailPanel.add(emailButton);
-            emailPanel.setBackground(pink);
-            emailPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-
-            queryPanel.add(emailPanel, BorderLayout.SOUTH);
-
-            // create listener for emailButton
-            emailButton.addActionListener(e -> {
-                emailPrompt.setLength(0);
-                emailPrompt.append(queryI + "/D\\" + responseI);
-            });
-        }
 
         // Format Reponse Field as a text box
         responseField = new JTextArea(responseI);
