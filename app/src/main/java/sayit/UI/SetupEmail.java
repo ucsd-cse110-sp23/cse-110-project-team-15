@@ -6,6 +6,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -21,6 +26,8 @@ import javax.swing.border.LineBorder;
 
 import com.sun.mail.imap.protocol.ID;
 
+import sayit.Server.BusinessLogic.Prompt;
+
 public class SetupEmail extends JFrame {
     
     private JPanel contentPane;
@@ -29,6 +36,8 @@ public class SetupEmail extends JFrame {
 
     Color pink = new Color(227, 179, 171);
     Color blue = new Color(171, 219, 227);
+
+    private final String setupURL = "http://localhost:8100/setupEmail";
 
     SetupEmail(StringBuilder IFirstName, StringBuilder ILastName, StringBuilder IDisplayName, StringBuilder IEmailAddress, StringBuilder IEmailPassword, StringBuilder ISMTPHost, StringBuilder ITLSPort, StringBuilder emailPrompt) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -158,7 +167,39 @@ public class SetupEmail extends JFrame {
                 // save all datq  \t database
                 // IDisplayName.toString()
 
-                //AppFrame appFrame = new AppFrame();
+                try {
+                    // create URL (with query) to the server and create the connection
+                    URL url = new URL(setupURL);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    
+                    // request the PUT method on the server
+                    conn.setRequestMethod("PUT");
+                    conn.setDoOutput(true);
+        
+                    // write the question to the file
+                    OutputStreamWriter out = new OutputStreamWriter(
+                        conn.getOutputStream()
+                    );
+                    out.write(IFirstName.toString() + "\n");
+                    out.write(ILastName.toString() + "\n");
+                    out.write(IDisplayName.toString() + "\n");
+                    out.write(IEmailAddress.toString() + "\n");
+                    out.write(IEmailPassword.toString() + "\n");
+                    out.write(ISMTPHost.toString() + "\n");
+                    out.write(ITLSPort.toString());
+                    out.flush();
+                    out.close();
+        
+                    BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream())
+                    );
+                    in.readLine();
+                    in.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    System.out.println("AppFrame: " + ex);
+                }
+
                 JOptionPane.showMessageDialog(null, "Saved");
                 dispose();
             }
