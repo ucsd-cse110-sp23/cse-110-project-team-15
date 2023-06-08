@@ -33,23 +33,11 @@ public class AutoLoginFrame extends JFrame {
         panel.add(label, BorderLayout.NORTH);
         panel.add(buttonPanel, BorderLayout.CENTER);
 
+
         yesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                /*
-                 * For iteration 2:
-                 * - request loadPH handlePut() with query "autoLogin" to add IP and its associated email to mango
-                 * - input the IP and the email in the request
-                 */
-
-                /*
-                 * String autoLogin = handlePut(autoLogin)
-                 * if autoLogin == "No Automatic Login"
-                 *      //continue to login screen
-                 *      new AppFrame()
-                 * else
-                 *      skip to scroll frame loaded with email's prompt history
-                 */
+                //storeLoginCredentials(inputEmail, inputPassword);
                 try {
                     File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
                     autoFile.createNewFile();
@@ -60,7 +48,6 @@ public class AutoLoginFrame extends JFrame {
                 } catch (IOException ex){
                     System.out.println(ex);
                 }
-
                 new AppFrame();
             }
         });
@@ -74,5 +61,23 @@ public class AutoLoginFrame extends JFrame {
 
         add(panel);
         setVisible(true);
+    }
+
+    /*
+     * creates file with login credentials to be used for auto login in the future
+     * @param inputEmail the user's email
+     * @param inputPassword the user's pasword
+     */
+    public void storeLoginCredentials(String inputEmail, String inputPassword) {
+        try {
+            File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
+            autoFile.createNewFile();
+            FileWriter myWriter = new FileWriter(autoFile);
+            myWriter.write(inputEmail + "\n" + inputPassword);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException ex){
+            System.out.println(ex);
+        }
     }
 }
