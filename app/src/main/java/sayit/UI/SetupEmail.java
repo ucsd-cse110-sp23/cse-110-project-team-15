@@ -61,12 +61,19 @@ public class SetupEmail extends JFrame {
 
         // Create the text fields
         JTextField firstName = new JTextField(20); 
+        firstName.setText(IFirstName.toString());
         JTextField lastName = new JTextField(20);
+        lastName.setText(ILastName.toString());
         JTextField displayName = new JTextField(20);
+        displayName.setText(IDisplayName.toString());
         JTextField emailAddress = new JTextField(20);
+        emailAddress.setText(IEmailAddress.toString());
         JTextField emailPassword = new JTextField(20);
+        emailPassword.setText(IEmailPassword.toString());
         JTextField SMTPHost = new JTextField(20);
+        SMTPHost.setText(ISMTPHost.toString());
         JTextField TLSPort = new JTextField(20);
+        TLSPort.setText(ITLSPort.toString());
 
         // Set font size
         Font textFieldFont = new Font("Arial", Font.PLAIN, 10);

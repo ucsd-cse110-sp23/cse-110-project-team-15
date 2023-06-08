@@ -26,15 +26,29 @@ import static com.mongodb.client.model.Updates.*;
 public class loadPromptsHandler implements HttpHandler {
     private ArrayList<Prompt> prompts = new ArrayList<Prompt>();
     StringBuilder email;
+    StringBuilder firstName;
+    StringBuilder lastName;
+    StringBuilder displayName;
+    StringBuilder fromEmail;
+    StringBuilder fromPassword;
+    StringBuilder SMTPHost;
+    StringBuilder TLSPort;
     static final String MONGO_URI = "mongodb://quistian241:Gura%40241@ac-kumtned-shard-00-00.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-01.uikyhue.mongodb.net:27017,ac-kumtned-shard-00-02.uikyhue.mongodb.net:27017/?ssl=true&replicaSet=atlas-fk9y1w-shard-0&authSource=admin&retryWrites=true&w=majority";
 
     /**
      * Default constructor that initializes ArrayList prompts
      * @param prompts  ArrayList of prompts
      */
-    public loadPromptsHandler(ArrayList<Prompt> prompts, StringBuilder email) {
+    public loadPromptsHandler(ArrayList<Prompt> prompts, StringBuilder email, StringBuilder firstName, StringBuilder lastName, StringBuilder displayName, StringBuilder fromEmail, StringBuilder fromPassword, StringBuilder SMTPHost, StringBuilder TLSPort) {
         this.prompts = prompts;
         this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.displayName = displayName;
+        this.fromEmail = fromEmail;
+        this.fromPassword = fromPassword;
+        this.SMTPHost = SMTPHost;
+        this.TLSPort = TLSPort;
     }
 
     /**
@@ -165,6 +179,13 @@ public class loadPromptsHandler implements HttpHandler {
                     email.append(inputEmail);
                     // gets us the promptH doc array
                     List<Document> promptHist = (List<Document>) accUser.get("promptH");
+                    firstName = (StringBuilder) accUser.get("firstName");
+                    lastName = (StringBuilder) accUser.get("lastName");
+                    displayName = (StringBuilder) accUser.get("displayName");
+                    fromEmail = (StringBuilder) accUser.get("fromEmail");
+                    fromPassword = (StringBuilder) accUser.get("fromPassword");
+                    SMTPHost = (StringBuilder) accUser.get("SMTPHost");
+                    TLSPort = (StringBuilder) accUser.get("TLSPort");
                     Document temp;
                     String type;
                     String qLine;
@@ -179,6 +200,7 @@ public class loadPromptsHandler implements HttpHandler {
                         Prompt questionAndAnswer = new Prompt(type, qLine, aLine, null);
                         prompts.add(questionAndAnswer); // uncomment when the actual testing is ready for this format
                     }
+
                     response = "Valid Login";
                 }
             }
