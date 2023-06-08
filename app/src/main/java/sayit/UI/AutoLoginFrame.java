@@ -71,7 +71,6 @@ public class AutoLoginFrame extends JFrame {
     public void storeLoginCredentials(String inputEmail, String inputPassword) {
         try {
             File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
-            autoFile.createNewFile();
             FileWriter myWriter = new FileWriter(autoFile);
             myWriter.write(inputEmail + "\n" + inputPassword);
             myWriter.close();

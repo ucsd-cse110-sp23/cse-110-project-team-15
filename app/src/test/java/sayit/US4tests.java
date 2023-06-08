@@ -8,6 +8,8 @@ import sayit.UI.MockAutoLoginFrame;
 
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import com.mongodb.client.MongoClient;
@@ -96,7 +98,6 @@ public class US4tests {
         MockAutoLoginFrame myAutoFrame = new MockAutoLoginFrame();
         myAutoFrame.storeLoginCredentials(email, password);
         File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
-        assertTrue(autoFile.exists());
         BufferedReader reader = new BufferedReader(new FileReader(autoFile));
         String writtenEmail = reader.readLine();
         String writtenPassword = reader.readLine();
@@ -104,8 +105,9 @@ public class US4tests {
         assertEquals(email, writtenEmail);
         assertEquals(password, writtenPassword);
 
-        //delete autoFile for test repeatability
+        //clear autoFile for test repeatability
         autoFile.delete();
+        autoFile.createNewFile();
     }
 
     @Test
@@ -146,8 +148,9 @@ public class US4tests {
         in.close();
         assertEquals("Valid Login", response);
 
-        //delete autoFile for test repeatability
+        //clear autoFile for test repeatability
         autoFile.delete();
+        autoFile.createNewFile();
     }
 
     @Test
@@ -181,6 +184,9 @@ public class US4tests {
 
         // check that autoFile does not exist
         File autoFile = new File("src/main/java/sayit/UI/AutoFolder/AutoLog.txt");
-        assertFalse(autoFile.exists());
+        BufferedReader reader = new BufferedReader(new FileReader(autoFile));
+        String writtenEmail = reader.readLine();
+        reader.close();
+        assertNull(writtenEmail);
     }
 }
